@@ -7,6 +7,8 @@ namespace AS_Compiler.CommandLine
     {
         private static void Main()
         {
+            var showTree = false;
+
             while (true)
             {
                 Console.Write("> ");
@@ -17,10 +19,24 @@ namespace AS_Compiler.CommandLine
                     return;
                 }
 
-                var parser = new Parser(line);
-                var syntaxTree = parser.Parse();
+                if (line == "#showTree")
+                {
+                    showTree = !showTree;
+                    Console.WriteLine(showTree ? "Showing parse trees." : "Not showing parse trees.");
+                    continue;
+                }
+                else if (line == "#cls")
+                {
+                    Console.Clear();
+                    continue;
+                }
 
-                Print(syntaxTree.Root);
+                var syntaxTree = SyntaxTree.Parse(line);
+
+                if (showTree)
+                {
+                    Print(syntaxTree.Root);
+                }
 
                 if (!syntaxTree.Diagnostics.Any())
                 {
