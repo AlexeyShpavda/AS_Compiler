@@ -10,11 +10,8 @@
         }
 
         public override SyntaxType SyntaxType => SyntaxType.BinaryExpression;
-
         public ExpressionSyntax Right { get; }
-
         public SyntaxNode OperatorToken { get; }
-
         public ExpressionSyntax Left { get; }
     }
 }
