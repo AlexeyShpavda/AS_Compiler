@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AS_Compiler.CommandLine
+namespace AS_Compiler.CommandLine.CodeAnalysis
 {
     public class Lexer
     {
@@ -40,7 +40,7 @@ namespace AS_Compiler.CommandLine
                 var length = _position - start;
                 var text = _text.Substring(start, length);
 
-                if(!int.TryParse(text, out var value))
+                if (!int.TryParse(text, out var value))
                 {
                     _diagnostics.Add($"ERROR: The number {_text} is not valid Int32");
                 }

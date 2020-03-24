@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AS_Compiler.CommandLine
+namespace AS_Compiler.CommandLine.CodeAnalysis
 {
     public class Parser
     {

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace AS_Compiler.CommandLine
+namespace AS_Compiler.CommandLine.CodeAnalysis
 {
-    public class SyntaxTree
+    public sealed class SyntaxTree
     {
         public SyntaxTree(IEnumerable<string> diagnostics, ExpressionSyntax root, SyntaxToken endOfFileSyntaxToken)
         {
