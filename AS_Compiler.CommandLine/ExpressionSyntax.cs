@@ -1,6 +1,6 @@
 ﻿namespace AS_Compiler.CommandLine
 {
-    public class ExpressionSyntax : SyntaxNode
+    public abstract class ExpressionSyntax : SyntaxNode
     {
 
     }

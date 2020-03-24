@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace AS_Compiler.CommandLine
 {
@@ -16,24 +17,37 @@ namespace AS_Compiler.CommandLine
                     return;
                 }
 
-                var lexer = new Lexer(line);
-                while (true)
-                {
-                    var syntaxToken = lexer.NextSyntaxToken();
+                var parser = new Parser(line);
+                var expression = parser.Parse();
 
-                    if (syntaxToken.Type == SyntaxType.EndOfFile)
-                    {
-                        break;
-                    }
+                Print(expression);
+            }
+        }
 
-                    Console.Write($"{syntaxToken.Type}: '{syntaxToken.Text}'");
-                    if(syntaxToken.Value != null)
-                    {
-                        Console.Write($" {syntaxToken.Value}");
-                    }
+        private static void Print(SyntaxNode syntaxNode, string indent = "", bool isLast = true)
+        {
 
-                    Console.WriteLine();
-                }
+            var marker = isLast ? "└──" : "├──";
+
+            Console.Write(indent);
+            Console.Write(marker);
+            Console.Write(syntaxNode.Type);
+
+            if(syntaxNode is SyntaxToken t && t.Value != null)
+            {
+                Console.Write(" ");
+                Console.Write(t.Value);
+            }
+
+            Console.WriteLine();
+
+            indent += isLast ? "    " : "│   ";
+
+            var lastChild = syntaxNode.GetChildren().LastOrDefault();
+
+            foreach (var child in syntaxNode.GetChildren())
+            {
+                Print(child, indent, child == lastChild);
             }
         }
     }

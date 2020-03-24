@@ -1,4 +1,6 @@
-﻿namespace AS_Compiler.CommandLine
+﻿using System.Collections.Generic;
+
+namespace AS_Compiler.CommandLine
 {
     public sealed class BinaryExpressionSyntax : ExpressionSyntax
     {
@@ -9,9 +11,16 @@
             Right = right;
         }
 
-        public override SyntaxType SyntaxType => SyntaxType.BinaryExpression;
+        public override SyntaxType Type => SyntaxType.BinaryExpression;
         public ExpressionSyntax Right { get; }
         public SyntaxNode OperatorToken { get; }
         public ExpressionSyntax Left { get; }
+
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            yield return Left;
+            yield return OperatorToken;
+            yield return Right;
+        }
     }
 }

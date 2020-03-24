@@ -1,4 +1,6 @@
-﻿namespace AS_Compiler.CommandLine
+﻿using System.Collections.Generic;
+
+namespace AS_Compiler.CommandLine
 {
     public sealed class NumberExpressionSyntax : ExpressionSyntax
     {
@@ -7,7 +9,12 @@
             NumberSyntaxToken = numberSyntaxToken;
         }
 
-        public override SyntaxType SyntaxType => SyntaxType.NumberExpression;
+        public override SyntaxType Type => SyntaxType.NumberExpression;
         public SyntaxToken NumberSyntaxToken { get; }
+
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            yield return NumberSyntaxToken;
+        }
     }
 }
