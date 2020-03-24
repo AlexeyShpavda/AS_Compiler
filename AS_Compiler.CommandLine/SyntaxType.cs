@@ -10,6 +10,7 @@
         Slash,
         OpeningParenthesis,
         ClosingParenthesis,
+        NumberExpression,
         Unknown,
         EndOfFile
     }
