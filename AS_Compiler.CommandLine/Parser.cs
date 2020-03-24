@@ -72,7 +72,10 @@ namespace AS_Compiler.CommandLine
         {
             var left = ParsePrimaryExpression();
 
-            while (Current.Type == SyntaxType.Plus || Current.Type == SyntaxType.Minus)
+            while (Current.Type == SyntaxType.Plus
+                   || Current.Type == SyntaxType.Minus
+                   || Current.Type == SyntaxType.Star
+                   || Current.Type == SyntaxType.Slash)
             {
                 var operatorToken = NextToken();
                 var right = ParsePrimaryExpression();
