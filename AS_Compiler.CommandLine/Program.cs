@@ -18,15 +18,15 @@ namespace AS_Compiler.CommandLine
                 }
 
                 var parser = new Parser(line);
-                var expression = parser.Parse();
+                var syntaxTree = parser.Parse();
 
-                Print(expression);
+                Print(syntaxTree.Root);
 
-                if (parser.Diagnostics.Any())
+                if (syntaxTree.Diagnostics.Any())
                 {
                     Console.ForegroundColor = ConsoleColor.DarkRed;
 
-                    foreach (var diagnostic in parser.Diagnostics)
+                    foreach (var diagnostic in syntaxTree.Diagnostics)
                     {
                         Console.WriteLine(diagnostic);
                     }

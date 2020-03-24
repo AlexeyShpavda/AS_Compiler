@@ -58,7 +58,17 @@ namespace AS_Compiler.CommandLine
             return new SyntaxToken(syntaxType, Current.Position, null, null);
         }
 
-        public ExpressionSyntax Parse()
+        public SyntaxTree Parse()
+        {
+            var expression = ParseExpression();
+
+            var endOfFileToken = Match(SyntaxType.EndOfFile);
+
+            return new SyntaxTree(Diagnostics, expression, endOfFileToken);
+
+        }
+
+        public ExpressionSyntax ParseExpression()
         {
             var left = ParsePrimaryExpression();
 
