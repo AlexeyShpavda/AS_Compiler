@@ -11,6 +11,7 @@
         OpeningParenthesis,
         ClosingParenthesis,
         NumberExpression,
+        BinaryExpression,
         Unknown,
         EndOfFile
     }
