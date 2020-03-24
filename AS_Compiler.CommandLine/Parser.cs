@@ -6,6 +6,7 @@ namespace AS_Compiler.CommandLine
     {
         private readonly SyntaxToken[] _syntaxTokens;
         private int _position;
+        private readonly List<string> _diagnostics = new List<string>();
 
         public Parser(string text)
         {
@@ -25,7 +26,10 @@ namespace AS_Compiler.CommandLine
             } while (syntaxToken.Type != SyntaxType.EndOfFile);
 
             _syntaxTokens = syntaxTokens.ToArray();
+            _diagnostics.AddRange(lexer.Diagnostics);
         }
+
+        public IEnumerable<string> Diagnostics => _diagnostics;
 
         private SyntaxToken Peek(int offset)
         {
@@ -50,6 +54,7 @@ namespace AS_Compiler.CommandLine
                 return NextToken();
             }
 
+            _diagnostics.Add($"ERROR: Unexpected token <{Current.Type}>, expected <{syntaxType}>");
             return new SyntaxToken(syntaxType, Current.Position, null, null);
         }
 

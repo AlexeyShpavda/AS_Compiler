@@ -1,16 +1,20 @@
-﻿namespace AS_Compiler.CommandLine
+﻿using System.Collections.Generic;
+
+namespace AS_Compiler.CommandLine
 {
     public class Lexer
     {
         private readonly string _text;
         private int _position;
-
-        private char Current => _position >= _text.Length ? '\0' : _text[_position];
+        private readonly List<string> _diagnostics = new List<string>();
 
         public Lexer(string text)
         {
             _text = text;
         }
+
+        private char Current => _position >= _text.Length ? '\0' : _text[_position];
+        public List<string> Diagnostics => _diagnostics;
 
         private void Next()
         {
@@ -81,6 +85,7 @@
                 return new SyntaxToken(SyntaxType.ClosingParenthesis, _position++, ")", null);
             }
 
+            _diagnostics.Add($"ERROR: bad character input: '{Current}'");
             return new SyntaxToken(SyntaxType.Unknown, _position++, _text.Substring(_position - 1, 1), null);
         }
     }

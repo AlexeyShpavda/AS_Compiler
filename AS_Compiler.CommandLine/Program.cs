@@ -21,6 +21,18 @@ namespace AS_Compiler.CommandLine
                 var expression = parser.Parse();
 
                 Print(expression);
+
+                if (parser.Diagnostics.Any())
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+
+                    foreach (var diagnostic in parser.Diagnostics)
+                    {
+                        Console.WriteLine(diagnostic);
+                    }
+
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                }
             }
         }
 
