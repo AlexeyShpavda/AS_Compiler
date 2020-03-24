@@ -8,6 +8,7 @@
         Minus,
         Star,
         Slash,
+        Parenthesized,
         OpeningParenthesis,
         ClosingParenthesis,
         NumberExpression,

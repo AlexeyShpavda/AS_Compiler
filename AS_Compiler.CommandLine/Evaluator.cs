@@ -50,6 +50,11 @@ namespace AS_Compiler.CommandLine
                 }
             }
 
+            if (node is ParenthesizedExpressionSyntax p)
+            {
+                return EvaluateExpression(p.Expression);
+            }
+
             throw new Exception($"Unexpected node {node.Type}");
         }
     }

@@ -58,9 +58,14 @@ namespace AS_Compiler.CommandLine
             return new SyntaxToken(syntaxType, Current.Position, null, null);
         }
 
+        private ExpressionSyntax ParseExpression()
+        {
+            return ParseTerm();
+        }
+
         public SyntaxTree Parse()
         {
-            var expression = ParseExpression();
+            var expression = ParseTerm();
 
             var endOfFileToken = Match(SyntaxType.EndOfFile);
 
@@ -68,13 +73,26 @@ namespace AS_Compiler.CommandLine
 
         }
 
-        public ExpressionSyntax ParseExpression()
+        public ExpressionSyntax ParseTerm()
+        {
+            var left = ParseFactor();
+
+            while (Current.Type == SyntaxType.Plus
+                   || Current.Type == SyntaxType.Minus)
+            {
+                var operatorToken = NextToken();
+                var right = ParseFactor();
+                left = new BinaryExpressionSyntax(left, operatorToken, right);
+            }
+
+            return left;
+        }
+
+        public ExpressionSyntax ParseFactor()
         {
             var left = ParsePrimaryExpression();
 
-            while (Current.Type == SyntaxType.Plus
-                   || Current.Type == SyntaxType.Minus
-                   || Current.Type == SyntaxType.Star
+            while (Current.Type == SyntaxType.Star
                    || Current.Type == SyntaxType.Slash)
             {
                 var operatorToken = NextToken();
@@ -87,6 +105,15 @@ namespace AS_Compiler.CommandLine
 
         private ExpressionSyntax ParsePrimaryExpression()
         {
+            if (Current.Type == SyntaxType.OpeningParenthesis)
+            {
+                var left = NextToken();
+                var expression = ParseExpression();
+                var right = Match(SyntaxType.ClosingParenthesis);
+
+                return new ParenthesizedExpressionSyntax(left, expression, right);
+            }
+
             var numberToken = Match(SyntaxType.Number);
 
             return new NumberExpressionSyntax(numberToken);
