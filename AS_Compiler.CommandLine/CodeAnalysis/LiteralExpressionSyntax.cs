@@ -9,7 +9,7 @@ namespace AS_Compiler.CommandLine.CodeAnalysis
             LiteralSyntaxToken = literalSyntaxToken;
         }
 
-        public override SyntaxType Type => SyntaxType.NumberExpression;
+        public override SyntaxType Type => SyntaxType.LiteralExpression;
         public SyntaxToken LiteralSyntaxToken { get; }
 
         public override IEnumerable<SyntaxNode> GetChildren()

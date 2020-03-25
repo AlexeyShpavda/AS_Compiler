@@ -63,33 +63,24 @@ namespace AS_Compiler.CommandLine.CodeAnalysis
                 return new SyntaxToken(SyntaxType.WhiteSpace, start, text, null);
             }
 
-            if (Current == '+')
+            switch (Current)
             {
-                return new SyntaxToken(SyntaxType.Plus, _position++, "+", null);
+                case '+':
+                    return new SyntaxToken(SyntaxType.Plus, _position++, "+", null);
+                case '-':
+                    return new SyntaxToken(SyntaxType.Minus, _position++, "-", null);
+                case '*':
+                    return new SyntaxToken(SyntaxType.Star, _position++, "*", null);
+                case '/':
+                    return new SyntaxToken(SyntaxType.Slash, _position++, "/", null);
+                case '(':
+                    return new SyntaxToken(SyntaxType.OpeningParenthesis, _position++, "(", null);
+                case ')':
+                    return new SyntaxToken(SyntaxType.ClosingParenthesis, _position++, ")", null);
+                default:
+                    _diagnostics.Add($"ERROR: bad character input: '{Current}'");
+                    return new SyntaxToken(SyntaxType.Unknown, _position++, _text.Substring(_position - 1, 1), null);
             }
-            if (Current == '-')
-            {
-                return new SyntaxToken(SyntaxType.Minus, _position++, "-", null);
-            }
-            if (Current == '*')
-            {
-                return new SyntaxToken(SyntaxType.Star, _position++, "*", null);
-            }
-            if (Current == '/')
-            {
-                return new SyntaxToken(SyntaxType.Slash, _position++, "/", null);
-            }
-            if (Current == '(')
-            {
-                return new SyntaxToken(SyntaxType.OpeningParenthesis, _position++, "(", null);
-            }
-            if (Current == ')')
-            {
-                return new SyntaxToken(SyntaxType.ClosingParenthesis, _position++, ")", null);
-            }
-
-            _diagnostics.Add($"ERROR: bad character input: '{Current}'");
-            return new SyntaxToken(SyntaxType.Unknown, _position++, _text.Substring(_position - 1, 1), null);
         }
     }
 }

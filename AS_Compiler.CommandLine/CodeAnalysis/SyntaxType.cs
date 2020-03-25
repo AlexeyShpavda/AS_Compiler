@@ -14,7 +14,7 @@
         ClosingParenthesis,
 
         ParenthesizedExpression,
-        NumberExpression,
+        LiteralExpression,
         BinaryExpression
     }
 }

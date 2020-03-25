@@ -20,7 +20,7 @@ namespace AS_Compiler.CommandLine.CodeAnalysis
         {
             if (node is LiteralExpressionSyntax n)
             {
-                return (int)n.NumberSyntaxToken.Value;
+                return (int)n.LiteralSyntaxToken.Value;
             }
 
             if (node is BinaryExpressionSyntax b)
@@ -28,25 +28,18 @@ namespace AS_Compiler.CommandLine.CodeAnalysis
                 var left = EvaluateExpression(b.Left);
                 var right = EvaluateExpression(b.Right);
 
-                if (b.OperatorToken.Type == SyntaxType.Plus)
+                switch (b.OperatorToken.Type)
                 {
-                    return left + right;
-                }
-                else if (b.OperatorToken.Type == SyntaxType.Minus)
-                {
-                    return left - right;
-                }
-                else if (b.OperatorToken.Type == SyntaxType.Star)
-                {
-                    return left * right;
-                }
-                else if (b.OperatorToken.Type == SyntaxType.Slash)
-                {
-                    return left / right;
-                }
-                else
-                {
-                    throw new Exception($"Unexpected binary operator {b.OperatorToken.Type}");
+                    case SyntaxType.Plus:
+                        return left + right;
+                    case SyntaxType.Minus:
+                        return left - right;
+                    case SyntaxType.Star:
+                        return left * right;
+                    case SyntaxType.Slash:
+                        return left / right;
+                    default:
+                        throw new Exception($"Unexpected binary operator {b.OperatorToken.Type}");
                 }
             }
 
