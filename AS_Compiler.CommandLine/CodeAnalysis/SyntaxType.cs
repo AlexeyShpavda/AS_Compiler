@@ -2,18 +2,19 @@
 {
     public enum SyntaxType
     {
-        Number,
+        Unknown,
+        EndOfFile,
         WhiteSpace,
+        Number,
         Plus,
         Minus,
         Star,
         Slash,
-        Parenthesized,
         OpeningParenthesis,
         ClosingParenthesis,
+
+        ParenthesizedExpression,
         NumberExpression,
-        BinaryExpression,
-        Unknown,
-        EndOfFile
+        BinaryExpression
     }
 }

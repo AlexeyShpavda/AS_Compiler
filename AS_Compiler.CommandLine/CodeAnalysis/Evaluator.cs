@@ -2,7 +2,7 @@
 
 namespace AS_Compiler.CommandLine.CodeAnalysis
 {
-    public class Evaluator
+    public sealed class Evaluator
     {
         private readonly ExpressionSyntax _root;
 
@@ -18,7 +18,7 @@ namespace AS_Compiler.CommandLine.CodeAnalysis
 
         private int EvaluateExpression(ExpressionSyntax node)
         {
-            if (node is NumberExpressionSyntax n)
+            if (node is LiteralExpressionSyntax n)
             {
                 return (int)n.NumberSyntaxToken.Value;
             }

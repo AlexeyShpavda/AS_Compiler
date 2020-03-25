@@ -44,10 +44,11 @@ namespace AS_Compiler.CommandLine.CodeAnalysis
         {
             var current = Current;
             _position++;
+
             return current;
         }
 
-        private SyntaxToken Match(SyntaxType syntaxType)
+        private SyntaxToken MatchToken(SyntaxType syntaxType)
         {
             if (Current.Type == syntaxType)
             {
@@ -58,19 +59,18 @@ namespace AS_Compiler.CommandLine.CodeAnalysis
             return new SyntaxToken(syntaxType, Current.Position, null, null);
         }
 
+        public SyntaxTree Parse()
+        {
+            var expression = ParseExpression();
+
+            var endOfFileToken = MatchToken(SyntaxType.EndOfFile);
+
+            return new SyntaxTree(Diagnostics, expression, endOfFileToken);
+        }
+
         private ExpressionSyntax ParseExpression()
         {
             return ParseTerm();
-        }
-
-        public SyntaxTree Parse()
-        {
-            var expression = ParseTerm();
-
-            var endOfFileToken = Match(SyntaxType.EndOfFile);
-
-            return new SyntaxTree(Diagnostics, expression, endOfFileToken);
-
         }
 
         public ExpressionSyntax ParseTerm()
@@ -109,14 +109,14 @@ namespace AS_Compiler.CommandLine.CodeAnalysis
             {
                 var left = NextToken();
                 var expression = ParseExpression();
-                var right = Match(SyntaxType.ClosingParenthesis);
+                var right = MatchToken(SyntaxType.ClosingParenthesis);
 
                 return new ParenthesizedExpressionSyntax(left, expression, right);
             }
 
-            var numberToken = Match(SyntaxType.Number);
+            var numberToken = MatchToken(SyntaxType.Number);
 
-            return new NumberExpressionSyntax(numberToken);
+            return new LiteralExpressionSyntax(numberToken);
         }
     }
 }

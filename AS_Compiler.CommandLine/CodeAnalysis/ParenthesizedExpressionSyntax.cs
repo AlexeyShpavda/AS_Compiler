@@ -14,7 +14,7 @@ namespace AS_Compiler.CommandLine.CodeAnalysis
         public SyntaxToken OpenParenthesisToken { get; set; }
         public ExpressionSyntax Expression { get; set; }
         public SyntaxToken CloseParenthesisToken { get; set; }
-        public override SyntaxType Type => SyntaxType.Parenthesized;
+        public override SyntaxType Type => SyntaxType.ParenthesizedExpression;
         public override IEnumerable<SyntaxNode> GetChildren()
         {
             yield return OpenParenthesisToken;

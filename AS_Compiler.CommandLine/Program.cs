@@ -54,7 +54,7 @@ namespace AS_Compiler.CommandLine
                         Console.WriteLine(diagnostic);
                     }
 
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ResetColor();
                 }
             }
         }
