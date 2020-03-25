@@ -74,7 +74,7 @@ namespace AS_Compiler.CommandLine.CodeAnalysis
 
             while (true)
             {
-                var precedence = GetBinaryOperatorPrecedence(Current.Type);
+                var precedence = Current.Type.GetBinaryOperatorPrecedence();
                 if (precedence == 0 || precedence <= parentPrecedence)
                 {
                     break;
@@ -86,21 +86,6 @@ namespace AS_Compiler.CommandLine.CodeAnalysis
             }
 
             return left;
-        }
-
-        private static int GetBinaryOperatorPrecedence(SyntaxType syntaxType)
-        {
-            switch (syntaxType)
-            {
-                case SyntaxType.Star:
-                case SyntaxType.Slash:
-                    return 2;
-                case SyntaxType.Plus:
-                case SyntaxType.Minus:
-                    return 1;
-                default:
-                    return 0;
-            }
         }
 
         private ExpressionSyntax ParsePrimaryExpression()
