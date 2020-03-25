@@ -1,4 +1,4 @@
-﻿namespace AS_Compiler.CommandLine.CodeAnalysis
+﻿namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
 {
     public static class SyntaxFacts
     {

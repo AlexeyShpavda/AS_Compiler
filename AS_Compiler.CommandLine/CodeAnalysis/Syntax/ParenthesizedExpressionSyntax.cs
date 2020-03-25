@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AS_Compiler.CommandLine.CodeAnalysis
+namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
 {
     public sealed class ParenthesizedExpressionSyntax : ExpressionSyntax
     {

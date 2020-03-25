@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using AS_Compiler.CommandLine.CodeAnalysis;
+using AS_Compiler.CommandLine.CodeAnalysis.Syntax;
 
 namespace AS_Compiler.CommandLine
 {

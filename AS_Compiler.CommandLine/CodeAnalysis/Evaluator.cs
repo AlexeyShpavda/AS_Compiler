@@ -1,4 +1,5 @@
 ﻿using System;
+using AS_Compiler.CommandLine.CodeAnalysis.Syntax;
 
 namespace AS_Compiler.CommandLine.CodeAnalysis
 {
