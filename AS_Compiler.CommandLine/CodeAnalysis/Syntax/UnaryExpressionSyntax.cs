@@ -10,7 +10,7 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
             Operand = operand;
         }
 
-        public override SyntaxType Type => SyntaxType.BinaryExpression;
+        public override SyntaxType Type => SyntaxType.UnaryExpression;
         public SyntaxNode OperatorToken { get; }
         public ExpressionSyntax Operand { get; }
 
