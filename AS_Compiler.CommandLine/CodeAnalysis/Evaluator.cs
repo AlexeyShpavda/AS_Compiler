@@ -23,6 +23,21 @@ namespace AS_Compiler.CommandLine.CodeAnalysis
                 return (int)n.LiteralSyntaxToken.Value;
             }
 
+            if (node is UnaryExpressionSyntax u)
+            {
+                var operand = EvaluateExpression(u.Operand);
+
+                switch (u.OperatorToken.Type)
+                {
+                    case SyntaxType.Plus:
+                        return operand;
+                    case SyntaxType.Minus:
+                        return -operand;
+                    default:
+                        throw new Exception($"Unexpected unary operator {u.OperatorToken.Type}");
+                }
+            }
+
             if (node is BinaryExpressionSyntax b)
             {
                 var left = EvaluateExpression(b.Left);
