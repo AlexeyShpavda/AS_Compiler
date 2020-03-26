@@ -4,17 +4,17 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Binding
 {
     internal sealed class BoundBinaryExpression : BoundExpression
     {
-        public BoundBinaryExpression(BoundExpression left, BoundBinaryOperatorType operatorType, BoundExpression right)
+        public BoundBinaryExpression(BoundExpression left, BoundBinaryOperator op, BoundExpression right)
         {
             Left = left;
-            OperatorType = operatorType;
+            Operator = op;
             Right = right;
         }
 
         public override BoundNodeType BoundNodeType => BoundNodeType.BinaryExpression;
         public override Type Type => Left.Type;
         public BoundExpression Left { get; }
-        public BoundBinaryOperatorType OperatorType { get; set; }
+        public BoundBinaryOperator Operator { get; set; }
         public BoundExpression Right { get; }
     }
 }

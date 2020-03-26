@@ -28,12 +28,12 @@ namespace AS_Compiler.CommandLine.CodeAnalysis
             {
                 var operand = EvaluateExpression(u.Operand);
 
-                return u.OperatorType switch
+                return u.Operator.OperatorType switch
                 {
                     BoundUnaryOperatorType.Identity => (int) operand,
                     BoundUnaryOperatorType.Negation => -(int) operand,
                     BoundUnaryOperatorType.LogicalNegation => !(bool) operand,
-                    _ => throw new Exception($"Unexpected unary operator {u.OperatorType}")
+                    _ => throw new Exception($"Unexpected unary operator {u.Operator.OperatorType}")
                 };
             }
 
@@ -42,7 +42,7 @@ namespace AS_Compiler.CommandLine.CodeAnalysis
                 var left = EvaluateExpression(b.Left);
                 var right = EvaluateExpression(b.Right);
 
-                return b.OperatorType switch
+                return b.Operator.OperatorType switch
                 {
                     BoundBinaryOperatorType.Addition => (int) left + (int) right,
                     BoundBinaryOperatorType.Subtraction => (int) left - (int) right,
@@ -50,7 +50,7 @@ namespace AS_Compiler.CommandLine.CodeAnalysis
                     BoundBinaryOperatorType.Division => (int) left / (int) right,
                     BoundBinaryOperatorType.LogicalAnd => (bool)left && (bool)right,
                     BoundBinaryOperatorType.LogicalOr => (bool)left || (bool)right,
-                    _ => throw new Exception($"Unexpected binary operator {b.OperatorType}")
+                    _ => throw new Exception($"Unexpected binary operator {b.Operator.OperatorType}")
                 };
             }
 
