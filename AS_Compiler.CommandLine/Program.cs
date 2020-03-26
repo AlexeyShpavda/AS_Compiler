@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using AS_Compiler.CommandLine.CodeAnalysis;
+using AS_Compiler.CommandLine.CodeAnalysis.Binding;
 using AS_Compiler.CommandLine.CodeAnalysis.Syntax;
 
 namespace AS_Compiler.CommandLine
@@ -34,15 +35,19 @@ namespace AS_Compiler.CommandLine
                 }
 
                 var syntaxTree = SyntaxTree.Parse(line);
+                var binder = new Binder();
+                var boundExpression = binder.BindExpression(syntaxTree.Root);
+
+                var diagnostics = syntaxTree.Diagnostics.Concat(binder.Diagnostics).ToList();
 
                 if (showTree)
                 {
                     Print(syntaxTree.Root);
                 }
 
-                if (!syntaxTree.Diagnostics.Any())
+                if (!diagnostics.Any())
                 {
-                    var e = new Evaluator(syntaxTree.Root);
+                    var e = new Evaluator(boundExpression);
                     var result = e.Evaluate();
                     Console.WriteLine(result);
                 }
