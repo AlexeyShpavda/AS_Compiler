@@ -29,15 +29,12 @@ namespace AS_Compiler.CommandLine.CodeAnalysis
             {
                 var operand = EvaluateExpression(u.Operand);
 
-                switch (u.OperatorType)
+                return u.OperatorType switch
                 {
-                    case BoundUnaryOperatorType.Identity:
-                        return operand;
-                    case BoundUnaryOperatorType.Negation:
-                        return -operand;
-                    default:
-                        throw new Exception($"Unexpected unary operator {u.OperatorType}");
-                }
+                    BoundUnaryOperatorType.Identity => operand,
+                    BoundUnaryOperatorType.Negation => -operand,
+                    _ => throw new Exception($"Unexpected unary operator {u.OperatorType}")
+                };
             }
 
             if (node is BoundBinaryExpression b)
@@ -45,19 +42,14 @@ namespace AS_Compiler.CommandLine.CodeAnalysis
                 var left = EvaluateExpression(b.Left);
                 var right = EvaluateExpression(b.Right);
 
-                switch (b.OperatorType)
+                return b.OperatorType switch
                 {
-                    case BoundBinaryOperatorType.Addition:
-                        return left + right;
-                    case BoundBinaryOperatorType.Subtraction:
-                        return left - right;
-                    case BoundBinaryOperatorType.Multiplication:
-                        return left * right;
-                    case BoundBinaryOperatorType.Division:
-                        return left / right;
-                    default:
-                        throw new Exception($"Unexpected binary operator {b.OperatorType}");
-                }
+                    BoundBinaryOperatorType.Addition => (left + right),
+                    BoundBinaryOperatorType.Subtraction => (left - right),
+                    BoundBinaryOperatorType.Multiplication => (left * right),
+                    BoundBinaryOperatorType.Division => (left / right),
+                    _ => throw new Exception($"Unexpected binary operator {b.OperatorType}")
+                };
             }
 
             throw new Exception($"Unexpected node {node.Type}");

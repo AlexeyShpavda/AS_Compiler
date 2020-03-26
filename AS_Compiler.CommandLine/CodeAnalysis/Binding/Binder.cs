@@ -12,17 +12,13 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Binding
 
         public BoundExpression BindExpression(ExpressionSyntax syntax)
         {
-            switch (syntax.Type)
+            return syntax.Type switch
             {
-                case SyntaxType.LiteralExpression:
-                    return BindLiteralExpression((LiteralExpressionSyntax) syntax);
-                case SyntaxType.BinaryExpression:
-                    return BindBinaryExpression((BinaryExpressionSyntax) syntax);
-                case SyntaxType.UnaryExpression:
-                    return BindUnaryExpression((UnaryExpressionSyntax) syntax);
-                default:
-                    throw new Exception($"Unexpected syntax {syntax.Type}");
-            }
+                SyntaxType.LiteralExpression => BindLiteralExpression((LiteralExpressionSyntax) syntax),
+                SyntaxType.BinaryExpression => BindBinaryExpression((BinaryExpressionSyntax) syntax),
+                SyntaxType.UnaryExpression => BindUnaryExpression((UnaryExpressionSyntax) syntax),
+                _ => throw new Exception($"Unexpected syntax {syntax.Type}")
+            };
         }
 
         private BoundExpression BindLiteralExpression(LiteralExpressionSyntax syntax)
@@ -69,15 +65,12 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Binding
                 return null;
             }
 
-            switch (type)
+            return type switch
             {
-                case SyntaxType.Plus:
-                    return BoundUnaryOperatorType.Identity;
-                case SyntaxType.Minus:
-                    return BoundUnaryOperatorType.Negation;
-                default:
-                    throw new Exception($"Unexpected unary operator {type}");
-            }
+                SyntaxType.Plus => BoundUnaryOperatorType.Identity,
+                SyntaxType.Minus => BoundUnaryOperatorType.Negation,
+                _ => throw new Exception($"Unexpected unary operator {type}")
+            };
         }
 
         private BoundBinaryOperatorType? BindBinaryOperatorType(SyntaxType type, Type leftType, Type rightType)
@@ -87,19 +80,14 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Binding
                 return null;
             }
 
-            switch (type)
+            return type switch
             {
-                case SyntaxType.Plus:
-                    return BoundBinaryOperatorType.Addition;
-                case SyntaxType.Minus:
-                    return BoundBinaryOperatorType.Subtraction;
-                case SyntaxType.Star:
-                    return BoundBinaryOperatorType.Multiplication;
-                case SyntaxType.Slash:
-                    return BoundBinaryOperatorType.Division;
-                default:
-                    throw new Exception($"Unexpected binary operator {type}");
-            }
+                SyntaxType.Plus => BoundBinaryOperatorType.Addition,
+                SyntaxType.Minus => BoundBinaryOperatorType.Subtraction,
+                SyntaxType.Star => BoundBinaryOperatorType.Multiplication,
+                SyntaxType.Slash => BoundBinaryOperatorType.Division,
+                _ => throw new Exception($"Unexpected binary operator {type}")
+            };
         }
     }
 }
