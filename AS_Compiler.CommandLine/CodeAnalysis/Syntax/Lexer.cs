@@ -13,8 +13,15 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
             _text = text;
         }
 
-        private char Current => _position >= _text.Length ? '\0' : _text[_position];
+        private char Current => Peek(0);
+        private char LookAhead => Peek(1);
         public List<string> Diagnostics => _diagnostics;
+
+        private char Peek(int offset)
+        {
+            var index = _position + offset;
+            return index >= _text.Length ? '\0' : _text[index];
+        }
 
         private void Next()
         {
@@ -93,10 +100,20 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
                     return new SyntaxToken(SyntaxType.OpeningParenthesisToken, _position++, "(", null);
                 case ')':
                     return new SyntaxToken(SyntaxType.ClosingParenthesisToken, _position++, ")", null);
-                default:
-                    _diagnostics.Add($"ERROR: bad character input: '{Current}'");
-                    return new SyntaxToken(SyntaxType.UnknownToken, _position++, _text.Substring(_position - 1, 1), null);
+                case '!':
+                    return new SyntaxToken(SyntaxType.BangToken, _position++, "!", null);
+                case '&':
+                    if (LookAhead == '&')
+                        return new SyntaxToken(SyntaxType.AmpersandAmpersandToken, _position += 2, "&&", null); 
+                    break;
+                case '|':
+                    if (LookAhead == '|')
+                        return new SyntaxToken(SyntaxType.PipePipeToken, _position += 2, "||", null);
+                    break;
             }
+
+            _diagnostics.Add($"ERROR: bad character input: '{Current}'");
+            return new SyntaxToken(SyntaxType.UnknownToken, _position++, _text.Substring(_position - 1, 1), null);
         }
     }
 }

@@ -26,27 +26,30 @@ namespace AS_Compiler.CommandLine.CodeAnalysis
 
             if (node is BoundUnaryExpression u)
             {
-                var operand = (int) EvaluateExpression(u.Operand);
+                var operand = EvaluateExpression(u.Operand);
 
                 return u.OperatorType switch
                 {
-                    BoundUnaryOperatorType.Identity => operand,
-                    BoundUnaryOperatorType.Negation => -operand,
+                    BoundUnaryOperatorType.Identity => (int) operand,
+                    BoundUnaryOperatorType.Negation => -(int) operand,
+                    BoundUnaryOperatorType.LogicalNegation => !(bool) operand,
                     _ => throw new Exception($"Unexpected unary operator {u.OperatorType}")
                 };
             }
 
             if (node is BoundBinaryExpression b)
             {
-                var left = (int) EvaluateExpression(b.Left);
-                var right = (int) EvaluateExpression(b.Right);
+                var left = EvaluateExpression(b.Left);
+                var right = EvaluateExpression(b.Right);
 
                 return b.OperatorType switch
                 {
-                    BoundBinaryOperatorType.Addition => (left + right),
-                    BoundBinaryOperatorType.Subtraction => (left - right),
-                    BoundBinaryOperatorType.Multiplication => (left * right),
-                    BoundBinaryOperatorType.Division => (left / right),
+                    BoundBinaryOperatorType.Addition => (int) left + (int) right,
+                    BoundBinaryOperatorType.Subtraction => (int) left - (int) right,
+                    BoundBinaryOperatorType.Multiplication => (int) left * (int) right,
+                    BoundBinaryOperatorType.Division => (int) left / (int) right,
+                    BoundBinaryOperatorType.LogicalAnd => (bool)left && (bool)right,
+                    BoundBinaryOperatorType.LogicalOr => (bool)left || (bool)right,
                     _ => throw new Exception($"Unexpected binary operator {b.OperatorType}")
                 };
             }

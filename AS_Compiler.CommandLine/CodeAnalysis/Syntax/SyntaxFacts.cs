@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
+﻿namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
 {
     public static class SyntaxFacts
     {
@@ -10,7 +8,8 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
             {
                 case SyntaxType.PlusToken:
                 case SyntaxType.MinusToken:
-                    return 3;
+                case SyntaxType.BangToken:
+                    return 5;
                 default:
                     return 0;
             }
@@ -22,9 +21,13 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
             {
                 case SyntaxType.StarToken:
                 case SyntaxType.SlashToken:
-                    return 2;
+                    return 4;
                 case SyntaxType.PlusToken:
                 case SyntaxType.MinusToken:
+                    return 3;
+                case SyntaxType.AmpersandAmpersandToken:
+                    return 2;
+                case SyntaxType.PipePipeToken:
                     return 1;
                 default:
                     return 0;

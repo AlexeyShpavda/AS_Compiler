@@ -60,34 +60,58 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Binding
 
         private BoundUnaryOperatorType? BindUnaryOperatorType(SyntaxType type, Type operandType)
         {
-            if(operandType != typeof(int))
+            if(operandType == typeof(int))
             {
-                return null;
+                switch (type)
+                {
+                    case SyntaxType.PlusToken:
+                        return BoundUnaryOperatorType.Identity;
+                    case SyntaxType.MinusToken:
+                        return BoundUnaryOperatorType.Negation;
+                }
             }
 
-            return type switch
+            if (operandType == typeof(bool))
             {
-                SyntaxType.PlusToken => BoundUnaryOperatorType.Identity,
-                SyntaxType.MinusToken => BoundUnaryOperatorType.Negation,
-                _ => throw new Exception($"Unexpected unary operator {type}")
-            };
+                switch (type)
+                {
+                    case SyntaxType.BangToken:
+                        return BoundUnaryOperatorType.LogicalNegation;
+                }
+            }
+
+            return null;
         }
 
         private BoundBinaryOperatorType? BindBinaryOperatorType(SyntaxType type, Type leftType, Type rightType)
         {
-            if (leftType != typeof(int) || rightType != typeof(int))
+            if (leftType == typeof(int) && rightType == typeof(int))
             {
-                return null;
+                switch (type)
+                {
+                    case SyntaxType.PlusToken:
+                        return BoundBinaryOperatorType.Addition;
+                    case SyntaxType.MinusToken:
+                        return BoundBinaryOperatorType.Subtraction;
+                    case SyntaxType.StarToken:
+                        return BoundBinaryOperatorType.Multiplication;
+                    case SyntaxType.SlashToken:
+                        return BoundBinaryOperatorType.Division;
+                }
             }
 
-            return type switch
+            if (leftType == typeof(bool) && rightType == typeof(bool))
             {
-                SyntaxType.PlusToken => BoundBinaryOperatorType.Addition,
-                SyntaxType.MinusToken => BoundBinaryOperatorType.Subtraction,
-                SyntaxType.StarToken => BoundBinaryOperatorType.Multiplication,
-                SyntaxType.SlashToken => BoundBinaryOperatorType.Division,
-                _ => throw new Exception($"Unexpected binary operator {type}")
-            };
+                switch (type)
+                {
+                    case SyntaxType.AmpersandAmpersandToken:
+                        return BoundBinaryOperatorType.LogicalAnd;
+                    case SyntaxType.PipePipeToken:
+                        return BoundBinaryOperatorType.LogicalOr;
+                }
+            }
+
+            return null;
         }
     }
 }
