@@ -1,6 +1,5 @@
 ﻿using System;
 using AS_Compiler.CommandLine.CodeAnalysis.Binding;
-using AS_Compiler.CommandLine.CodeAnalysis.Syntax;
 
 namespace AS_Compiler.CommandLine.CodeAnalysis
 {
@@ -13,21 +12,21 @@ namespace AS_Compiler.CommandLine.CodeAnalysis
             _root = root;
         }
 
-        public int Evaluate()
+        public object Evaluate()
         {
             return EvaluateExpression(_root);
         }
 
-        private int EvaluateExpression(BoundExpression node)
+        private object EvaluateExpression(BoundExpression node)
         {
             if (node is BoundLiteralExpression n)
             {
-                return (int)n.Value;
+                return n.Value;
             }
 
             if (node is BoundUnaryExpression u)
             {
-                var operand = EvaluateExpression(u.Operand);
+                var operand = (int) EvaluateExpression(u.Operand);
 
                 return u.OperatorType switch
                 {
@@ -39,8 +38,8 @@ namespace AS_Compiler.CommandLine.CodeAnalysis
 
             if (node is BoundBinaryExpression b)
             {
-                var left = EvaluateExpression(b.Left);
-                var right = EvaluateExpression(b.Right);
+                var left = (int) EvaluateExpression(b.Left);
+                var right = (int) EvaluateExpression(b.Right);
 
                 return b.OperatorType switch
                 {

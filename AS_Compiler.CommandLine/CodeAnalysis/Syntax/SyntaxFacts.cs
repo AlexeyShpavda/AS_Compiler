@@ -1,4 +1,6 @@
-﻿namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
+﻿using System;
+
+namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
 {
     public static class SyntaxFacts
     {
@@ -27,6 +29,16 @@
                 default:
                     return 0;
             }
+        }
+
+        internal static SyntaxType GetKeywordType(string text)
+        {
+            return text switch
+            {
+                "true" => SyntaxType.TrueKeyword,
+                "false" => SyntaxType.FalseKeyword,
+                _ => SyntaxType.IdentifierToken
+            };
         }
     }
 }

@@ -102,18 +102,31 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
 
         private ExpressionSyntax ParsePrimaryExpression()
         {
-            if (Current.Type == SyntaxType.OpeningParenthesis)
+            switch (Current.Type)
             {
-                var left = NextToken();
-                var expression = ParseExpression();
-                var right = MatchToken(SyntaxType.ClosingParenthesis);
+                case SyntaxType.OpeningParenthesis:
+                {
+                    var left = NextToken();
+                    var expression = ParseExpression();
+                    var right = MatchToken(SyntaxType.ClosingParenthesis);
 
-                return new ParenthesizedExpressionSyntax(left, expression, right);
+                    return new ParenthesizedExpressionSyntax(left, expression, right);
+                }
+                case SyntaxType.TrueKeyword:
+                case SyntaxType.FalseKeyword:
+                {
+                    var keywordToken = NextToken();
+                    var value = keywordToken.Type == SyntaxType.TrueKeyword;
+
+                    return new LiteralExpressionSyntax(keywordToken, value);
+                }
+                default:
+                {
+                    var numberToken = MatchToken(SyntaxType.Number);
+
+                    return new LiteralExpressionSyntax(numberToken);
+                }
             }
-
-            var numberToken = MatchToken(SyntaxType.Number);
-
-            return new LiteralExpressionSyntax(numberToken);
         }
     }
 }

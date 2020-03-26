@@ -12,6 +12,10 @@
         Slash,
         OpeningParenthesis,
         ClosingParenthesis,
+        IdentifierToken,
+
+        TrueKeyword,
+        FalseKeyword,
 
         ParenthesizedExpression,
         LiteralExpression,
