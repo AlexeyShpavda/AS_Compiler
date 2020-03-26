@@ -8,8 +8,8 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
         {
             switch (syntaxType)
             {
-                case SyntaxType.Plus:
-                case SyntaxType.Minus:
+                case SyntaxType.PlusToken:
+                case SyntaxType.MinusToken:
                     return 3;
                 default:
                     return 0;
@@ -20,11 +20,11 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
         {
             switch (syntaxType)
             {
-                case SyntaxType.Star:
-                case SyntaxType.Slash:
+                case SyntaxType.StarToken:
+                case SyntaxType.SlashToken:
                     return 2;
-                case SyntaxType.Plus:
-                case SyntaxType.Minus:
+                case SyntaxType.PlusToken:
+                case SyntaxType.MinusToken:
                     return 1;
                 default:
                     return 0;

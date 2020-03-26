@@ -19,11 +19,11 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
             {
                 syntaxToken = lexer.NextSyntaxToken();
 
-                if (syntaxToken.Type != SyntaxType.WhiteSpace && syntaxToken.Type != SyntaxType.Unknown)
+                if (syntaxToken.Type != SyntaxType.WhiteSpaceToken && syntaxToken.Type != SyntaxType.UnknownToken)
                 {
                     syntaxTokens.Add(syntaxToken);
                 }
-            } while (syntaxToken.Type != SyntaxType.EndOfFile);
+            } while (syntaxToken.Type != SyntaxType.EndOfFileToken);
 
             _syntaxTokens = syntaxTokens.ToArray();
             _diagnostics.AddRange(lexer.Diagnostics);
@@ -63,7 +63,7 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
         {
             var expression = ParseExpression();
 
-            var endOfFileToken = MatchToken(SyntaxType.EndOfFile);
+            var endOfFileToken = MatchToken(SyntaxType.EndOfFileToken);
 
             return new SyntaxTree(Diagnostics, expression, endOfFileToken);
         }
@@ -104,11 +104,11 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
         {
             switch (Current.Type)
             {
-                case SyntaxType.OpeningParenthesis:
+                case SyntaxType.OpeningParenthesisToken:
                 {
                     var left = NextToken();
                     var expression = ParseExpression();
-                    var right = MatchToken(SyntaxType.ClosingParenthesis);
+                    var right = MatchToken(SyntaxType.ClosingParenthesisToken);
 
                     return new ParenthesizedExpressionSyntax(left, expression, right);
                 }
@@ -122,7 +122,7 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
                 }
                 default:
                 {
-                    var numberToken = MatchToken(SyntaxType.Number);
+                    var numberToken = MatchToken(SyntaxType.NumberToken);
 
                     return new LiteralExpressionSyntax(numberToken);
                 }

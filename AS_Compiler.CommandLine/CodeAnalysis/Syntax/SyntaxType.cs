@@ -2,16 +2,16 @@
 {
     public enum SyntaxType
     {
-        Unknown,
-        EndOfFile,
-        WhiteSpace,
-        Number,
-        Plus,
-        Minus,
-        Star,
-        Slash,
-        OpeningParenthesis,
-        ClosingParenthesis,
+        UnknownToken,
+        EndOfFileToken,
+        WhiteSpaceToken,
+        NumberToken,
+        PlusToken,
+        MinusToken,
+        StarToken,
+        SlashToken,
+        OpeningParenthesisToken,
+        ClosingParenthesisToken,
         IdentifierToken,
 
         TrueKeyword,

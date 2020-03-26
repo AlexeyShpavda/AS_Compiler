@@ -25,7 +25,7 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
         {
             if (_position >= _text.Length)
             {
-                return new SyntaxToken(SyntaxType.EndOfFile, _position, "\0", null);
+                return new SyntaxToken(SyntaxType.EndOfFileToken, _position, "\0", null);
             }
 
             if (char.IsDigit(Current))
@@ -45,7 +45,7 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
                     _diagnostics.Add($"ERROR: The number {_text} is not valid Int32");
                 }
 
-                return new SyntaxToken(SyntaxType.Number, start, text, value);
+                return new SyntaxToken(SyntaxType.NumberToken, start, text, value);
             }
 
             if (char.IsWhiteSpace(Current))
@@ -60,7 +60,7 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
                 var length = _position - start;
                 var text = _text.Substring(start, length);
 
-                return new SyntaxToken(SyntaxType.WhiteSpace, start, text, null);
+                return new SyntaxToken(SyntaxType.WhiteSpaceToken, start, text, null);
             }
 
             if (char.IsLetter(Current))
@@ -82,20 +82,20 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
             switch (Current)
             {
                 case '+':
-                    return new SyntaxToken(SyntaxType.Plus, _position++, "+", null);
+                    return new SyntaxToken(SyntaxType.PlusToken, _position++, "+", null);
                 case '-':
-                    return new SyntaxToken(SyntaxType.Minus, _position++, "-", null);
+                    return new SyntaxToken(SyntaxType.MinusToken, _position++, "-", null);
                 case '*':
-                    return new SyntaxToken(SyntaxType.Star, _position++, "*", null);
+                    return new SyntaxToken(SyntaxType.StarToken, _position++, "*", null);
                 case '/':
-                    return new SyntaxToken(SyntaxType.Slash, _position++, "/", null);
+                    return new SyntaxToken(SyntaxType.SlashToken, _position++, "/", null);
                 case '(':
-                    return new SyntaxToken(SyntaxType.OpeningParenthesis, _position++, "(", null);
+                    return new SyntaxToken(SyntaxType.OpeningParenthesisToken, _position++, "(", null);
                 case ')':
-                    return new SyntaxToken(SyntaxType.ClosingParenthesis, _position++, ")", null);
+                    return new SyntaxToken(SyntaxType.ClosingParenthesisToken, _position++, ")", null);
                 default:
                     _diagnostics.Add($"ERROR: bad character input: '{Current}'");
-                    return new SyntaxToken(SyntaxType.Unknown, _position++, _text.Substring(_position - 1, 1), null);
+                    return new SyntaxToken(SyntaxType.UnknownToken, _position++, _text.Substring(_position - 1, 1), null);
             }
         }
     }

@@ -67,8 +67,8 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Binding
 
             return type switch
             {
-                SyntaxType.Plus => BoundUnaryOperatorType.Identity,
-                SyntaxType.Minus => BoundUnaryOperatorType.Negation,
+                SyntaxType.PlusToken => BoundUnaryOperatorType.Identity,
+                SyntaxType.MinusToken => BoundUnaryOperatorType.Negation,
                 _ => throw new Exception($"Unexpected unary operator {type}")
             };
         }
@@ -82,10 +82,10 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Binding
 
             return type switch
             {
-                SyntaxType.Plus => BoundBinaryOperatorType.Addition,
-                SyntaxType.Minus => BoundBinaryOperatorType.Subtraction,
-                SyntaxType.Star => BoundBinaryOperatorType.Multiplication,
-                SyntaxType.Slash => BoundBinaryOperatorType.Division,
+                SyntaxType.PlusToken => BoundBinaryOperatorType.Addition,
+                SyntaxType.MinusToken => BoundBinaryOperatorType.Subtraction,
+                SyntaxType.StarToken => BoundBinaryOperatorType.Multiplication,
+                SyntaxType.SlashToken => BoundBinaryOperatorType.Division,
                 _ => throw new Exception($"Unexpected binary operator {type}")
             };
         }
