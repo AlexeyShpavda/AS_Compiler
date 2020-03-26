@@ -50,6 +50,8 @@ namespace AS_Compiler.CommandLine.CodeAnalysis
                     BoundBinaryOperatorType.Division => (int) left / (int) right,
                     BoundBinaryOperatorType.LogicalAnd => (bool)left && (bool)right,
                     BoundBinaryOperatorType.LogicalOr => (bool)left || (bool)right,
+                    BoundBinaryOperatorType.Equals => Equals(left, right),
+                    BoundBinaryOperatorType.NotEquals => !Equals(left, right),
                     _ => throw new Exception($"Unexpected binary operator {b.Operator.OperatorType}")
                 };
             }

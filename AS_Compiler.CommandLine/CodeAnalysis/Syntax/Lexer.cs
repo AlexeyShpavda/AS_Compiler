@@ -100,8 +100,6 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
                     return new SyntaxToken(SyntaxType.OpeningParenthesisToken, _position++, "(", null);
                 case ')':
                     return new SyntaxToken(SyntaxType.ClosingParenthesisToken, _position++, ")", null);
-                case '!':
-                    return new SyntaxToken(SyntaxType.BangToken, _position++, "!", null);
                 case '&':
                     if (LookAhead == '&')
                         return new SyntaxToken(SyntaxType.AmpersandAmpersandToken, _position += 2, "&&", null); 
@@ -110,6 +108,14 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
                     if (LookAhead == '|')
                         return new SyntaxToken(SyntaxType.PipePipeToken, _position += 2, "||", null);
                     break;
+                case '=':
+                    if (LookAhead == '=')
+                        return new SyntaxToken(SyntaxType.EqualsEqualsToken, _position += 2, "==", null);
+                    break;
+                case '!':
+                    return LookAhead == '='
+                        ? new SyntaxToken(SyntaxType.BangEqualsToken, _position += 2, "!=", null)
+                        : new SyntaxToken(SyntaxType.BangToken, _position++, "!", null);
             }
 
             _diagnostics.Add($"ERROR: bad character input: '{Current}'");

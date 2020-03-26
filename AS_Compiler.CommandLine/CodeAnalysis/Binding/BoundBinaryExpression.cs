@@ -12,7 +12,7 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Binding
         }
 
         public override BoundNodeType BoundNodeType => BoundNodeType.BinaryExpression;
-        public override Type Type => Left.Type;
+        public override Type Type => Operator.Type;
         public BoundExpression Left { get; }
         public BoundBinaryOperator Operator { get; set; }
         public BoundExpression Right { get; }

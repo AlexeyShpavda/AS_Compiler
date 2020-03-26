@@ -11,7 +11,7 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Binding
         }
 
         public override BoundNodeType BoundNodeType => BoundNodeType.UnaryExpression;
-        public override Type Type => Operand.Type;
+        public override Type Type => Operator.Type;
         public BoundUnaryOperator Operator { get; set; }
         public BoundExpression Operand { get; }
     }

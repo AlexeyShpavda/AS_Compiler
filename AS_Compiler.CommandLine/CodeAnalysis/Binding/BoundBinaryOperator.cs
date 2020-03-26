@@ -11,20 +11,25 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Binding
         {
         }
 
+        public BoundBinaryOperator(SyntaxType syntaxType, BoundBinaryOperatorType operatorType, Type operandType, Type resultType)
+            : this(syntaxType, operatorType, operandType, operandType, resultType)
+        {
+        }
+
         public BoundBinaryOperator(SyntaxType syntaxType, BoundBinaryOperatorType operatorType, Type leftType, Type rightType, Type resultType)
         {
             SyntaxType = syntaxType;
             OperatorType = operatorType;
             LeftType = leftType;
             RightType = rightType;
-            ResultType = resultType;
+            Type = resultType;
         }
 
         public SyntaxType SyntaxType { get; }
         public BoundBinaryOperatorType OperatorType { get; }
         public Type LeftType { get; }
         public Type RightType { get; }
-        public Type ResultType { get; }
+        public Type Type { get; }
 
         private static readonly BoundBinaryOperator[] Operators =
         {
@@ -32,9 +37,13 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Binding
             new BoundBinaryOperator(SyntaxType.MinusToken, BoundBinaryOperatorType.Subtraction, typeof(int)),
             new BoundBinaryOperator(SyntaxType.StarToken, BoundBinaryOperatorType.Multiplication, typeof(int)),
             new BoundBinaryOperator(SyntaxType.SlashToken, BoundBinaryOperatorType.Division, typeof(int)),
+            new BoundBinaryOperator(SyntaxType.EqualsEqualsToken, BoundBinaryOperatorType.Equals, typeof(int), typeof(int)),
+            new BoundBinaryOperator(SyntaxType.EqualsEqualsToken, BoundBinaryOperatorType.NotEquals, typeof(int), typeof(int)),
 
             new BoundBinaryOperator(SyntaxType.AmpersandAmpersandToken, BoundBinaryOperatorType.LogicalAnd, typeof(bool)),
-            new BoundBinaryOperator(SyntaxType.PipePipeToken, BoundBinaryOperatorType.LogicalOr, typeof(bool))
+            new BoundBinaryOperator(SyntaxType.PipePipeToken, BoundBinaryOperatorType.LogicalOr, typeof(bool)),
+            new BoundBinaryOperator(SyntaxType.EqualsEqualsToken, BoundBinaryOperatorType.Equals, typeof(bool), typeof(bool)),
+            new BoundBinaryOperator(SyntaxType.EqualsEqualsToken, BoundBinaryOperatorType.NotEquals, typeof(bool), typeof(bool)),
         };
 
         public static BoundBinaryOperator Bind(SyntaxType syntaxType, Type leftType, Type rightType)

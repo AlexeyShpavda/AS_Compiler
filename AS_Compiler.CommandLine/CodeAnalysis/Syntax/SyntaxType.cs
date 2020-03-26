@@ -16,6 +16,8 @@
         BangToken,
         AmpersandAmpersandToken,
         PipePipeToken,
+        EqualsEqualsToken,
+        BangEqualsToken,
 
         TrueKeyword,
         FalseKeyword,

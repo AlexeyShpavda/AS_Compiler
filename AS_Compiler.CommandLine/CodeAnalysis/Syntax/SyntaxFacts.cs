@@ -4,34 +4,35 @@
     {
         public static int GetUnaryOperatorPrecedence(this SyntaxType syntaxType)
         {
-            switch (syntaxType)
+            return syntaxType switch
             {
-                case SyntaxType.PlusToken:
-                case SyntaxType.MinusToken:
-                case SyntaxType.BangToken:
-                    return 5;
-                default:
-                    return 0;
-            }
+                SyntaxType.PlusToken => 6,
+                SyntaxType.MinusToken => 6,
+                SyntaxType.BangToken => 6,
+
+                _ => 0
+            };
         }
 
         public static int GetBinaryOperatorPrecedence(this SyntaxType syntaxType)
         {
-            switch (syntaxType)
+            return syntaxType switch
             {
-                case SyntaxType.StarToken:
-                case SyntaxType.SlashToken:
-                    return 4;
-                case SyntaxType.PlusToken:
-                case SyntaxType.MinusToken:
-                    return 3;
-                case SyntaxType.AmpersandAmpersandToken:
-                    return 2;
-                case SyntaxType.PipePipeToken:
-                    return 1;
-                default:
-                    return 0;
-            }
+                SyntaxType.StarToken => 5,
+                SyntaxType.SlashToken => 5,
+
+                SyntaxType.PlusToken => 4,
+                SyntaxType.MinusToken => 4,
+
+                SyntaxType.EqualsEqualsToken => 3,
+                SyntaxType.BangEqualsToken => 3,
+
+                SyntaxType.AmpersandAmpersandToken => 2,
+
+                SyntaxType.PipePipeToken => 1,
+
+                _ => 0
+            };
         }
 
         internal static SyntaxType GetKeywordType(string text)

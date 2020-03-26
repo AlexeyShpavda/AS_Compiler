@@ -16,13 +16,13 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Binding
             SyntaxType = syntaxType;
             OperatorType = operatorType;
             OperandType = operandType;
-            ResultType = resultType;
+            Type = resultType;
         }
 
         public SyntaxType SyntaxType { get; }
         public BoundUnaryOperatorType OperatorType { get; }
         public Type OperandType { get; }
-        public Type ResultType { get; }
+        public Type Type { get; }
 
         private static readonly BoundUnaryOperator[] Operators =
         {
@@ -34,7 +34,9 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Binding
 
         public static BoundUnaryOperator Bind(SyntaxType syntaxType, Type operandType)
         {
-            return Operators.FirstOrDefault(op => op.SyntaxType == syntaxType && op.OperandType == operandType);
+            return Operators.FirstOrDefault(op =>
+                op.SyntaxType == syntaxType
+                && op.OperandType == operandType);
         }
     }
 }
