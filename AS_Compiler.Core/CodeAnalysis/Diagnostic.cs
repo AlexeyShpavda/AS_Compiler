@@ -63,6 +63,12 @@ namespace AS_Compiler.Core.CodeAnalysis
             Report(textSpan, message);
         }
 
+        public void ReportUndefinedName(TextSpan textSpan, string name)
+        {
+            var message = $"Variable '{name}' does not exist.";
+            Report(textSpan, message);
+        }
+
         private void Report(TextSpan textSpan, string message)
         {
             var diagnostic = new Diagnostic(textSpan, message);

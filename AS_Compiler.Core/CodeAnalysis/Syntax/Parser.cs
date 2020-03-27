@@ -67,7 +67,26 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
             return new SyntaxTree(Diagnostics, expression, endOfFileToken);
         }
 
-        private ExpressionSyntax ParseExpression(int parentPrecedence = 0)
+        public ExpressionSyntax ParseExpression()
+        {
+            return ParseAssignmentExpression();
+        }
+
+        public ExpressionSyntax ParseAssignmentExpression()
+        {
+            if (Peek(0).Type == SyntaxType.IdentifierToken
+                && Peek(1).Type == SyntaxType.EqualsToken)
+            {
+                var identifierToken = NextToken();
+                var operatorToken = NextToken();
+                var right = ParseAssignmentExpression();
+                return new AssignmentExpressionSyntax(identifierToken, operatorToken, right);
+            }
+
+            return ParseBinaryExpression();
+        }
+
+        private ExpressionSyntax ParseBinaryExpression(int parentPrecedence = 0)
         {
             ExpressionSyntax left;
             var unaryOperatorPrecedence = Current.Type.GetUnaryOperatorPrecedence();
@@ -75,7 +94,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
             if (unaryOperatorPrecedence != 0 && unaryOperatorPrecedence >= parentPrecedence)
             {
                 var operatorToken = NextToken();
-                var operand = ParseExpression(unaryOperatorPrecedence);
+                var operand = ParseBinaryExpression(unaryOperatorPrecedence);
                 left = new UnaryExpressionSyntax(operatorToken, operand);
             }
             else
@@ -92,7 +111,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                 }
 
                 var operatorToken = NextToken();
-                var right = ParseExpression(precedence);
+                var right = ParseBinaryExpression(precedence);
                 left = new BinaryExpressionSyntax(left, operatorToken, right);
             }
 
@@ -118,6 +137,12 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                     var value = keywordToken.Type == SyntaxType.TrueKeyword;
 
                     return new LiteralExpressionSyntax(keywordToken, value);
+                }
+                case SyntaxType.IdentifierToken:
+                {
+                    var identifierToken = NextToken();
+
+                    return new NameExpressionSyntax(identifierToken);
                 }
                 default:
                 {

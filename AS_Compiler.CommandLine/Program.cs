@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using AS_Compiler.Core.CodeAnalysis;
@@ -11,6 +12,7 @@ namespace AS_Compiler.CommandLine
         private static void Main()
         {
             var showTree = false;
+            var variables = new Dictionary<string, object>();
 
             while (true)
             {
@@ -36,7 +38,7 @@ namespace AS_Compiler.CommandLine
 
                 var syntaxTree = SyntaxTree.Parse(line);
                 var compilation = new Compilation(syntaxTree);
-                var result = compilation.Evaluate();
+                var result = compilation.Evaluate(variables);
 
                 var diagnostics = result.Diagnostics;
 

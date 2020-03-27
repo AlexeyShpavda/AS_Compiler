@@ -13,6 +13,7 @@
         OpeningParenthesisToken,
         ClosingParenthesisToken,
         IdentifierToken,
+        EqualsToken,
         BangToken,
         AmpersandAmpersandToken,
         PipePipeToken,
@@ -24,7 +25,9 @@
 
         ParenthesizedExpression,
         LiteralExpression,
+        NameExpression,
         BinaryExpression,
-        UnaryExpression
+        UnaryExpression,
+        AssignmentExpression
     }
 }

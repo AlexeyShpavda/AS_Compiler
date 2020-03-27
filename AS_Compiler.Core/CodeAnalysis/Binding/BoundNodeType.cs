@@ -3,6 +3,8 @@
     internal enum BoundNodeType
     {
         LiteralExpression,
+        VariableExpression,
+        AssignmentExpression,
         UnaryExpression,
         BinaryExpression
     }

@@ -113,7 +113,11 @@
                         _position += 2;
                         return new SyntaxToken(SyntaxType.EqualsEqualsToken, start, "==", null);
                     }
-                    break;
+                    else
+                    {
+                        _position += 1;
+                        return new SyntaxToken(SyntaxType.EqualsToken, start, "=", null);
+                    }
                 case '!':
                     if (LookAhead == '=')
                     {
