@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AS_Compiler.Core.CodeAnalysis.Syntax;
 
 namespace AS_Compiler.Core.CodeAnalysis.Binding
 {
     internal sealed class Binder
     {
-        private readonly Dictionary<string, object> _variables;
+        private readonly Dictionary<VariableSymbol, object> _variables;
 
-        public Binder(Dictionary<string, object> variables)
+        public Binder(Dictionary<VariableSymbol, object> variables)
         {
             _variables = variables;
         }
@@ -44,15 +45,15 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
         private BoundExpression BindNameExpression(NameExpressionSyntax syntax)
         {
             var name = syntax.IdentifierToken.Text;
+            var variable = _variables.Keys.FirstOrDefault(v => v.Name == name);
 
-            if (!_variables.TryGetValue(name, out var value))
+            if (variable == null)
             {
                 Diagnostics.ReportUndefinedName(syntax.IdentifierToken.TextSpan, name);
                 return new BoundLiteralExpression(0);
             }
 
-            var type = value.GetType();
-            return new BoundVariableExpression(name, type);
+            return new BoundVariableExpression(variable);
         }
 
         private BoundExpression BindAssignmentExpression(AssignmentExpressionSyntax syntax)
@@ -60,14 +61,17 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
             var name = syntax.IdentifierToken.Text;
             var boundExpression = BindExpression(syntax.ExpressionSyntax);
 
-            var defaultValue = boundExpression.Type == typeof(int)
-                ? 0
-                : boundExpression.Type == typeof(bool)
-                    ? (object) false
-                    : null;
+            var existingVariable = _variables.Keys.FirstOrDefault(v => v.Name == name);
 
-            _variables[name] = defaultValue ?? throw new Exception($"Unsupported variable type: {boundExpression.Type}");
-            return new BoundAssignmentExpression(name, boundExpression);
+            if (existingVariable != null)
+            {
+                _variables.Remove(existingVariable);
+            }
+
+            var variable = new VariableSymbol(name, boundExpression.Type);
+            _variables[variable] = null;
+
+            return new BoundAssignmentExpression(variable, boundExpression);
         }
 
         private BoundExpression BindUnaryExpression(UnaryExpressionSyntax syntax)

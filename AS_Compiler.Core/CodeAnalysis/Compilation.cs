@@ -15,7 +15,7 @@ namespace AS_Compiler.Core.CodeAnalysis
 
         public SyntaxTree SyntaxTree { get; }
 
-        public EvaluationResult Evaluate(Dictionary<string, object> variables)
+        public EvaluationResult Evaluate(Dictionary<VariableSymbol, object> variables)
         {
             var binder = new Binder(variables);
             var boundExpression = binder.BindExpression(SyntaxTree.Root);
