@@ -82,7 +82,7 @@ namespace AS_Compiler.CommandLine
 
             Console.WriteLine();
 
-            indent += isLast ? "    " : "│   ";
+            indent += isLast ? "   " : "│  ";
 
             var lastChild = syntaxNode.GetChildren().LastOrDefault();
 
