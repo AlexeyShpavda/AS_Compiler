@@ -5,7 +5,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
 {
     public sealed class SyntaxTree
     {
-        public SyntaxTree(IEnumerable<string> diagnostics, ExpressionSyntax root, SyntaxToken endOfFileSyntaxToken)
+        public SyntaxTree(IEnumerable<Diagnostic> diagnostics, ExpressionSyntax root, SyntaxToken endOfFileSyntaxToken)
         {
             Diagnostics = diagnostics.ToList();
             Root = root;
@@ -14,7 +14,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
 
         public SyntaxToken EndOfFileSyntaxToken { get; }
         public ExpressionSyntax Root { get; }
-        public IReadOnlyList<string> Diagnostics { get; }
+        public IReadOnlyList<Diagnostic> Diagnostics { get; }
 
         public static SyntaxTree Parse(string text)
         {

@@ -13,7 +13,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
 
         public override SyntaxType Type => SyntaxType.BinaryExpression;
         public ExpressionSyntax Right { get; }
-        public SyntaxNode OperatorToken { get; }
+        public SyntaxToken OperatorToken { get; }
         public ExpressionSyntax Left { get; }
 
         public override IEnumerable<SyntaxNode> GetChildren()

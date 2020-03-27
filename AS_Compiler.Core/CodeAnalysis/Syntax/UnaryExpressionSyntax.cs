@@ -11,7 +11,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
         }
 
         public override SyntaxType Type => SyntaxType.UnaryExpression;
-        public SyntaxNode OperatorToken { get; }
+        public SyntaxToken OperatorToken { get; }
         public ExpressionSyntax Operand { get; }
 
         public override IEnumerable<SyntaxNode> GetChildren()

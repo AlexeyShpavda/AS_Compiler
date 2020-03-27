@@ -6,7 +6,6 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
     {
         private readonly SyntaxToken[] _syntaxTokens;
         private int _position;
-        private readonly List<string> _diagnostics = new List<string>();
 
         public Parser(string text)
         {
@@ -26,10 +25,10 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
             } while (syntaxToken.Type != SyntaxType.EndOfFileToken);
 
             _syntaxTokens = syntaxTokens.ToArray();
-            _diagnostics.AddRange(lexer.Diagnostics);
+            Diagnostics.AddRange(lexer.Diagnostics);
         }
 
-        public IEnumerable<string> Diagnostics => _diagnostics;
+        public DiagnosticBag Diagnostics { get; } = new DiagnosticBag();
 
         private SyntaxToken Peek(int offset)
         {
@@ -55,7 +54,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                 return NextToken();
             }
 
-            _diagnostics.Add($"ERROR: Unexpected token <{Current.Type}>, expected <{syntaxType}>");
+            Diagnostics.ReportUnexpectedToken(Current.TextSpan, Current.Type, syntaxType);
             return new SyntaxToken(syntaxType, Current.Position, null, null);
         }
 

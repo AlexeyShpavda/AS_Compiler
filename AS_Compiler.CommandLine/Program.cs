@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using AS_Compiler.Core.CodeAnalysis;
 using AS_Compiler.Core.CodeAnalysis.Syntax;
@@ -50,21 +51,35 @@ namespace AS_Compiler.CommandLine
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.DarkRed;
-
                     foreach (var diagnostic in syntaxTree.Diagnostics)
                     {
-                        Console.WriteLine(diagnostic);
-                    }
+                        Console.WriteLine();
 
-                    Console.ResetColor();
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine(diagnostic);
+                        Console.ResetColor();
+
+                        var prefix = line.Substring(0, diagnostic.TextSpan.Start);
+                        var error = line.Substring(diagnostic.TextSpan.Start, diagnostic.TextSpan.Length);
+                        var suffix = line.Substring(diagnostic.TextSpan.End);
+
+                        Console.Write("    ");
+                        Console.Write(prefix);
+
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.Write(error);
+                        Console.ResetColor();
+
+                        Console.Write(suffix);
+
+                        Console.WriteLine();
+                    }
                 }
             }
         }
 
         private static void Print(SyntaxNode syntaxNode, string indent = "", bool isLast = true)
         {
-
             var marker = isLast ? "└──" : "├──";
 
             Console.Write(indent);
