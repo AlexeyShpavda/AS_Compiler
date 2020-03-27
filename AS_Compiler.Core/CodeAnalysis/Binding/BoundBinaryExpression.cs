@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AS_Compiler.CommandLine.CodeAnalysis.Binding
+namespace AS_Compiler.Core.CodeAnalysis.Binding
 {
     internal sealed class BoundBinaryExpression : BoundExpression
     {

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
-using AS_Compiler.CommandLine.CodeAnalysis;
-using AS_Compiler.CommandLine.CodeAnalysis.Binding;
-using AS_Compiler.CommandLine.CodeAnalysis.Syntax;
+using AS_Compiler.Core.CodeAnalysis;
+using AS_Compiler.Core.CodeAnalysis.Syntax;
 
 namespace AS_Compiler.CommandLine
 {
@@ -35,10 +34,10 @@ namespace AS_Compiler.CommandLine
                 }
 
                 var syntaxTree = SyntaxTree.Parse(line);
-                var binder = new Binder();
-                var boundExpression = binder.BindExpression(syntaxTree.Root);
+                var compilation = new Compilation(syntaxTree);
+                var result = compilation.Evaluate();
 
-                var diagnostics = syntaxTree.Diagnostics.Concat(binder.Diagnostics).ToList();
+                var diagnostics = result.Diagnostics;
 
                 if (showTree)
                 {
@@ -47,9 +46,7 @@ namespace AS_Compiler.CommandLine
 
                 if (!diagnostics.Any())
                 {
-                    var e = new Evaluator(boundExpression);
-                    var result = e.Evaluate();
-                    Console.WriteLine(result);
+                    Console.WriteLine(result.Value);
                 }
                 else
                 {

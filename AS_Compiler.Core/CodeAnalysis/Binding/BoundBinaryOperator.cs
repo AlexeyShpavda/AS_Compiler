@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using AS_Compiler.CommandLine.CodeAnalysis.Syntax;
+using AS_Compiler.Core.CodeAnalysis.Syntax;
 
-namespace AS_Compiler.CommandLine.CodeAnalysis.Binding
+namespace AS_Compiler.Core.CodeAnalysis.Binding
 {
     internal sealed class BoundBinaryOperator
     {

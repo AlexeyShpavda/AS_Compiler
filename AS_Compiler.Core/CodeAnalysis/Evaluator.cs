@@ -1,7 +1,7 @@
 ﻿using System;
-using AS_Compiler.CommandLine.CodeAnalysis.Binding;
+using AS_Compiler.Core.CodeAnalysis.Binding;
 
-namespace AS_Compiler.CommandLine.CodeAnalysis
+namespace AS_Compiler.Core.CodeAnalysis
 {
     internal sealed class Evaluator
     {

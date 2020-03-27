@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
+namespace AS_Compiler.Core.CodeAnalysis.Syntax
 {
     public class Parser
     {
@@ -35,7 +35,7 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Syntax
         {
             var index = _position + offset;
 
-            return index >= _syntaxTokens.Length ? _syntaxTokens[^1] : _syntaxTokens[index];
+            return index >= _syntaxTokens.Length ? _syntaxTokens[_syntaxTokens.Length - 1] : _syntaxTokens[index];
         }
 
         private SyntaxToken Current => Peek(0);
