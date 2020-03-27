@@ -17,6 +17,7 @@ namespace AS_Compiler.CommandLine.CodeAnalysis.Binding
                 SyntaxType.LiteralExpression => BindLiteralExpression((LiteralExpressionSyntax) syntax),
                 SyntaxType.BinaryExpression => BindBinaryExpression((BinaryExpressionSyntax) syntax),
                 SyntaxType.UnaryExpression => BindUnaryExpression((UnaryExpressionSyntax) syntax),
+                SyntaxType.ParenthesizedExpression => BindExpression(((ParenthesizedExpressionSyntax) syntax).Expression),
                 _ => throw new Exception($"Unexpected syntax {syntax.Type}")
             };
         }
