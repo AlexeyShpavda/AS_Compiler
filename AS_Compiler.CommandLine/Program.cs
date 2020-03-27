@@ -51,7 +51,7 @@ namespace AS_Compiler.CommandLine
                 }
                 else
                 {
-                    foreach (var diagnostic in syntaxTree.Diagnostics)
+                    foreach (var diagnostic in diagnostics)
                     {
                         Console.WriteLine();
 
