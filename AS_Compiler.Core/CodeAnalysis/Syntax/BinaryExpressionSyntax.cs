@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data;
 
 namespace AS_Compiler.Core.CodeAnalysis.Syntax
 {

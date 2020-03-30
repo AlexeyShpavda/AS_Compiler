@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using AS_Compiler.Core.CodeAnalysis;
 using AS_Compiler.Core.CodeAnalysis.Syntax;
