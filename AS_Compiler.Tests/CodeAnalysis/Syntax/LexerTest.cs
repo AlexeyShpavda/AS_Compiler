@@ -1,0 +1,202 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using AS_Compiler.Core.CodeAnalysis.Syntax;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
+using Xunit;
+
+namespace AS_Compiler.Tests.CodeAnalysis.Syntax
+{
+    public class LexerTest
+    {
+        [Theory]
+        [MemberData(nameof(GetTokensData))]
+        public void Lexer_Lexes_Token(SyntaxType syntaxType, string text)
+        {
+            var tokens = SyntaxTree.ParseTokens(text);
+
+            var token = Assert.Single(tokens);
+
+            Assert.Equal(syntaxType, token.Type);
+            Assert.Equal(text, token.Text);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetTokenPairsData))]
+        public void Lexer_Lexes_TokenPairs_WithSeparators(SyntaxType syntaxType1, string text1, SyntaxType syntaxType2, string text2)
+        {
+            var text = text1 + text2;
+            var tokens = SyntaxTree.ParseTokens(text).ToList();
+
+            Assert.Equal(2, tokens.Count);
+            Assert.Equal(syntaxType1, tokens[0].Type);
+            Assert.Equal(text1, tokens[0].Text);
+            Assert.Equal(syntaxType2, tokens[1].Type);
+            Assert.Equal(text2, tokens[1].Text);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetTokenPairsWithSeparatorData))]
+        public void Lexer_Lexes_TokenPairs(SyntaxType syntaxType1, string text1,
+                                           SyntaxType separatorType, string separatorText,
+                                           SyntaxType syntaxType2, string text2)
+        {
+            var text = text1 + separatorText + text2;
+            var tokens = SyntaxTree.ParseTokens(text).ToList();
+
+            Assert.Equal(3, tokens.Count);
+            Assert.Equal(syntaxType1, tokens[0].Type);
+            Assert.Equal(text1, tokens[0].Text);
+            Assert.Equal(separatorType, tokens[1].Type);
+            Assert.Equal(separatorText, tokens[1].Text);
+            Assert.Equal(syntaxType2, tokens[2].Type);
+            Assert.Equal(text2, tokens[2].Text);
+        }
+
+        public static IEnumerable<object[]> GetTokensData()
+        {
+            return GetTokens().Concat(GetSeparators()).Select(t => new object[] { t.syntaxType, t.text });
+        }
+
+        public static IEnumerable<object[]> GetTokenPairsData()
+        {
+            return GetTokenPairs().Select(t => new object[] { t.syntaxType1, t.text1, t.syntaxType2, t.text2 });
+        }
+
+        public static IEnumerable<object[]> GetTokenPairsWithSeparatorData()
+        {
+            return GetTokenPairsWithSeparator().Select(t => new object[] { t.syntaxType1, t.text1, t.separatorType, t.separatorText, t.syntaxType2, t.text2 });
+        }
+
+        private static IEnumerable<(SyntaxType syntaxType, string text)> GetTokens()
+        {
+            return new[]
+            {
+                (SyntaxType.PlusToken, "+"),
+                (SyntaxType.MinusToken, "-"),
+                (SyntaxType.StarToken, "*"),
+                (SyntaxType.SlashToken, "/"),
+                (SyntaxType.EqualsToken, "="),
+                (SyntaxType.BangToken, "!"),
+                (SyntaxType.AmpersandAmpersandToken, "&&"),
+                (SyntaxType.PipePipeToken, "||"),
+                (SyntaxType.EqualsEqualsToken, "=="),
+                (SyntaxType.BangEqualsToken, "!="),
+                (SyntaxType.OpeningParenthesisToken, "("),
+                (SyntaxType.ClosingParenthesisToken, ")"),
+                (SyntaxType.TrueKeyword, "true"),
+                (SyntaxType.FalseKeyword, "false"),
+                (SyntaxType.NumberToken, "1"),
+                (SyntaxType.NumberToken, "123"), 
+                (SyntaxType.IdentifierToken, "a"),
+                (SyntaxType.IdentifierToken, "abc")
+            };
+        }
+
+        private static IEnumerable<(SyntaxType syntaxType, string text)> GetSeparators()
+        {
+            return new[]
+            {
+                (SyntaxType.WhiteSpaceToken, " "),
+                (SyntaxType.WhiteSpaceToken, "   "),
+                (SyntaxType.WhiteSpaceToken, "\r"),
+                (SyntaxType.WhiteSpaceToken, "\n"),
+                (SyntaxType.WhiteSpaceToken, "\r\n"),
+                (SyntaxType.WhiteSpaceToken, "\r")
+            };
+        }
+
+        private static bool RequiresSeparator(SyntaxType syntaxType1, SyntaxType syntaxType2)
+        {
+            var isSyntaxType1Keyword = syntaxType1.ToString().EndsWith("Keyword");
+            var isSyntaxType2Keyword = syntaxType2.ToString().EndsWith("Keyword");
+
+            if(syntaxType1 == SyntaxType.IdentifierToken && syntaxType2 == SyntaxType.IdentifierToken)
+            {
+                return true;
+            }
+
+            if (isSyntaxType1Keyword && isSyntaxType2Keyword)
+            {
+                return true;
+            }
+
+            if (isSyntaxType1Keyword && syntaxType2 == SyntaxType.IdentifierToken)
+            {
+                return true;
+            }
+
+            if (isSyntaxType2Keyword && syntaxType1 == SyntaxType.IdentifierToken)
+            {
+                return true;
+            }
+
+            if (isSyntaxType2Keyword && syntaxType1 == SyntaxType.IdentifierToken)
+            {
+                return true;
+            }
+
+            if (syntaxType1 == SyntaxType.NumberToken && syntaxType2 == SyntaxType.NumberToken)
+            {
+                return true;
+            }
+
+            if (syntaxType1 == SyntaxType.BangToken && syntaxType2 == SyntaxType.EqualsToken)
+            {
+                return true;
+            }
+
+            if (syntaxType1 == SyntaxType.BangToken && syntaxType2 == SyntaxType.EqualsEqualsToken)
+            {
+                return true;
+            }
+
+            if (syntaxType1 == SyntaxType.EqualsToken && syntaxType2 == SyntaxType.EqualsToken)
+            {
+                return true;
+            }
+
+            if (syntaxType1 == SyntaxType.EqualsToken && syntaxType2 == SyntaxType.EqualsEqualsToken)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private static IEnumerable<(SyntaxType syntaxType1, string text1,
+                                    SyntaxType syntaxType2, string text2)> GetTokenPairs()
+        {
+            foreach (var (syntaxType1, text1) in GetTokens())
+            {
+                foreach (var (syntaxType2, text2) in GetTokens())
+                {
+                    if (!RequiresSeparator(syntaxType1, syntaxType2))
+                    {
+                        yield return (syntaxType1, text1, syntaxType2, text2);
+                    }
+                }
+            }
+        }
+
+        private static IEnumerable<(SyntaxType syntaxType1, string text1, 
+                                    SyntaxType separatorType, string separatorText,
+                                    SyntaxType syntaxType2, string text2)> GetTokenPairsWithSeparator()
+        {
+            foreach (var (syntaxType1, text1) in GetTokens())
+            {
+                foreach (var (syntaxType2, text2) in GetTokens())
+                {
+                    if (RequiresSeparator(syntaxType1, syntaxType2))
+                    {
+                        foreach (var (separatorType, separatorText) in GetSeparators())
+                        {
+                            yield return (syntaxType1, text1, separatorType, separatorText, syntaxType2, text2);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
