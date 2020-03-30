@@ -1,4 +1,7 @@
-﻿namespace AS_Compiler.Core.CodeAnalysis.Syntax
+﻿using System;
+using System.Collections.Generic;
+
+namespace AS_Compiler.Core.CodeAnalysis.Syntax
 {
     public static class SyntaxFacts
     {
@@ -43,6 +46,19 @@
                 "false" => SyntaxType.FalseKeyword,
                 _ => SyntaxType.IdentifierToken
             };
+        }
+
+        public static IEnumerable<SyntaxType> GetBinaryOperators()
+        {
+            var types = (SyntaxType[]) Enum.GetValues(typeof(SyntaxType));
+            foreach (var type in types)
+            {
+                if (GetBinaryOperatorPrecedence(type) > 0)
+                {
+                    yield return type;
+                }
+            }
+
         }
 
         public static string GetText(SyntaxType syntaxType)
