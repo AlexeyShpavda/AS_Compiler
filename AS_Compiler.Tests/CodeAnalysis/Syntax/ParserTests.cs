@@ -50,13 +50,63 @@ namespace AS_Compiler.Tests.CodeAnalysis.Syntax
             }
         }
 
+        [Theory]
+        [MemberData(nameof(GetUnaryOperatorPairsData))]
+        public void Parser_UnaryExpression_HonorsPrecedences(SyntaxType unaryType, SyntaxType binaryType)
+        {
+            var unaryPrecedence = unaryType.GetUnaryOperatorPrecedence();
+            var binaryPrecedence = binaryType.GetBinaryOperatorPrecedence();
+
+            var unaryText = SyntaxFacts.GetText(unaryType);
+            var binaryText = SyntaxFacts.GetText(binaryType);
+
+            var text = $"{unaryText} a {binaryText} b";
+            var expression = SyntaxTree.Parse(text).Root;
+
+            if (unaryPrecedence >= binaryPrecedence)
+            {
+                using var e = new AssertingEnumerator(expression);
+                e.AssertNode(SyntaxType.BinaryExpression);
+                e.AssertNode(SyntaxType.UnaryExpression);
+                e.AssertToken(unaryType, unaryText);
+                e.AssertNode(SyntaxType.NameExpression);
+                e.AssertToken(SyntaxType.IdentifierToken, "a");
+                e.AssertToken(binaryType, binaryText);
+                e.AssertNode(SyntaxType.NameExpression);
+                e.AssertToken(SyntaxType.IdentifierToken, "b");
+            }
+            else
+            {
+                using var e = new AssertingEnumerator(expression);
+                e.AssertNode(SyntaxType.UnaryExpression);
+                e.AssertToken(unaryType, unaryText);
+                e.AssertNode(SyntaxType.BinaryExpression);
+                e.AssertNode(SyntaxType.NameExpression);
+                e.AssertToken(SyntaxType.IdentifierToken, "a");
+                e.AssertToken(binaryType, binaryText);
+                e.AssertNode(SyntaxType.NameExpression);
+                e.AssertToken(SyntaxType.IdentifierToken, "b");
+            }
+        }
+
         public static IEnumerable<object[]> GetBinaryOperatorPairsData()
         {
-            foreach (var op1 in SyntaxFacts.GetBinaryOperators())
+            foreach (var op1 in SyntaxFacts.GetBinaryOperatorTypes())
             {
-                foreach (var op2 in SyntaxFacts.GetBinaryOperators())
+                foreach (var op2 in SyntaxFacts.GetBinaryOperatorTypes())
                 {
                     yield return new object[] {op1, op2};
+                }
+            }
+        }
+
+        public static IEnumerable<object[]> GetUnaryOperatorPairsData()
+        {
+            foreach (var unary in SyntaxFacts.GetUnaryOperatorTypes())
+            {
+                foreach (var binary in SyntaxFacts.GetBinaryOperatorTypes())
+                {
+                    yield return new object[] { unary, binary };
                 }
             }
         }

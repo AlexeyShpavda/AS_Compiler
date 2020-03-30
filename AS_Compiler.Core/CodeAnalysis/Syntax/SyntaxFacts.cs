@@ -48,7 +48,19 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
             };
         }
 
-        public static IEnumerable<SyntaxType> GetBinaryOperators()
+        public static IEnumerable<SyntaxType> GetUnaryOperatorTypes()
+        {
+            var types = (SyntaxType[])Enum.GetValues(typeof(SyntaxType));
+            foreach (var type in types)
+            {
+                if (GetUnaryOperatorPrecedence(type) > 0)
+                {
+                    yield return type;
+                }
+            }
+        }
+
+        public static IEnumerable<SyntaxType> GetBinaryOperatorTypes()
         {
             var types = (SyntaxType[]) Enum.GetValues(typeof(SyntaxType));
             foreach (var type in types)
@@ -58,44 +70,28 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                     yield return type;
                 }
             }
-
         }
 
         public static string GetText(SyntaxType syntaxType)
         {
-            switch (syntaxType)
+            return syntaxType switch
             {
-                case SyntaxType.PlusToken:
-                    return "+";
-                case SyntaxType.MinusToken:
-                    return "-";
-                case SyntaxType.StarToken:
-                    return "*";
-                case SyntaxType.SlashToken:
-                    return "/";
-                case SyntaxType.EqualsToken:
-                    return "=";
-                case SyntaxType.BangToken:
-                    return "!";
-                case SyntaxType.AmpersandAmpersandToken:
-                    return "&&";
-                case SyntaxType.PipePipeToken:
-                    return "||";
-                case SyntaxType.EqualsEqualsToken:
-                    return "==";
-                case SyntaxType.BangEqualsToken:
-                    return "!=";
-                case SyntaxType.OpeningParenthesisToken:
-                    return "(";
-                case SyntaxType.ClosingParenthesisToken:
-                    return ")";
-                case SyntaxType.TrueKeyword:
-                    return "true";
-                case SyntaxType.FalseKeyword:
-                    return "false";
-                default:
-                    return null;
-            }
+                SyntaxType.PlusToken => "+",
+                SyntaxType.MinusToken => "-",
+                SyntaxType.StarToken => "*",
+                SyntaxType.SlashToken => "/",
+                SyntaxType.EqualsToken => "=",
+                SyntaxType.BangToken => "!",
+                SyntaxType.AmpersandAmpersandToken => "&&",
+                SyntaxType.PipePipeToken => "||",
+                SyntaxType.EqualsEqualsToken => "==",
+                SyntaxType.BangEqualsToken => "!=",
+                SyntaxType.OpeningParenthesisToken => "(",
+                SyntaxType.ClosingParenthesisToken => ")",
+                SyntaxType.TrueKeyword => "true",
+                SyntaxType.FalseKeyword => "false",
+                _ => null
+            };
         }
     }
 }
