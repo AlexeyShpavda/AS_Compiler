@@ -44,5 +44,42 @@
                 _ => SyntaxType.IdentifierToken
             };
         }
+
+        public static string GetText(SyntaxType syntaxType)
+        {
+            switch (syntaxType)
+            {
+                case SyntaxType.PlusToken:
+                    return "+";
+                case SyntaxType.MinusToken:
+                    return "-";
+                case SyntaxType.StarToken:
+                    return "*";
+                case SyntaxType.SlashToken:
+                    return "/";
+                case SyntaxType.EqualsToken:
+                    return "=";
+                case SyntaxType.BangToken:
+                    return "!";
+                case SyntaxType.AmpersandAmpersandToken:
+                    return "&&";
+                case SyntaxType.PipePipeToken:
+                    return "||";
+                case SyntaxType.EqualsEqualsToken:
+                    return "==";
+                case SyntaxType.BangEqualsToken:
+                    return "!=";
+                case SyntaxType.OpeningParenthesisToken:
+                    return "(";
+                case SyntaxType.ClosingParenthesisToken:
+                    return ")";
+                case SyntaxType.TrueKeyword:
+                    return "true";
+                case SyntaxType.FalseKeyword:
+                    return "false";
+                default:
+                    return null;
+            }
+        }
     }
 }
