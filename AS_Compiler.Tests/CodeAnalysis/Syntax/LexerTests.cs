@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AS_Compiler.Core.CodeAnalysis.Syntax;
 using Xunit;
@@ -14,6 +15,11 @@ namespace AS_Compiler.Tests.CodeAnalysis.Syntax
             var tokens = SyntaxTree.ParseTokens(text);
 
             var token = Assert.Single(tokens);
+
+            if (token == null)
+            {
+                throw new Exception("Token does not exist.");
+            }
 
             Assert.Equal(syntaxType, token.Type);
             Assert.Equal(text, token.Text);
