@@ -38,12 +38,12 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
             new BoundBinaryOperator(SyntaxType.StarToken, BoundBinaryOperatorType.Multiplication, typeof(int)),
             new BoundBinaryOperator(SyntaxType.SlashToken, BoundBinaryOperatorType.Division, typeof(int)),
             new BoundBinaryOperator(SyntaxType.EqualsEqualsToken, BoundBinaryOperatorType.Equals, typeof(int), typeof(bool)),
-            new BoundBinaryOperator(SyntaxType.EqualsEqualsToken, BoundBinaryOperatorType.NotEquals, typeof(int), typeof(bool)),
+            new BoundBinaryOperator(SyntaxType.BangEqualsToken, BoundBinaryOperatorType.NotEquals, typeof(int), typeof(bool)),
 
             new BoundBinaryOperator(SyntaxType.AmpersandAmpersandToken, BoundBinaryOperatorType.LogicalAnd, typeof(bool)),
             new BoundBinaryOperator(SyntaxType.PipePipeToken, BoundBinaryOperatorType.LogicalOr, typeof(bool)),
             new BoundBinaryOperator(SyntaxType.EqualsEqualsToken, BoundBinaryOperatorType.Equals, typeof(bool)),
-            new BoundBinaryOperator(SyntaxType.EqualsEqualsToken, BoundBinaryOperatorType.NotEquals, typeof(bool)),
+            new BoundBinaryOperator(SyntaxType.BangEqualsToken, BoundBinaryOperatorType.NotEquals, typeof(bool)),
         };
 
         public static BoundBinaryOperator Bind(SyntaxType syntaxType, Type leftType, Type rightType)
