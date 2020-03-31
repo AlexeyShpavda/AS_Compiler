@@ -22,57 +22,65 @@ namespace AS_Compiler.Core.CodeAnalysis
 
         private object EvaluateExpression(BoundExpression node)
         {
-            if (node is BoundLiteralExpression n)
+            return node.BoundNodeType switch
             {
-                return n.Value;
-            }
+                BoundNodeType.LiteralExpression => EvaluateLiteralExpression((BoundLiteralExpression) node),
+                BoundNodeType.VariableExpression => EvaluateVariableExpression((BoundVariableExpression) node),
+                BoundNodeType.AssignmentExpression => EvaluateAssignmentExpression((BoundAssignmentExpression) node),
+                BoundNodeType.UnaryExpression => EvaluateUnaryExpression((BoundUnaryExpression) node),
+                BoundNodeType.BinaryExpression => EvaluateBinaryExpression((BoundBinaryExpression) node),
+                _ => throw new Exception($"Unexpected node {node.Type}")
+            };
+        }
 
-            if (node is BoundVariableExpression v)
+        private object EvaluateLiteralExpression(BoundLiteralExpression boundLiteralExpression)
+        {
+            return boundLiteralExpression.Value;
+        }
+
+        private object EvaluateVariableExpression(BoundVariableExpression boundVariableExpression)
+        {
+            return _variables[boundVariableExpression.Variable];
+        }
+
+        private object EvaluateAssignmentExpression(BoundAssignmentExpression boundAssignmentExpression)
+        {
+            var value = EvaluateExpression(boundAssignmentExpression.Expression);
+            _variables[boundAssignmentExpression.Variable] = value;
+
+            return value;
+        }
+
+        private object EvaluateUnaryExpression(BoundUnaryExpression boundUnaryExpression)
+        {
+            var operand = EvaluateExpression(boundUnaryExpression.Operand);
+
+            return boundUnaryExpression.Operator.OperatorType switch
             {
-                return _variables[v.Variable];
-            }
+                BoundUnaryOperatorType.Identity => (int)operand,
+                BoundUnaryOperatorType.Negation => -(int)operand,
+                BoundUnaryOperatorType.LogicalNegation => !(bool)operand,
+                _ => throw new Exception($"Unexpected unary operator {boundUnaryExpression.Operator.OperatorType}")
+            };
+        }
 
-            if (node is BoundAssignmentExpression a)
+        private object EvaluateBinaryExpression(BoundBinaryExpression boundBinaryExpression)
+        {
+            var left = EvaluateExpression(boundBinaryExpression.Left);
+            var right = EvaluateExpression(boundBinaryExpression.Right);
+
+            return boundBinaryExpression.Operator.OperatorType switch
             {
-                var value = EvaluateExpression(a.Expression);
-                _variables[a.Variable] = value;
-
-                return value;
-            }
-
-            if (node is BoundUnaryExpression u)
-            {
-                var operand = EvaluateExpression(u.Operand);
-
-                return u.Operator.OperatorType switch
-                {
-                    BoundUnaryOperatorType.Identity => (int) operand,
-                    BoundUnaryOperatorType.Negation => -(int) operand,
-                    BoundUnaryOperatorType.LogicalNegation => !(bool) operand,
-                    _ => throw new Exception($"Unexpected unary operator {u.Operator.OperatorType}")
-                };
-            }
-
-            if (node is BoundBinaryExpression b)
-            {
-                var left = EvaluateExpression(b.Left);
-                var right = EvaluateExpression(b.Right);
-
-                return b.Operator.OperatorType switch
-                {
-                    BoundBinaryOperatorType.Addition => (int) left + (int) right,
-                    BoundBinaryOperatorType.Subtraction => (int) left - (int) right,
-                    BoundBinaryOperatorType.Multiplication => (int) left * (int) right,
-                    BoundBinaryOperatorType.Division => (int) left / (int) right,
-                    BoundBinaryOperatorType.LogicalAnd => (bool)left && (bool)right,
-                    BoundBinaryOperatorType.LogicalOr => (bool)left || (bool)right,
-                    BoundBinaryOperatorType.Equals => Equals(left, right),
-                    BoundBinaryOperatorType.NotEquals => !Equals(left, right),
-                    _ => throw new Exception($"Unexpected binary operator {b.Operator.OperatorType}")
-                };
-            }
-
-            throw new Exception($"Unexpected node {node.Type}");
+                BoundBinaryOperatorType.Addition => (int)left + (int)right,
+                BoundBinaryOperatorType.Subtraction => (int)left - (int)right,
+                BoundBinaryOperatorType.Multiplication => (int)left * (int)right,
+                BoundBinaryOperatorType.Division => (int)left / (int)right,
+                BoundBinaryOperatorType.LogicalAnd => (bool)left && (bool)right,
+                BoundBinaryOperatorType.LogicalOr => (bool)left || (bool)right,
+                BoundBinaryOperatorType.Equals => Equals(left, right),
+                BoundBinaryOperatorType.NotEquals => !Equals(left, right),
+                _ => throw new Exception($"Unexpected binary operator {boundBinaryExpression.Operator.OperatorType}")
+            };
         }
     }
 }
