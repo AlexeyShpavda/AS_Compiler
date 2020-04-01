@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -41,6 +42,45 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                     }
                 }
             }
+        }
+
+        public void WriteTo(TextWriter writer)
+        {
+            Print(writer, this);
+        }
+
+        private static void Print(TextWriter writer, SyntaxNode syntaxNode, string indent = "", bool isLast = true)
+        {
+            var marker = isLast ? "└──" : "├──";
+
+            writer.Write(indent);
+            writer.Write(marker);
+            writer.Write(syntaxNode.Type);
+
+            if (syntaxNode is SyntaxToken t && t.Value != null)
+            {
+                writer.Write(" ");
+                writer.Write(t.Value);
+            }
+
+            writer.WriteLine();
+
+            indent += isLast ? "   " : "│  ";
+
+            var lastChild = syntaxNode.GetChildren().LastOrDefault();
+
+            foreach (var child in syntaxNode.GetChildren())
+            {
+                Print(writer, child, indent, child == lastChild);
+            }
+        }
+
+        public override string ToString()
+        {
+            using var writer = new StringWriter();
+            WriteTo(writer);
+
+            return writer.ToString();
         }
     }
 }
