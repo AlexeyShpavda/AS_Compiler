@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace AS_Compiler.Core.CodeAnalysis.Syntax
@@ -6,6 +7,17 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
     public abstract class SyntaxNode
     {
         public abstract SyntaxType Type { get; }
+
+        public virtual TextSpan TextSpan
+        {
+            get
+            {
+                var first = GetChildren().First().TextSpan;
+                var last = GetChildren().Last().TextSpan;
+
+                return TextSpan.FromBounds(first.Start, last.End);
+            }
+        }
 
         public IEnumerable<SyntaxNode> GetChildren()
         {
