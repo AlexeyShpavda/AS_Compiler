@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Immutable;
 
 namespace AS_Compiler.Core.CodeAnalysis.Syntax
 {
     public sealed class SyntaxTree
     {
-        public SyntaxTree(IEnumerable<Diagnostic> diagnostics, ExpressionSyntax root, SyntaxToken endOfFileSyntaxToken)
+        public SyntaxTree(ImmutableArray<Diagnostic> diagnostics, ExpressionSyntax root, SyntaxToken endOfFileSyntaxToken)
         {
-            Diagnostics = diagnostics.ToList();
+            Diagnostics = diagnostics;
             Root = root;
             EndOfFileSyntaxToken = endOfFileSyntaxToken;
         }
 
         public SyntaxToken EndOfFileSyntaxToken { get; }
         public ExpressionSyntax Root { get; }
-        public IReadOnlyList<Diagnostic> Diagnostics { get; }
+        public ImmutableArray<Diagnostic> Diagnostics { get; }
 
         public static SyntaxTree Parse(string text)
         {

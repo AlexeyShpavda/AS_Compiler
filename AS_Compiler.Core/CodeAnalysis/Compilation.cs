@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using AS_Compiler.Core.CodeAnalysis.Binding;
 using AS_Compiler.Core.CodeAnalysis.Syntax;
@@ -24,13 +25,13 @@ namespace AS_Compiler.Core.CodeAnalysis
 
             if (diagnostics.Any())
             {
-                return new EvaluationResult(diagnostics, null);
+                return new EvaluationResult(diagnostics.ToImmutableArray(), null);
             }
 
             var evaluator = new Evaluator(boundExpression, variables);
             var value = evaluator.Evaluate();
 
-            return new EvaluationResult(Array.Empty<Diagnostic>(), value);
+            return new EvaluationResult(ImmutableArray<Diagnostic>.Empty, value);
         }
     }
 }
