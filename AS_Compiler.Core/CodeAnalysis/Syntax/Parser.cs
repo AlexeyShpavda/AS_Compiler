@@ -123,34 +123,46 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
             switch (Current.Type)
             {
                 case SyntaxType.OpeningParenthesisToken:
-                {
-                    var left = NextToken();
-                    var expression = ParseExpression();
-                    var right = MatchToken(SyntaxType.ClosingParenthesisToken);
-
-                    return new ParenthesizedExpressionSyntax(left, expression, right);
-                }
+                    return ParseParenthesizedExpression();
                 case SyntaxType.TrueKeyword:
                 case SyntaxType.FalseKeyword:
-                {
-                    var keywordToken = NextToken();
-                    var value = keywordToken.Type == SyntaxType.TrueKeyword;
-
-                    return new LiteralExpressionSyntax(keywordToken, value);
-                }
-                case SyntaxType.IdentifierToken:
-                {
-                    var identifierToken = NextToken();
-
-                    return new NameExpressionSyntax(identifierToken);
-                }
+                    return ParseBooleanLiteral();
+                case SyntaxType.NumberToken:
+                    return ParseNumberLiteral();
                 default:
-                {
-                    var numberToken = MatchToken(SyntaxType.NumberToken);
-
-                    return new LiteralExpressionSyntax(numberToken);
-                }
+                    return ParseNameExpression();
             }
+        }
+
+        private ExpressionSyntax ParseParenthesizedExpression()
+        {
+            var left = MatchToken(SyntaxType.OpeningParenthesisToken);
+            var expression = ParseExpression();
+            var right = MatchToken(SyntaxType.ClosingParenthesisToken);
+
+            return new ParenthesizedExpressionSyntax(left, expression, right);
+        }
+
+        private ExpressionSyntax ParseBooleanLiteral()
+        {
+            var isTrue = Current.Type == SyntaxType.TrueKeyword;
+            var keywordToken = isTrue ? MatchToken(SyntaxType.TrueKeyword) : MatchToken(SyntaxType.FalseKeyword);
+
+            return new LiteralExpressionSyntax(keywordToken, isTrue);
+        }
+
+        private ExpressionSyntax ParseNumberLiteral()
+        {
+            var numberToken = MatchToken(SyntaxType.NumberToken);
+
+            return new LiteralExpressionSyntax(numberToken);
+        }
+
+        private ExpressionSyntax ParseNameExpression()
+        {
+            var identifierToken = MatchToken(SyntaxType.IdentifierToken);
+
+            return new NameExpressionSyntax(identifierToken);
         }
     }
 }
