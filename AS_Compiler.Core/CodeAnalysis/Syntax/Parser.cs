@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
+using AS_Compiler.Core.CodeAnalysis.Text;
 
 namespace AS_Compiler.Core.CodeAnalysis.Syntax
 {
     public class Parser
     {
+        private readonly SourceText _text;
         private readonly ImmutableArray<SyntaxToken> _syntaxTokens;
         private int _position;
 
-        public Parser(string text)
+        public Parser(SourceText text)
         {
             var syntaxTokens = new List<SyntaxToken>();
 
@@ -25,6 +27,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                 }
             } while (syntaxToken.Type != SyntaxType.EndOfFileToken);
 
+            _text = text;
             _syntaxTokens = syntaxTokens.ToImmutableArray();
             Diagnostics.AddRange(lexer.Diagnostics);
         }
@@ -65,7 +68,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
 
             var endOfFileToken = MatchToken(SyntaxType.EndOfFileToken);
 
-            return new SyntaxTree(Diagnostics.ToImmutableArray(), expression, endOfFileToken);
+            return new SyntaxTree(_text, Diagnostics.ToImmutableArray(), expression, endOfFileToken);
         }
 
         public ExpressionSyntax ParseExpression()

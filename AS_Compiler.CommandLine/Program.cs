@@ -52,11 +52,18 @@ namespace AS_Compiler.CommandLine
                 }
                 else
                 {
+                    var text = syntaxTree.Text;
+
                     foreach (var diagnostic in diagnostics)
                     {
+                        var lineIndex = text.GetLineIndex(diagnostic.TextSpan.Start);
+                        var lineNumber = lineIndex + 1;
+                        var character = diagnostic.TextSpan.Start - text.Lines[lineIndex].Start + 1;
+
                         Console.WriteLine();
 
                         Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.Write($"({lineNumber}, {character}): ");
                         Console.WriteLine(diagnostic);
                         Console.ResetColor();
 

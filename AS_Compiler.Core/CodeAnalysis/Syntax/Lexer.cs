@@ -4,7 +4,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
 {
     public class Lexer
     {
-        private readonly string _text;
+        private readonly SourceText _text;
 
         private int _position;
 
@@ -12,7 +12,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
         private SyntaxType _type;
         private object _value;
 
-        public Lexer(string text)
+        public Lexer(SourceText text)
         {
             _text = text;
         }
@@ -136,7 +136,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
             }
 
             var length = _position - _start;
-            var text = SyntaxFacts.GetText(_type) ?? _text.Substring(_start, length);
+            var text = SyntaxFacts.GetText(_type) ?? _text.ToString(_start, length);
 
             return new SyntaxToken(_type, _start, text, _value);
         }
@@ -147,11 +147,11 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                 _position++;
 
             var length = _position - _start;
-            var text = _text.Substring(_start, length);
+            var text = _text.ToString(_start, length);
 
             if (!int.TryParse(text, out var value))
             {
-                Diagnostics.ReportInvalidNumber(new TextSpan(_start, length), _text, typeof(int));
+                Diagnostics.ReportInvalidNumber(new TextSpan(_start, length), text, typeof(int));
             }
 
             _value = value;
@@ -172,7 +172,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                 _position++; 
             
             var length = _position - _start;
-            var text = _text.Substring(_start, length);
+            var text = _text.ToString(_start, length);
             _type = SyntaxFacts.GetKeywordType(text);
         }
     }
