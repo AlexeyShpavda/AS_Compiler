@@ -16,6 +16,6 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
         public int Position { get; }
         public string Text { get; }
         public object Value { get; }
-        public override TextSpan TextSpan => new TextSpan(Position, Text.Length);
+        public override TextSpan TextSpan => new TextSpan(Position, Text?.Length ?? 0);
     }
 }
