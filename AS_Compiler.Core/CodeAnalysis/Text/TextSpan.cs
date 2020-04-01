@@ -1,4 +1,4 @@
-﻿namespace AS_Compiler.Core.CodeAnalysis
+﻿namespace AS_Compiler.Core.CodeAnalysis.Text
 {
     public struct TextSpan
     {
