@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using AS_Compiler.Core.CodeAnalysis;
 using AS_Compiler.Core.CodeAnalysis.Syntax;
+using AS_Compiler.Core.CodeAnalysis.Text;
 
 namespace AS_Compiler.CommandLine
 {
@@ -12,30 +14,40 @@ namespace AS_Compiler.CommandLine
         {
             var showTree = false;
             var variables = new Dictionary<VariableSymbol, object>();
+            var textBuilder = new StringBuilder();
 
             while (true)
             {
-                Console.Write("> ");
-                var line = Console.ReadLine();
+                Console.Write(textBuilder.Length == 0 ? "> " : "| ");
 
-                if (string.IsNullOrWhiteSpace(line))
+                var input = Console.ReadLine();
+                var isLineBlank = string.IsNullOrWhiteSpace(input);
+
+                if (textBuilder.Length == 0)
                 {
-                    return;
+                    if (isLineBlank)
+                        break;
+
+                    switch (input)
+                    {
+                        case "#showTree":
+                            showTree = !showTree;
+                            Console.WriteLine(showTree ? "Showing parse trees." : "Not showing parse trees.");
+                            continue;
+                        case "#cls":
+                            Console.Clear();
+                            continue;
+                    }
                 }
 
-                if (line == "#showTree")
-                {
-                    showTree = !showTree;
-                    Console.WriteLine(showTree ? "Showing parse trees." : "Not showing parse trees.");
+                textBuilder.AppendLine(input);
+
+                var text = textBuilder.ToString();
+                var syntaxTree = SyntaxTree.Parse(text);
+
+                if (!isLineBlank && syntaxTree.Diagnostics.Any())
                     continue;
-                }
-                else if (line == "#cls")
-                {
-                    Console.Clear();
-                    continue;
-                }
 
-                var syntaxTree = SyntaxTree.Parse(line);
                 var compilation = new Compilation(syntaxTree);
                 var result = compilation.Evaluate(variables);
 
@@ -52,13 +64,12 @@ namespace AS_Compiler.CommandLine
                 }
                 else
                 {
-                    var text = syntaxTree.Text;
-
                     foreach (var diagnostic in diagnostics)
                     {
-                        var lineIndex = text.GetLineIndex(diagnostic.TextSpan.Start);
+                        var lineIndex = syntaxTree.Text.GetLineIndex(diagnostic.TextSpan.Start);
+                        var line = syntaxTree.Text.Lines[lineIndex];
                         var lineNumber = lineIndex + 1;
-                        var character = diagnostic.TextSpan.Start - text.Lines[lineIndex].Start + 1;
+                        var character = diagnostic.TextSpan.Start - line.Start + 1;
 
                         Console.WriteLine();
 
@@ -67,9 +78,12 @@ namespace AS_Compiler.CommandLine
                         Console.WriteLine(diagnostic);
                         Console.ResetColor();
 
-                        var prefix = line.Substring(0, diagnostic.TextSpan.Start);
-                        var error = line.Substring(diagnostic.TextSpan.Start, diagnostic.TextSpan.Length);
-                        var suffix = line.Substring(diagnostic.TextSpan.End);
+                        var prefixSpan = TextSpan.FromBounds(line.Start, diagnostic.TextSpan.Start);
+                        var suffixSpan = TextSpan.FromBounds(diagnostic.TextSpan.End, line.End);
+
+                        var prefix = syntaxTree.Text.ToString(prefixSpan);
+                        var error = syntaxTree.Text.ToString(diagnostic.TextSpan);
+                        var suffix = syntaxTree.Text.ToString(suffixSpan);
 
                         Console.Write("    ");
                         Console.Write(prefix);
@@ -82,6 +96,8 @@ namespace AS_Compiler.CommandLine
 
                         Console.WriteLine();
                     }
+
+                    textBuilder.Clear();
                 }
             }
         }
