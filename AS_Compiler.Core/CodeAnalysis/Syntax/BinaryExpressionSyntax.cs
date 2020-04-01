@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AS_Compiler.Core.CodeAnalysis.Syntax
+﻿namespace AS_Compiler.Core.CodeAnalysis.Syntax
 {
     public sealed class BinaryExpressionSyntax : ExpressionSyntax
     {
@@ -12,15 +10,8 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
         }
 
         public override SyntaxType Type => SyntaxType.BinaryExpression;
-        public ExpressionSyntax Right { get; }
-        public SyntaxToken OperatorToken { get; }
         public ExpressionSyntax Left { get; }
-
-        public override IEnumerable<SyntaxNode> GetChildren()
-        {
-            yield return Left;
-            yield return OperatorToken;
-            yield return Right;
-        }
+        public SyntaxToken OperatorToken { get; }
+        public ExpressionSyntax Right { get; }
     }
 }

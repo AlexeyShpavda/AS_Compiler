@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AS_Compiler.Core.CodeAnalysis.Syntax
+﻿namespace AS_Compiler.Core.CodeAnalysis.Syntax
 {
     public sealed class UnaryExpressionSyntax : ExpressionSyntax
     {
@@ -13,11 +11,5 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
         public override SyntaxType Type => SyntaxType.UnaryExpression;
         public SyntaxToken OperatorToken { get; }
         public ExpressionSyntax Operand { get; }
-
-        public override IEnumerable<SyntaxNode> GetChildren()
-        {
-            yield return OperatorToken;
-            yield return Operand;
-        }
     }
 }

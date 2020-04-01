@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AS_Compiler.Core.CodeAnalysis.Syntax
+﻿namespace AS_Compiler.Core.CodeAnalysis.Syntax
 {
     public sealed class ParenthesizedExpressionSyntax : ExpressionSyntax
     {
@@ -11,15 +9,9 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
             CloseParenthesisToken = closeParenthesisToken;
         }
 
+        public override SyntaxType Type => SyntaxType.ParenthesizedExpression;
         public SyntaxToken OpenParenthesisToken { get; set; }
         public ExpressionSyntax Expression { get; set; }
         public SyntaxToken CloseParenthesisToken { get; set; }
-        public override SyntaxType Type => SyntaxType.ParenthesizedExpression;
-        public override IEnumerable<SyntaxNode> GetChildren()
-        {
-            yield return OpenParenthesisToken;
-            yield return Expression;
-            yield return CloseParenthesisToken;
-        }
     }
 }

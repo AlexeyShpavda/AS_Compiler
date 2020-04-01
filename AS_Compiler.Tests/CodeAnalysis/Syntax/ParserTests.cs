@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using AS_Compiler.Core.CodeAnalysis.Syntax;
 using Xunit;
 
@@ -95,7 +94,7 @@ namespace AS_Compiler.Tests.CodeAnalysis.Syntax
             {
                 foreach (var op2 in SyntaxFacts.GetBinaryOperatorTypes())
                 {
-                    yield return new object[] {op1, op2};
+                    yield return new object[] { op1, op2 };
                 }
             }
         }
