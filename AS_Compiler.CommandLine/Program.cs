@@ -97,8 +97,10 @@ namespace AS_Compiler.CommandLine
                         Console.WriteLine();
                     }
 
-                    textBuilder.Clear();
+                    Console.WriteLine();
                 }
+
+                textBuilder.Clear();
             }
         }
     }
