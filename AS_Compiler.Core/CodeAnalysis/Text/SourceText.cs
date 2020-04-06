@@ -69,7 +69,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Text
                 }
             }
 
-            if (position > lineStart)
+            if (position >= lineStart)
                 AddLine(result, sourceText, position, lineStart, 0);
 
             return result.ToImmutable();
