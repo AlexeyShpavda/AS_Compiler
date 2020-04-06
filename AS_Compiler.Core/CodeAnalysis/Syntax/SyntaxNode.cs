@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -52,16 +53,34 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
 
         private static void Print(TextWriter writer, SyntaxNode syntaxNode, string indent = "", bool isLast = true)
         {
+            var isConsoleOut = writer == Console.Out;
             var marker = isLast ? "└──" : "├──";
 
             writer.Write(indent);
-            writer.Write(marker);
+
+            if (isConsoleOut)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                writer.Write(marker);
+                Console.ResetColor();
+            }
+
+            if (isConsoleOut)
+            {
+                Console.ForegroundColor = syntaxNode is SyntaxToken ? ConsoleColor.DarkCyan : ConsoleColor.Cyan;
+            }
+
             writer.Write(syntaxNode.Type);
 
             if (syntaxNode is SyntaxToken t && t.Value != null)
             {
                 writer.Write(" ");
                 writer.Write(t.Value);
+            }
+
+            if (isConsoleOut)
+            {
+                Console.ResetColor();
             }
 
             writer.WriteLine();
