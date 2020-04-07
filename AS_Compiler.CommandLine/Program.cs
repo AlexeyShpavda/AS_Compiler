@@ -15,6 +15,7 @@ namespace AS_Compiler.CommandLine
             var showTree = false;
             var variables = new Dictionary<VariableSymbol, object>();
             var textBuilder = new StringBuilder();
+            Compilation previous = null;
 
             while (true)
             {
@@ -37,6 +38,9 @@ namespace AS_Compiler.CommandLine
                         case "#cls":
                             Console.Clear();
                             continue;
+                        case "#reset":
+                            previous = null;
+                            continue;
                     }
                 }
 
@@ -48,7 +52,10 @@ namespace AS_Compiler.CommandLine
                 if (!isLineBlank && syntaxTree.Diagnostics.Any())
                     continue;
 
-                var compilation = new Compilation(syntaxTree);
+                var compilation = previous == null
+                    ? new Compilation(syntaxTree)
+                    : previous.ContinueWith(syntaxTree);
+
                 var result = compilation.Evaluate(variables);
 
                 var diagnostics = result.Diagnostics;
@@ -61,6 +68,8 @@ namespace AS_Compiler.CommandLine
                 if (!diagnostics.Any())
                 {
                     Console.WriteLine(result.Value);
+
+                    previous = compilation;
                 }
                 else
                 {

@@ -1,17 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Immutable;
 using AS_Compiler.Core.CodeAnalysis.Syntax;
 
 namespace AS_Compiler.Core.CodeAnalysis.Binding
 {
     internal sealed class Binder
     {
-        private readonly Dictionary<VariableSymbol, object> _variables;
+        private readonly BoundScope _scope;
 
-        public Binder(Dictionary<VariableSymbol, object> variables)
+        public Binder(BoundScope parent)
         {
-            _variables = variables;
+            _scope = new BoundScope(parent);
+        }
+
+        public static BoundGlobalScope BindGlobalScope(BoundGlobalScope previous, CompilationUnitSyntax compilationUnitSyntax)
+        {
+            var parentScope = CreateParentScopes(previous);
+            var binder = new Binder(parentScope);
+            var expression = binder.BindExpression(compilationUnitSyntax.Expression);
+            var variables = binder._scope.GetDeclaredVariables();
+            var diagnostic = binder.Diagnostics.ToImmutableArray();
+
+            if (previous != null)
+            {
+                diagnostic = diagnostic.InsertRange(0, previous.Diagnostics);
+            }
+
+            return new BoundGlobalScope(previous, diagnostic, variables, expression);
+        }
+
+        private static BoundScope CreateParentScopes(BoundGlobalScope previous)
+        {
+            var stack = new Stack<BoundGlobalScope>();
+
+            while (previous != null)
+            {
+                stack.Push(previous);
+                previous = previous.Previous;
+            }
+
+            BoundScope parent = null;
+
+            while (stack.Count > 0)
+            {
+                previous = stack.Pop();
+                var scope = new BoundScope(parent);
+
+                foreach (var variable in previous.Variables)
+                {
+                    scope.TryDeclare(variable);
+                }
+                
+                parent = scope;
+            } 
+            
+            return parent;
         }
 
         public DiagnosticBag Diagnostics { get; } = new DiagnosticBag();
@@ -45,9 +89,8 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
         private BoundExpression BindNameExpression(NameExpressionSyntax syntax)
         {
             var name = syntax.IdentifierToken.Text;
-            var variable = _variables.Keys.FirstOrDefault(v => v.Name == name);
 
-            if (variable == null)
+            if (!_scope.TryLookup(name, out var variable))
             {
                 Diagnostics.ReportUndefinedName(syntax.IdentifierToken.TextSpan, name);
                 return new BoundLiteralExpression(0);
@@ -61,15 +104,18 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
             var name = syntax.IdentifierToken.Text;
             var boundExpression = BindExpression(syntax.ExpressionSyntax);
 
-            var existingVariable = _variables.Keys.FirstOrDefault(v => v.Name == name);
-
-            if (existingVariable != null)
+            if(!_scope.TryLookup(name, out var variable))
             {
-                _variables.Remove(existingVariable);
+                variable = new VariableSymbol(name, boundExpression.Type);
+                _scope.TryDeclare(variable);
             }
 
-            var variable = new VariableSymbol(name, boundExpression.Type);
-            _variables[variable] = null;
+            if (boundExpression.Type != variable.Type)
+            {
+                Diagnostics.ReportCannotConvert(syntax.ExpressionSyntax.TextSpan, boundExpression.Type, variable.Type);
+
+                return boundExpression;
+            }
 
             return new BoundAssignmentExpression(variable, boundExpression);
         }

@@ -32,6 +32,12 @@ namespace AS_Compiler.Core.CodeAnalysis
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
+        private void Report(TextSpan textSpan, string message)
+        {
+            var diagnostic = new Diagnostic(textSpan, message);
+            _diagnostics.Add(diagnostic);
+        }
+
         public void ReportInvalidNumber(TextSpan textSpan, string text, Type type)
         {
             var message = $"The number {text} is not valid {type}.";
@@ -70,10 +76,10 @@ namespace AS_Compiler.Core.CodeAnalysis
             Report(textSpan, message);
         }
 
-        private void Report(TextSpan textSpan, string message)
+        public void ReportCannotConvert(TextSpan textSpan, Type fromType, Type toType)
         {
-            var diagnostic = new Diagnostic(textSpan, message);
-            _diagnostics.Add(diagnostic);
+            var message = $"Cannot convert type '{fromType}' to '{toType}'.";
+            Report(textSpan, message);
         }
     }
 }
