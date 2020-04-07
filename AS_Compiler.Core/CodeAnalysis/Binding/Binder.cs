@@ -8,7 +8,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
 {
     internal sealed class Binder
     {
-        private readonly BoundScope _scope;
+        private BoundScope _scope;
 
         public Binder(BoundScope parent)
         {
@@ -66,20 +66,40 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
             return syntax.Type switch
             {
                 SyntaxType.BlockStatement => BindBlockStatement((BlockStatementSyntax)syntax),
+                SyntaxType.VariableDeclaration => BindVariableDeclaration((VariableDeclarationSyntax)syntax),
                 SyntaxType.ExpressionStatement => BindExpressionStatement((ExpressionStatementSyntax)syntax),
                 _ => throw new Exception($"Unexpected syntax {syntax.Type}")
             };
         }
+
         private BoundStatement BindBlockStatement(BlockStatementSyntax syntax)
         {
             var statements = ImmutableArray.CreateBuilder<BoundStatement>();
+            _scope = new BoundScope(_scope);
 
             foreach (var statement in syntax.Statements.Select(BindStatement))
             {
                 statements.Add(statement);
             }
 
+            _scope = _scope.Parent;
+
             return new BoundBlockStatement(statements.ToImmutable());
+        }
+
+        private BoundStatement BindVariableDeclaration(VariableDeclarationSyntax syntax)
+        {
+            var name = syntax.Identifier.Text;
+            var isReadOnly = syntax.Keyword.Type == SyntaxType.LetKeyword;
+            var initializer = BindExpression(syntax.Initializer);
+            var variable = new VariableSymbol(name, isReadOnly, initializer.Type);
+
+            if (!_scope.TryDeclare(variable))
+            {
+                Diagnostics.ReportVariableAlreadyDeclared(syntax.Identifier.TextSpan, name);
+            }
+
+            return new BoundVariableDeclaration(variable, initializer);
         }
 
         private BoundStatement BindExpressionStatement(ExpressionStatementSyntax syntax)
@@ -135,8 +155,13 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
 
             if(!_scope.TryLookup(name, out var variable))
             {
-                variable = new VariableSymbol(name, boundExpression.Type);
-                _scope.TryDeclare(variable);
+                Diagnostics.ReportUndefinedName(syntax.IdentifierToken.TextSpan, name);
+                return boundExpression;
+            }
+
+            if (variable.IsReadOnly)
+            {
+                Diagnostics.ReportCannotAssign(syntax.EqualsToken.TextSpan, name);
             }
 
             if (boundExpression.Type != variable.Type)

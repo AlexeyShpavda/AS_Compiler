@@ -44,6 +44,8 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
             {
                 "true" => SyntaxType.TrueKeyword,
                 "false" => SyntaxType.FalseKeyword,
+                "var" => SyntaxType.VarKeyword,
+                "let" => SyntaxType.LetKeyword,
                 _ => SyntaxType.IdentifierToken
             };
         }
@@ -92,6 +94,8 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                 SyntaxType.ClosingBraceToken => "}",
                 SyntaxType.TrueKeyword => "true",
                 SyntaxType.FalseKeyword => "false",
+                SyntaxType.VarKeyword => "var",
+                SyntaxType.LetKeyword => "let",
                 _ => null
             };
         }

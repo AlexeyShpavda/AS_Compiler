@@ -81,5 +81,17 @@ namespace AS_Compiler.Core.CodeAnalysis
             var message = $"Cannot convert type '{fromType}' to '{toType}'.";
             Report(textSpan, message);
         }
+
+        public void ReportVariableAlreadyDeclared(TextSpan textSpan, string name)
+        {
+            var message = $"Variable '{name}' was already declared.";
+            Report(textSpan, message);
+        }
+
+        public void ReportCannotAssign(TextSpan textSpan, string name)
+        {
+            var message = $"Variable '{name}' is read-only and cannot be assigned.";
+            Report(textSpan, message);
+        }
     }
 }

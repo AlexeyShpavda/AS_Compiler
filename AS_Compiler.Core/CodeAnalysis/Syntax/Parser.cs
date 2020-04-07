@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Xml;
 using AS_Compiler.Core.CodeAnalysis.Text;
 
 namespace AS_Compiler.Core.CodeAnalysis.Syntax
@@ -72,12 +73,27 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
 
         private StatementSyntax ParseStatement()
         {
-            if (Current.Type == SyntaxType.OpeningBraceToken)
+            switch (Current.Type)
             {
-                return ParseBlockStatement();
+                case SyntaxType.OpeningBraceToken:
+                    return ParseBlockStatement();
+                case SyntaxType.LetKeyword:
+                case SyntaxType.VarKeyword:
+                    return ParseVariableDeclaration();
+                default:
+                    return ParseExpressionStatement();
             }
+        }
 
-            return ParseExpressionStatement();
+        private StatementSyntax ParseVariableDeclaration()
+        {
+            var expected = Current.Type == SyntaxType.LetKeyword ? SyntaxType.LetKeyword : SyntaxType.VarKeyword;
+            var keyword = MatchToken(expected);
+            var identifier = MatchToken(SyntaxType.IdentifierToken);
+            var equalsToken = MatchToken(SyntaxType.EqualsToken);
+            var initializer = ParseExpression();
+
+            return new VariableDeclarationSyntax(keyword, identifier, equalsToken, initializer);
         }
 
         private StatementSyntax ParseBlockStatement()

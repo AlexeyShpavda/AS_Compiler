@@ -31,6 +31,9 @@ namespace AS_Compiler.Core.CodeAnalysis
                 case BoundNodeType.BlockStatement:
                     EvaluateBlockStatement((BoundBlockStatement) node);
                     break;
+                case BoundNodeType.VariableDeclaration:
+                    EvaluateVariableDeclaration((BoundVariableDeclaration)node);
+                    break;
                 case BoundNodeType.ExpressionStatement:
                     EvaluateExpressionStatement((BoundExpressionStatement)node);
                     break;
@@ -45,6 +48,13 @@ namespace AS_Compiler.Core.CodeAnalysis
             {
                 EvaluateStatement(statement);
             }
+        }
+
+        private void EvaluateVariableDeclaration(BoundVariableDeclaration node)
+        {
+            var value = EvaluateExpression(node.Initializer);
+            _variables[node.Variable] = value;
+            _lastValue = value;
         }
 
         private void EvaluateExpressionStatement(BoundExpressionStatement node)

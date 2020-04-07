@@ -3,6 +3,7 @@
     internal enum BoundNodeType
     {
         BlockStatement,
+        VariableDeclaration,
         ExpressionStatement,
 
         LiteralExpression,

@@ -24,10 +24,13 @@
 
         TrueKeyword,
         FalseKeyword,
+        VarKeyword,
+        LetKeyword,
 
         CompilationUnit,
 
         BlockStatement,
+        VariableDeclaration,
         ExpressionStatement,
 
         ParenthesizedExpression,

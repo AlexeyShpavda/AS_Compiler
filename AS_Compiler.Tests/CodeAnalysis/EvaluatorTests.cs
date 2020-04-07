@@ -28,7 +28,7 @@ namespace AS_Compiler.Tests.CodeAnalysis
         [InlineData("false", false)]
         [InlineData("!true", false)]
         [InlineData("!false", true)]
-        [InlineData("(a = 5) * a", 25)]
+        [InlineData("{ var a = 0 (a = 10) * a }", 25)]
         public void SyntaxFact_GetText_RoundTrips(string text, object expectedValue)
         {
             var syntaxTree = SyntaxTree.Parse(text);
