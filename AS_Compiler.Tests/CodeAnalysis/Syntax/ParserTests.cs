@@ -17,7 +17,7 @@ namespace AS_Compiler.Tests.CodeAnalysis.Syntax
             var operator2Text = SyntaxFacts.GetText(operator2);
 
             var text = $"a {operator1Text} b {operator2Text} c";
-            var expression = SyntaxTree.Parse(text).Root;
+            var expression = ParseExpression(text);
 
             if(operator1Precedence >= operator2Precedence)
             {
@@ -60,7 +60,7 @@ namespace AS_Compiler.Tests.CodeAnalysis.Syntax
             var binaryText = SyntaxFacts.GetText(binaryType);
 
             var text = $"{unaryText} a {binaryText} b";
-            var expression = SyntaxTree.Parse(text).Root;
+            var expression = ParseExpression(text);
 
             if (unaryPrecedence >= binaryPrecedence)
             {
@@ -86,6 +86,14 @@ namespace AS_Compiler.Tests.CodeAnalysis.Syntax
                 e.AssertNode(SyntaxType.NameExpression);
                 e.AssertToken(SyntaxType.IdentifierToken, "b");
             }
+        }
+
+        private static ExpressionSyntax ParseExpression(string text)
+        {
+            var syntaxTree = SyntaxTree.Parse(text);
+            var root = syntaxTree.Root;
+
+            return root.Expression;
         }
 
         public static IEnumerable<object[]> GetBinaryOperatorPairsData()
