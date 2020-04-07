@@ -88,6 +88,8 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                 SyntaxType.BangEqualsToken => "!=",
                 SyntaxType.OpeningParenthesisToken => "(",
                 SyntaxType.ClosingParenthesisToken => ")",
+                SyntaxType.OpeningBraceToken => "{",
+                SyntaxType.ClosingBraceToken => "}",
                 SyntaxType.TrueKeyword => "true",
                 SyntaxType.FalseKeyword => "false",
                 _ => null

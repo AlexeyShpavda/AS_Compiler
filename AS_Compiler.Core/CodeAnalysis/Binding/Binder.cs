@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using AS_Compiler.Core.CodeAnalysis.Syntax;
 
 namespace AS_Compiler.Core.CodeAnalysis.Binding
@@ -18,7 +19,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
         {
             var parentScope = CreateParentScopes(previous);
             var binder = new Binder(parentScope);
-            var expression = binder.BindExpression(compilationUnitSyntax.Expression);
+            var expression = binder.BindStatement(compilationUnitSyntax.Statement);
             var variables = binder._scope.GetDeclaredVariables();
             var diagnostic = binder.Diagnostics.ToImmutableArray();
 
@@ -60,7 +61,35 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
 
         public DiagnosticBag Diagnostics { get; } = new DiagnosticBag();
 
-        public BoundExpression BindExpression(ExpressionSyntax syntax)
+        private BoundStatement BindStatement(StatementSyntax syntax)
+        {
+            return syntax.Type switch
+            {
+                SyntaxType.BlockStatement => BindBlockStatement((BlockStatementSyntax)syntax),
+                SyntaxType.ExpressionStatement => BindExpressionStatement((ExpressionStatementSyntax)syntax),
+                _ => throw new Exception($"Unexpected syntax {syntax.Type}")
+            };
+        }
+        private BoundStatement BindBlockStatement(BlockStatementSyntax syntax)
+        {
+            var statements = ImmutableArray.CreateBuilder<BoundStatement>();
+
+            foreach (var statement in syntax.Statements.Select(BindStatement))
+            {
+                statements.Add(statement);
+            }
+
+            return new BoundBlockStatement(statements.ToImmutable());
+        }
+
+        private BoundStatement BindExpressionStatement(ExpressionStatementSyntax syntax)
+        {
+            var expression = BindExpression(syntax.Expression);
+
+            return new BoundExpressionStatement(expression);
+        }
+
+        private BoundExpression BindExpression(ExpressionSyntax syntax)
         {
             return syntax.Type switch
             {

@@ -62,6 +62,14 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                     _type = SyntaxType.ClosingParenthesisToken;
                     _position++;
                     break;
+                case '{':
+                    _type = SyntaxType.OpeningBraceToken;
+                    _position++;
+                    break;
+                case '}':
+                    _type = SyntaxType.ClosingBraceToken;
+                    _position++;
+                    break;
                 case '&':
                     if (LookAhead == '&')
                     {

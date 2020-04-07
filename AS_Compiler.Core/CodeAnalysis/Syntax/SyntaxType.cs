@@ -12,6 +12,8 @@
         SlashToken,
         OpeningParenthesisToken,
         ClosingParenthesisToken,
+        OpeningBraceToken,
+        ClosingBraceToken,
         IdentifierToken,
         EqualsToken,
         BangToken,
@@ -25,11 +27,14 @@
 
         CompilationUnit,
 
+        BlockStatement,
+        ExpressionStatement,
+
         ParenthesizedExpression,
         LiteralExpression,
         NameExpression,
         BinaryExpression,
         UnaryExpression,
-        AssignmentExpression
+        AssignmentExpression,
     }
 }

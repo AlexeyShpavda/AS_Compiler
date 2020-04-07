@@ -64,10 +64,44 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
 
         public CompilationUnitSyntax ParseCompilationUnit()
         {
-            var expression = ParseExpression();
+            var statement = ParseStatement();
             var endOfFileToken = MatchToken(SyntaxType.EndOfFileToken);
 
-            return new CompilationUnitSyntax(expression, endOfFileToken);
+            return new CompilationUnitSyntax(statement, endOfFileToken);
+        }
+
+        private StatementSyntax ParseStatement()
+        {
+            if (Current.Type == SyntaxType.OpeningBraceToken)
+            {
+                return ParseBlockStatement();
+            }
+
+            return ParseExpressionStatement();
+        }
+
+        private StatementSyntax ParseBlockStatement()
+        {
+            var statements = ImmutableArray.CreateBuilder<StatementSyntax>();
+
+            var openingBraceToken = MatchToken(SyntaxType.OpeningBraceToken);
+
+            while (Current.Type != SyntaxType.EndOfFileToken && Current.Type != SyntaxType.ClosingBraceToken)
+            {
+                var statement = ParseStatement();
+                statements.Add(statement);
+            }
+
+            var closingBraceToken = MatchToken(SyntaxType.ClosingBraceToken);
+
+            return new BlockStatementSyntax(openingBraceToken, statements.ToImmutable(), closingBraceToken);
+        }
+
+        private StatementSyntax ParseExpressionStatement()
+        {
+            var expression = ParseExpression();
+
+            return new ExpressionStatementSyntax(expression);
         }
 
         public ExpressionSyntax ParseExpression()
