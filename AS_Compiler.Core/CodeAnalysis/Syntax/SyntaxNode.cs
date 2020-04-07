@@ -61,9 +61,9 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
             if (isConsoleOut)
             {
                 Console.ForegroundColor = ConsoleColor.DarkGray;
-                writer.Write(marker);
-                Console.ResetColor();
             }
+
+            writer.Write(marker);
 
             if (isConsoleOut)
             {
