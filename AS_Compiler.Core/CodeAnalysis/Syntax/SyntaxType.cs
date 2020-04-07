@@ -23,6 +23,8 @@
         TrueKeyword,
         FalseKeyword,
 
+        CompilationUnit,
+
         ParenthesizedExpression,
         LiteralExpression,
         NameExpression,
