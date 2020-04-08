@@ -13,7 +13,7 @@ namespace AS_Compiler.Core.CodeAnalysis
 
         public Compilation(SyntaxTree syntaxTree) : this(null, syntaxTree)
         {
-            SyntaxTree = syntaxTree;
+
         }
 
         public Compilation(Compilation previous, SyntaxTree syntaxTree)
