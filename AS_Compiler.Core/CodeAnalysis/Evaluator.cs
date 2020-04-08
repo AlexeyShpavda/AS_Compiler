@@ -28,6 +28,9 @@ namespace AS_Compiler.Core.CodeAnalysis
         {
             switch (node.BoundNodeType)
             {
+                case BoundNodeType.ForStatement:
+                    EvaluateForStatement((BoundForStatement)node);
+                    break;
                 case BoundNodeType.WhileStatement:
                     EvaluateWhileStatement((BoundWhileStatement)node);
                     break;
@@ -45,6 +48,18 @@ namespace AS_Compiler.Core.CodeAnalysis
                     break;
                 default:
                     throw new Exception($"Unexpected node {node.BoundNodeType}");
+            }
+        }
+
+        private void EvaluateForStatement(BoundForStatement node)
+        {
+            var lowerBound = (int) EvaluateExpression(node.LowerBound);
+            var upperBound = (int) EvaluateExpression(node.UpperBound);
+
+            for (var i = lowerBound; i <= upperBound; i++)
+            {
+                _variables[node.Variable] = i;
+                EvaluateStatement(node.Body);
             }
         }
 

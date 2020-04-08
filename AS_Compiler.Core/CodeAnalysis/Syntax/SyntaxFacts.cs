@@ -54,6 +54,8 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                 "if" => SyntaxType.IfKeyword,
                 "else" => SyntaxType.ElseKeyword,
                 "while" => SyntaxType.WhileKeyword,
+                "for" => SyntaxType.ForKeyword,
+                "to" => SyntaxType.ToKeyword,
                 _ => SyntaxType.IdentifierToken
             };
         }
@@ -111,6 +113,8 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                 SyntaxType.IfKeyword => "if",
                 SyntaxType.ElseKeyword => "else",
                 SyntaxType.WhileKeyword => "while",
+                SyntaxType.ForKeyword => "for",
+                SyntaxType.ToKeyword => "to",
                 _ => null
             };
         }

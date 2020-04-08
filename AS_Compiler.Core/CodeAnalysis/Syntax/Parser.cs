@@ -84,9 +84,24 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                     return ParseIfStatement();
                 case SyntaxType.WhileKeyword:
                     return ParseWhileStatement();
+                case SyntaxType.ForKeyword:
+                    return ParseForStatement();
                 default:
                     return ParseExpressionStatement();
             }
+        }
+
+        private StatementSyntax ParseForStatement()
+        {
+            var keyword = MatchToken(SyntaxType.ForKeyword);
+            var identifier = MatchToken(SyntaxType.IdentifierToken);
+            var equalsToken = MatchToken(SyntaxType.EqualsToken);
+            var lowerBound = ParseExpression();
+            var toKeyword = MatchToken(SyntaxType.ToKeyword);
+            var upperBound = ParseExpression();
+            var body = ParseStatement();
+
+            return new ForStatementSyntax(keyword, identifier, equalsToken, lowerBound, toKeyword, upperBound, body);
         }
 
         private StatementSyntax ParseWhileStatement()

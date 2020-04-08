@@ -33,6 +33,8 @@
         IfKeyword,
         ElseKeyword,
         WhileKeyword,
+        ForKeyword,
+        ToKeyword,
 
         CompilationUnit,
         ElseClause,
@@ -42,6 +44,7 @@
         ExpressionStatement,
         IfStatement,
         WhileStatement,
+        ForStatement,
 
         ParenthesizedExpression,
         LiteralExpression,
