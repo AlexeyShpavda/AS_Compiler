@@ -60,13 +60,13 @@ namespace AS_Compiler.Core.CodeAnalysis
 
         public void ReportUndefinedUnaryOperator(TextSpan textSpan, string operatorText, Type operandType)
         {
-            var message = $"Unary operator '{operatorText}' is not defined for type {operandType}.";
+            var message = $"Unary operator '{operatorText}' is not defined for type '{operandType}'.";
             Report(textSpan, message);
         }
 
         public void ReportUndefinedBinaryOperator(TextSpan textSpan, string operatorText, Type leftType, Type rightType)
         {
-            var message = $"Binary operator '{operatorText}' is not defined for type {leftType} and {rightType}.";
+            var message = $"Binary operator '{operatorText}' is not defined for type '{leftType}' and '{rightType}'.";
             Report(textSpan, message);
         }
 
