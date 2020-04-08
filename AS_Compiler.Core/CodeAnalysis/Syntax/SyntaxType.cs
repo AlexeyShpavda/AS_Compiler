@@ -30,12 +30,16 @@
         FalseKeyword,
         VarKeyword,
         LetKeyword,
+        IfKeyword,
+        ElseKeyword,
 
         CompilationUnit,
+        ElseClause,
 
         BlockStatement,
         VariableDeclaration,
         ExpressionStatement,
+        IfStatement,
 
         ParenthesizedExpression,
         LiteralExpression,

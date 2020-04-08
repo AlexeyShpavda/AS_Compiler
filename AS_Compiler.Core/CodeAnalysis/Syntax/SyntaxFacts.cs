@@ -51,6 +51,8 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                 "false" => SyntaxType.FalseKeyword,
                 "var" => SyntaxType.VarKeyword,
                 "let" => SyntaxType.LetKeyword,
+                "if" => SyntaxType.IfKeyword,
+                "else" => SyntaxType.ElseKeyword,
                 _ => SyntaxType.IdentifierToken
             };
         }
@@ -105,6 +107,8 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                 SyntaxType.FalseKeyword => "false",
                 SyntaxType.VarKeyword => "var",
                 SyntaxType.LetKeyword => "let",
+                SyntaxType.IfKeyword => "if",
+                SyntaxType.ElseKeyword => "else",
                 _ => null
             };
         }

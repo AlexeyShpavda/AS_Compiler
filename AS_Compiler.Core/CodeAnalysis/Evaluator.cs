@@ -28,6 +28,9 @@ namespace AS_Compiler.Core.CodeAnalysis
         {
             switch (node.BoundNodeType)
             {
+                case BoundNodeType.IfStatement:
+                    EvaluateIfStatement((BoundIfStatement)node);
+                    break;
                 case BoundNodeType.BlockStatement:
                     EvaluateBlockStatement((BoundBlockStatement) node);
                     break;
@@ -39,6 +42,20 @@ namespace AS_Compiler.Core.CodeAnalysis
                     break;
                 default:
                     throw new Exception($"Unexpected node {node.BoundNodeType}");
+            }
+        }
+
+        private void EvaluateIfStatement(BoundIfStatement node)
+        {
+            var condition = (bool) EvaluateExpression(node.Condition);
+
+            if (condition)
+            {
+                EvaluateStatement(node.ThenStatement);
+            }
+            else if (node.ElseStatement != null)
+            {
+                EvaluateStatement(node.ElseStatement);
             }
         }
 

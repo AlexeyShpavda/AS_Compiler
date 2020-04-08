@@ -30,7 +30,7 @@ namespace AS_Compiler.Tests.CodeAnalysis.Syntax
 
         [Theory]
         [MemberData(nameof(GetTokensData))]
-        public void Lexer_Lexes_Token(SyntaxType syntaxType, string text)
+        public void Lexer_Lex_Token(SyntaxType syntaxType, string text)
         {
             var tokens = SyntaxTree.ParseTokens(text);
 
@@ -47,7 +47,7 @@ namespace AS_Compiler.Tests.CodeAnalysis.Syntax
 
         [Theory]
         [MemberData(nameof(GetTokenPairsData))]
-        public void Lexer_Lexes_TokenPairs_WithSeparators(SyntaxType syntaxType1, string text1, SyntaxType syntaxType2, string text2)
+        public void Lexer_Lex_TokenPairs_WithSeparators(SyntaxType syntaxType1, string text1, SyntaxType syntaxType2, string text2)
         {
             var text = text1 + text2;
             var tokens = SyntaxTree.ParseTokens(text).ToList();
@@ -61,7 +61,7 @@ namespace AS_Compiler.Tests.CodeAnalysis.Syntax
 
         [Theory]
         [MemberData(nameof(GetTokenPairsWithSeparatorData))]
-        public void Lexer_Lexes_TokenPairs(SyntaxType syntaxType1, string text1,
+        public void Lexer_Lex_TokenPairs(SyntaxType syntaxType1, string text1,
                                            SyntaxType separatorType, string separatorText,
                                            SyntaxType syntaxType2, string text2)
         {

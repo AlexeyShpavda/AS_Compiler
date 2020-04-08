@@ -65,11 +65,21 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
         {
             return syntax.Type switch
             {
+                SyntaxType.IfStatement => BindIfStatement((IfStatementSyntax)syntax),
                 SyntaxType.BlockStatement => BindBlockStatement((BlockStatementSyntax)syntax),
                 SyntaxType.VariableDeclaration => BindVariableDeclaration((VariableDeclarationSyntax)syntax),
                 SyntaxType.ExpressionStatement => BindExpressionStatement((ExpressionStatementSyntax)syntax),
                 _ => throw new Exception($"Unexpected syntax {syntax.Type}")
             };
+        }
+
+        private BoundStatement BindIfStatement(IfStatementSyntax syntax)
+        {
+            var condition = BindExpression(syntax.Condition, typeof(bool));
+            var thenStatement = BindStatement(syntax.ThenStatement);
+            var elseStatement = syntax.ElseClause == null ? null : BindStatement(syntax.ElseClause.ElseStatement);
+
+            return new BoundIfStatement(condition, thenStatement, elseStatement);
         }
 
         private BoundStatement BindBlockStatement(BlockStatementSyntax syntax)
@@ -107,6 +117,18 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
             var expression = BindExpression(syntax.Expression);
 
             return new BoundExpressionStatement(expression);
+        }
+
+        private BoundExpression BindExpression(ExpressionSyntax expressionSyntax, Type targetType)
+        {
+            var result = BindExpression(expressionSyntax);
+
+            if(result.Type != targetType)
+            {
+                Diagnostics.ReportCannotConvert(expressionSyntax.TextSpan, result.Type, targetType);
+            }
+
+            return result;
         }
 
         private BoundExpression BindExpression(ExpressionSyntax syntax)

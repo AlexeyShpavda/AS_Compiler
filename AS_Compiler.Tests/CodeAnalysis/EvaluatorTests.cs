@@ -40,6 +40,10 @@ namespace AS_Compiler.Tests.CodeAnalysis
         [InlineData("!true", false)]
         [InlineData("!false", true)]
         [InlineData("{ var a = 0 (a = 10) * a }", 100)]
+        [InlineData("{ var a = 0 if a == 0 a = 1 a }", 1)]
+        [InlineData("{ var a = 0 if a == 1 a = 1 a }", 0)]
+        [InlineData("{ var a = 0 if a == 0 a = 1 else a = 2 a }", 1)]
+        [InlineData("{ var a = 0 if a == 1 a = 1 else a = 2 a }", 2)]
         public void SyntaxFact_GetText_RoundTrips(string text, object expectedValue)
         {
             AssertValue(text, expectedValue);
