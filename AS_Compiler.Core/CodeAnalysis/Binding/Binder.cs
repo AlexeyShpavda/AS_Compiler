@@ -193,6 +193,11 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
         {
             var name = syntax.IdentifierToken.Text;
 
+            if (string.IsNullOrEmpty(name))
+            {
+                return new BoundLiteralExpression(0);
+            }
+
             if (!_scope.TryLookup(name, out var variable))
             {
                 Diagnostics.ReportUndefinedName(syntax.IdentifierToken.TextSpan, name);

@@ -7,7 +7,6 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
 {
     public class Parser
     {
-        private readonly SourceText _text;
         private readonly ImmutableArray<SyntaxToken> _syntaxTokens;
         private int _position;
 
@@ -28,7 +27,6 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                 }
             } while (syntaxToken.Type != SyntaxType.EndOfFileToken);
 
-            _text = text;
             _syntaxTokens = syntaxTokens.ToImmutableArray();
             Diagnostics.AddRange(lexer.Diagnostics);
         }
@@ -155,8 +153,16 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
 
             while (Current.Type != SyntaxType.EndOfFileToken && Current.Type != SyntaxType.ClosingBraceToken)
             {
+                var startToken = Current;
+
                 var statement = ParseStatement();
                 statements.Add(statement);
+                
+                // To avoid infinite loop.
+                if (Current == startToken)
+                {
+                    NextToken();
+                }
             }
 
             var closingBraceToken = MatchToken(SyntaxType.ClosingBraceToken);

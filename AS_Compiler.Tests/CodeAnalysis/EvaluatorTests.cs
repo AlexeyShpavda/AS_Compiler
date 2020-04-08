@@ -63,6 +63,22 @@ namespace AS_Compiler.Tests.CodeAnalysis
         }
 
         [Fact]
+        public void Evaluator_BlockStatement_NoInfiniteLoop()
+        {
+            const string text = @"
+                {
+                [)][]
+            ";
+
+            const string diagnostics = @"
+                Unexpected token <ClosingParenthesisToken>, expected <IdentifierToken>.
+                Unexpected token <EndOfFileToken>, expected <ClosingBraceToken>.
+            ";
+
+            AssertHasDiagnostics(text, diagnostics);
+        }
+
+        [Fact]
         public void Evaluator_VariableDeclaration_Reports_Redeclaration()
         {
             const string text = @"
@@ -90,6 +106,18 @@ namespace AS_Compiler.Tests.CodeAnalysis
 
             const string diagnostics = @"
                 Variable 'x' does not exist.
+            ";
+
+            AssertHasDiagnostics(text, diagnostics);
+        }
+
+        [Fact]
+        public void Evaluator_NameExpression_Reports_NoErrorForInsertedToken()
+        {
+            const string text = @"[]";
+
+            const string diagnostics = @"
+                Unexpected token <EndOfFileToken>, expected <IdentifierToken>.
             ";
 
             AssertHasDiagnostics(text, diagnostics);
