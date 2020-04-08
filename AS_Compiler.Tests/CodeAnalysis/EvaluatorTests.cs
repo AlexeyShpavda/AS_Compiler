@@ -142,6 +142,78 @@ namespace AS_Compiler.Tests.CodeAnalysis
         }
 
         [Fact]
+        public void Evaluator_IfStatement_Reports_CannotConvert()
+        {
+            const string text = @"
+                {
+                    var x = 1
+                    if [10]
+                        x = 10
+                }
+            ";
+
+            const string diagnostics = @"
+                Cannot convert type 'System.Int32' to 'System.Boolean'.
+            ";
+
+            AssertHasDiagnostics(text, diagnostics);
+        }
+
+        [Fact]
+        public void Evaluator_WhileStatement_Reports_CannotConvert()
+        {
+            const string text = @"
+                {
+                    var x = 1
+                    while [10]
+                        x = 10
+                }
+            ";
+
+            const string diagnostics = @"
+                Cannot convert type 'System.Int32' to 'System.Boolean'.
+            ";
+
+            AssertHasDiagnostics(text, diagnostics);
+        }
+
+        [Fact]
+        public void Evaluator_ForStatement_Reports_CannotConvert_LowerBound()
+        {
+            const string text = @"
+                {
+                    var sum = 0
+                    for i = [false] to 10
+                        sum = sum + i
+                }
+            ";
+
+            const string diagnostics = @"
+                Cannot convert type 'System.Boolean' to 'System.Int32'.
+            ";
+
+            AssertHasDiagnostics(text, diagnostics);
+        }
+
+        [Fact]
+        public void Evaluator_ForStatement_Reports_CannotConvert_UpperBound()
+        {
+            const string text = @"
+                {
+                    var sum = 0
+                    for i = 1 to [false]
+                        sum = sum + i
+                }
+            ";
+
+            const string diagnostics = @"
+                Cannot convert type 'System.Boolean' to 'System.Int32'.
+            ";
+
+            AssertHasDiagnostics(text, diagnostics);
+        }
+
+        [Fact]
         public void Evaluator_Unary_Reports_Undefined()
         {
             const string text = @"[+]false";
