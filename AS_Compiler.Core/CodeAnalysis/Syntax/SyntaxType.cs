@@ -21,6 +21,10 @@
         PipePipeToken,
         EqualsEqualsToken,
         BangEqualsToken,
+        LessThanToken,
+        LessThanOrEqualsToken,
+        GreaterThanToken,
+        GreaterThanOrEqualsToken,
 
         TrueKeyword,
         FalseKeyword,

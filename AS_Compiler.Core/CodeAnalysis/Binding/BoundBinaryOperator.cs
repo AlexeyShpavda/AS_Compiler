@@ -40,6 +40,11 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
             new BoundBinaryOperator(SyntaxType.EqualsEqualsToken, BoundBinaryOperatorType.Equals, typeof(int), typeof(bool)),
             new BoundBinaryOperator(SyntaxType.BangEqualsToken, BoundBinaryOperatorType.NotEquals, typeof(int), typeof(bool)),
 
+            new BoundBinaryOperator(SyntaxType.LessThanToken, BoundBinaryOperatorType.LessThan, typeof(int), typeof(bool)),
+            new BoundBinaryOperator(SyntaxType.LessThanOrEqualsToken, BoundBinaryOperatorType.LessThanOrEquals, typeof(int), typeof(bool)),
+            new BoundBinaryOperator(SyntaxType.GreaterThanToken, BoundBinaryOperatorType.GreaterThan, typeof(int), typeof(bool)),
+            new BoundBinaryOperator(SyntaxType.GreaterThanOrEqualsToken, BoundBinaryOperatorType.GreaterThanOrEquals, typeof(int), typeof(bool)),
+
             new BoundBinaryOperator(SyntaxType.AmpersandAmpersandToken, BoundBinaryOperatorType.LogicalAnd, typeof(bool)),
             new BoundBinaryOperator(SyntaxType.PipePipeToken, BoundBinaryOperatorType.LogicalOr, typeof(bool)),
             new BoundBinaryOperator(SyntaxType.EqualsEqualsToken, BoundBinaryOperatorType.Equals, typeof(bool)),

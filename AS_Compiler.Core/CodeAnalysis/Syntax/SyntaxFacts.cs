@@ -19,23 +19,28 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
 
         public static int GetBinaryOperatorPrecedence(this SyntaxType syntaxType)
         {
-            return syntaxType switch
+            switch (syntaxType)
             {
-                SyntaxType.StarToken => 5,
-                SyntaxType.SlashToken => 5,
-
-                SyntaxType.PlusToken => 4,
-                SyntaxType.MinusToken => 4,
-
-                SyntaxType.EqualsEqualsToken => 3,
-                SyntaxType.BangEqualsToken => 3,
-
-                SyntaxType.AmpersandAmpersandToken => 2,
-
-                SyntaxType.PipePipeToken => 1,
-
-                _ => 0
-            };
+                case SyntaxType.StarToken:
+                case SyntaxType.SlashToken:
+                    return 5;
+                case SyntaxType.PlusToken:
+                case SyntaxType.MinusToken:
+                    return 4;
+                case SyntaxType.EqualsEqualsToken:
+                case SyntaxType.BangEqualsToken:
+                case SyntaxType.LessThanToken:
+                case SyntaxType.LessThanOrEqualsToken:
+                case SyntaxType.GreaterThanToken:
+                case SyntaxType.GreaterThanOrEqualsToken:
+                    return 3;
+                case SyntaxType.AmpersandAmpersandToken:
+                    return 2;
+                case SyntaxType.PipePipeToken:
+                    return 1;
+                default:
+                    return 0;
+            }
         }
 
         internal static SyntaxType GetKeywordType(string text)
@@ -83,6 +88,10 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                 SyntaxType.StarToken => "*",
                 SyntaxType.SlashToken => "/",
                 SyntaxType.EqualsToken => "=",
+                SyntaxType.LessThanToken => "<",
+                SyntaxType.LessThanOrEqualsToken => "<=",
+                SyntaxType.GreaterThanToken => ">",
+                SyntaxType.GreaterThanOrEqualsToken => ">=",
                 SyntaxType.BangToken => "!",
                 SyntaxType.AmpersandAmpersandToken => "&&",
                 SyntaxType.PipePipeToken => "||",

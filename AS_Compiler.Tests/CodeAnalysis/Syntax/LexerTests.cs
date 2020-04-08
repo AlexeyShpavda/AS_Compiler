@@ -178,6 +178,26 @@ namespace AS_Compiler.Tests.CodeAnalysis.Syntax
                 return true;
             }
 
+            if (syntaxType1 == SyntaxType.LessThanToken && syntaxType2 == SyntaxType.EqualsToken)
+            {
+                return true;
+            }
+
+            if (syntaxType1 == SyntaxType.LessThanToken && syntaxType2 == SyntaxType.EqualsEqualsToken)
+            {
+                return true;
+            }
+
+            if (syntaxType1 == SyntaxType.GreaterThanToken && syntaxType2 == SyntaxType.EqualsToken)
+            {
+                return true;
+            }
+
+            if (syntaxType1 == SyntaxType.GreaterThanToken && syntaxType2 == SyntaxType.EqualsEqualsToken)
+            {
+                return true;
+            }
+
             return false;
         }
 

@@ -108,6 +108,30 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                         _type = SyntaxType.BangToken;
                     }
                     break;
+                case '<':
+                    _position++;
+                    if (Current == '=')
+                    {
+                        _type = SyntaxType.LessThanOrEqualsToken;
+                        _position++;
+                    }
+                    else
+                    {
+                        _type = SyntaxType.LessThanToken;
+                    }
+                    break;
+                case '>':
+                    _position++;
+                    if (Current == '=')
+                    {
+                        _type = SyntaxType.GreaterThanOrEqualsToken;
+                        _position++;
+                    }
+                    else
+                    {
+                        _type = SyntaxType.GreaterThanToken;
+                    }
+                    break;
                 case '0':
                 case '1':
                 case '2':

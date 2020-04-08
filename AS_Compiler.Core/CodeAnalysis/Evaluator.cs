@@ -121,6 +121,10 @@ namespace AS_Compiler.Core.CodeAnalysis
                 BoundBinaryOperatorType.LogicalOr => (bool)left || (bool)right,
                 BoundBinaryOperatorType.Equals => Equals(left, right),
                 BoundBinaryOperatorType.NotEquals => !Equals(left, right),
+                BoundBinaryOperatorType.LessThan => (int)left < (int)right,
+                BoundBinaryOperatorType.LessThanOrEquals => (int)left <= (int)right,
+                BoundBinaryOperatorType.GreaterThan => (int)left > (int)right,
+                BoundBinaryOperatorType.GreaterThanOrEquals => (int)left >= (int)right,
                 _ => throw new Exception($"Unexpected binary operator {boundBinaryExpression.Operator.OperatorType}")
             };
         }
