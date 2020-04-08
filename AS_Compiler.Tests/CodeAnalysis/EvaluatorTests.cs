@@ -84,7 +84,7 @@ namespace AS_Compiler.Tests.CodeAnalysis
         }
 
         [Fact]
-        public void Evaluator_Name_Reports_Undefined()
+        public void Evaluator_NameExpression_Reports_Undefined()
         {
             const string text = @"[x] + 1";
 
@@ -96,7 +96,7 @@ namespace AS_Compiler.Tests.CodeAnalysis
         }
 
         [Fact]
-        public void Evaluator_Assigned_Reports_Undefined()
+        public void Evaluator_AssignmentExpression_Reports_Undefined()
         {
             const string text = @"[x] = 1";
 
@@ -108,7 +108,7 @@ namespace AS_Compiler.Tests.CodeAnalysis
         }
 
         [Fact]
-        public void Evaluator_Assigned_Reports_CannotAssign()
+        public void Evaluator_AssignmentExpression_Reports_CannotAssign()
         {
             const string text = @"
                 {
@@ -125,7 +125,7 @@ namespace AS_Compiler.Tests.CodeAnalysis
         }
 
         [Fact]
-        public void Evaluator_Assigned_Reports_CannotConvert()
+        public void Evaluator_AssignmentExpression_Reports_CannotConvert()
         {
             const string text = @"
                 {
@@ -214,7 +214,7 @@ namespace AS_Compiler.Tests.CodeAnalysis
         }
 
         [Fact]
-        public void Evaluator_Unary_Reports_Undefined()
+        public void Evaluator_UnaryExpression_Reports_Undefined()
         {
             const string text = @"[+]false";
 
@@ -226,7 +226,7 @@ namespace AS_Compiler.Tests.CodeAnalysis
         }
 
         [Fact]
-        public void Evaluator_Binary_Reports_Undefined()
+        public void Evaluator_BinaryExpression_Reports_Undefined()
         {
             const string text = @"1 [+] true";
 
