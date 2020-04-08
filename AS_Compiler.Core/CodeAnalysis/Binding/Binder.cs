@@ -65,12 +65,21 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
         {
             return syntax.Type switch
             {
+                SyntaxType.WhileStatement => BindWhileStatement((WhileStatementSyntax)syntax),
                 SyntaxType.IfStatement => BindIfStatement((IfStatementSyntax)syntax),
                 SyntaxType.BlockStatement => BindBlockStatement((BlockStatementSyntax)syntax),
                 SyntaxType.VariableDeclaration => BindVariableDeclaration((VariableDeclarationSyntax)syntax),
                 SyntaxType.ExpressionStatement => BindExpressionStatement((ExpressionStatementSyntax)syntax),
                 _ => throw new Exception($"Unexpected syntax {syntax.Type}")
             };
+        }
+
+        private BoundStatement BindWhileStatement(WhileStatementSyntax syntax)
+        {
+            var condition = BindExpression(syntax.Condition, typeof(bool));
+            var body = BindStatement(syntax.Body);
+
+            return new BoundWhileStatement(condition, body);
         }
 
         private BoundStatement BindIfStatement(IfStatementSyntax syntax)

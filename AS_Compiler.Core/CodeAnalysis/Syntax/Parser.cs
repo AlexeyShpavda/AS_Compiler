@@ -82,9 +82,20 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                     return ParseVariableDeclaration();
                 case SyntaxType.IfKeyword:
                     return ParseIfStatement();
+                case SyntaxType.WhileKeyword:
+                    return ParseWhileStatement();
                 default:
                     return ParseExpressionStatement();
             }
+        }
+
+        private StatementSyntax ParseWhileStatement()
+        {
+            var keyword = MatchToken(SyntaxType.WhileKeyword);
+            var condition = ParseExpression();
+            var body = ParseStatement();
+
+            return new WhileStatementSyntax(keyword, condition, body);
         }
 
         private StatementSyntax ParseIfStatement()

@@ -28,6 +28,9 @@ namespace AS_Compiler.Core.CodeAnalysis
         {
             switch (node.BoundNodeType)
             {
+                case BoundNodeType.WhileStatement:
+                    EvaluateWhileStatement((BoundWhileStatement)node);
+                    break;
                 case BoundNodeType.IfStatement:
                     EvaluateIfStatement((BoundIfStatement)node);
                     break;
@@ -42,6 +45,14 @@ namespace AS_Compiler.Core.CodeAnalysis
                     break;
                 default:
                     throw new Exception($"Unexpected node {node.BoundNodeType}");
+            }
+        }
+
+        private void EvaluateWhileStatement(BoundWhileStatement node)
+        {
+            while ((bool)EvaluateExpression(node.Condition))
+            {
+                EvaluateStatement(node.Body);
             }
         }
 

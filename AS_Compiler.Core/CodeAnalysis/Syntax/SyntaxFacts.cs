@@ -53,6 +53,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                 "let" => SyntaxType.LetKeyword,
                 "if" => SyntaxType.IfKeyword,
                 "else" => SyntaxType.ElseKeyword,
+                "while" => SyntaxType.WhileKeyword,
                 _ => SyntaxType.IdentifierToken
             };
         }
@@ -109,6 +110,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                 SyntaxType.LetKeyword => "let",
                 SyntaxType.IfKeyword => "if",
                 SyntaxType.ElseKeyword => "else",
+                SyntaxType.WhileKeyword => "while",
                 _ => null
             };
         }

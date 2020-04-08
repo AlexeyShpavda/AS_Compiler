@@ -32,6 +32,7 @@
         LetKeyword,
         IfKeyword,
         ElseKeyword,
+        WhileKeyword,
 
         CompilationUnit,
         ElseClause,
@@ -40,6 +41,7 @@
         VariableDeclaration,
         ExpressionStatement,
         IfStatement,
+        WhileStatement,
 
         ParenthesizedExpression,
         LiteralExpression,
