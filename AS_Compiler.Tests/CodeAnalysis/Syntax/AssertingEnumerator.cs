@@ -58,7 +58,7 @@ namespace AS_Compiler.Tests.CodeAnalysis.Syntax
                 Assert.Equal(syntaxType, _enumerator.Current.Type);
                 Assert.IsNotType<SyntaxToken>(_enumerator.Current);
             }
-            catch when(MarkFailed())
+            catch when (MarkFailed())
             {
                 throw;
             }
@@ -73,7 +73,7 @@ namespace AS_Compiler.Tests.CodeAnalysis.Syntax
                 var token = Assert.IsType<SyntaxToken>(_enumerator.Current);
                 Assert.Equal(text, token.Text);
             }
-            catch when(MarkFailed())
+            catch when (MarkFailed())
             {
                 throw;
             }

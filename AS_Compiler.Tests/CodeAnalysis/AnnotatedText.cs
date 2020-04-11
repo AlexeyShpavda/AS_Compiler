@@ -30,7 +30,7 @@ namespace AS_Compiler.Tests.CodeAnalysis
 
             foreach (var c in text)
             {
-                if(c == '[')
+                if (c == '[')
                 {
                     startStack.Push(position);
                 }

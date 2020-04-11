@@ -27,7 +27,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
 
         public bool TryLookup(string name, out VariableSymbol variable)
         {
-            if(_variables.TryGetValue(name, out variable))
+            if (_variables.TryGetValue(name, out variable))
             {
                 return true;
             }

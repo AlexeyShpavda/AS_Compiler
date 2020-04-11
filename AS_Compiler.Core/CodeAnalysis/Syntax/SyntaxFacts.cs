@@ -79,7 +79,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
 
         public static IEnumerable<SyntaxType> GetBinaryOperatorTypes()
         {
-            var types = (SyntaxType[]) Enum.GetValues(typeof(SyntaxType));
+            var types = (SyntaxType[])Enum.GetValues(typeof(SyntaxType));
             foreach (var type in types)
             {
                 if (GetBinaryOperatorPrecedence(type) > 0)

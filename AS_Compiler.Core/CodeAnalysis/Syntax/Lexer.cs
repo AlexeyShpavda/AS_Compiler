@@ -218,8 +218,8 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
         private void ReadIdentifierOrKeyword()
         {
             while (char.IsLetter(Current))
-                _position++; 
-            
+                _position++;
+
             var length = _position - _start;
             var text = _text.ToString(_start, length);
             _type = SyntaxFacts.GetKeywordType(text);

@@ -32,11 +32,11 @@ namespace AS_Compiler.Tests.CodeAnalysis.Syntax
 
         public static IEnumerable<object[]> GetSyntaxTypeData()
         {
-            var types = (SyntaxType[]) Enum.GetValues(typeof(SyntaxType));
+            var types = (SyntaxType[])Enum.GetValues(typeof(SyntaxType));
 
             foreach (var type in types)
             {
-                yield return new object[] {type};
+                yield return new object[] { type };
             }
         }
     }

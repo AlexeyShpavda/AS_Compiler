@@ -157,7 +157,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
 
                 var statement = ParseStatement();
                 statements.Add(statement);
-                
+
                 // To avoid infinite loop.
                 if (Current == startToken)
                 {

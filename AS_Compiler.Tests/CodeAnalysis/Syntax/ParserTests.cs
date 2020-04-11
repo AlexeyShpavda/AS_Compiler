@@ -19,7 +19,7 @@ namespace AS_Compiler.Tests.CodeAnalysis.Syntax
             var text = $"a {operator1Text} b {operator2Text} c";
             var expression = ParseExpression(text);
 
-            if(operator1Precedence >= operator2Precedence)
+            if (operator1Precedence >= operator2Precedence)
             {
                 using var e = new AssertingEnumerator(expression);
                 e.AssertNode(SyntaxType.BinaryExpression);

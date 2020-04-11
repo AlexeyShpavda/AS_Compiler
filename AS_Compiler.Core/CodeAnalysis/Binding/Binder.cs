@@ -52,10 +52,10 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
                 {
                     scope.TryDeclare(variable);
                 }
-                
+
                 parent = scope;
-            } 
-            
+            }
+
             return parent;
         }
 
@@ -155,7 +155,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
         {
             var result = BindExpression(expressionSyntax);
 
-            if(result.Type != targetType)
+            if (result.Type != targetType)
             {
                 Diagnostics.ReportCannotConvert(expressionSyntax.TextSpan, result.Type, targetType);
             }
@@ -167,12 +167,12 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
         {
             return syntax.Type switch
             {
-                SyntaxType.ParenthesizedExpression => BindParenthesizedExpression((ParenthesizedExpressionSyntax) syntax),
-                SyntaxType.LiteralExpression => BindLiteralExpression((LiteralExpressionSyntax) syntax),
-                SyntaxType.NameExpression => BindNameExpression((NameExpressionSyntax) syntax),
-                SyntaxType.AssignmentExpression => BindAssignmentExpression((AssignmentExpressionSyntax) syntax),
-                SyntaxType.UnaryExpression => BindUnaryExpression((UnaryExpressionSyntax) syntax),
-                SyntaxType.BinaryExpression => BindBinaryExpression((BinaryExpressionSyntax) syntax),
+                SyntaxType.ParenthesizedExpression => BindParenthesizedExpression((ParenthesizedExpressionSyntax)syntax),
+                SyntaxType.LiteralExpression => BindLiteralExpression((LiteralExpressionSyntax)syntax),
+                SyntaxType.NameExpression => BindNameExpression((NameExpressionSyntax)syntax),
+                SyntaxType.AssignmentExpression => BindAssignmentExpression((AssignmentExpressionSyntax)syntax),
+                SyntaxType.UnaryExpression => BindUnaryExpression((UnaryExpressionSyntax)syntax),
+                SyntaxType.BinaryExpression => BindBinaryExpression((BinaryExpressionSyntax)syntax),
                 _ => throw new Exception($"Unexpected syntax {syntax.Type}")
             };
         }
@@ -212,7 +212,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
             var name = syntax.IdentifierToken.Text;
             var boundExpression = BindExpression(syntax.ExpressionSyntax);
 
-            if(!_scope.TryLookup(name, out var variable))
+            if (!_scope.TryLookup(name, out var variable))
             {
                 Diagnostics.ReportUndefinedName(syntax.IdentifierToken.TextSpan, name);
                 return boundExpression;

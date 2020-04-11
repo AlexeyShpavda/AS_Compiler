@@ -62,8 +62,8 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
         public static BoundBinaryOperator Bind(SyntaxType syntaxType, Type leftType, Type rightType)
         {
             return Operators.FirstOrDefault(op =>
-                op.SyntaxType == syntaxType 
-                && op.LeftType == leftType 
+                op.SyntaxType == syntaxType
+                && op.LeftType == leftType
                 && op.RightType == rightType);
         }
     }

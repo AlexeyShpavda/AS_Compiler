@@ -12,7 +12,7 @@ namespace AS_Compiler.Tests.CodeAnalysis.Text
         public void SourceText_IncludesLastLine(string text, int expectedLineCount)
         {
             var sourceText = SourceText.From(text);
-            
+
             Assert.Equal(expectedLineCount, sourceText.Lines.Length);
         }
     }

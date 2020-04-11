@@ -31,10 +31,10 @@ namespace AS_Compiler.Core.CodeAnalysis.Lowering
 
             var increment = new BoundExpressionStatement(
                 new BoundAssignmentExpression(
-                    node.Variable, 
+                    node.Variable,
                     new BoundBinaryExpression(
-                        variableExpression, 
-                        BoundBinaryOperator.Bind(SyntaxType.PlusToken, typeof(int), typeof(int)), 
+                        variableExpression,
+                        BoundBinaryOperator.Bind(SyntaxType.PlusToken, typeof(int), typeof(int)),
                         new BoundLiteralExpression(1))));
 
             var whileBlock = new BoundBlockStatement(ImmutableArray.Create(node.Body, increment));

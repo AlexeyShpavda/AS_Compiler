@@ -47,7 +47,9 @@ namespace AS_Compiler.Tests.CodeAnalysis.Syntax
 
         [Theory]
         [MemberData(nameof(GetTokenPairsData))]
-        public void Lexer_Lex_TokenPairs_WithSeparators(SyntaxType syntaxType1, string text1, SyntaxType syntaxType2, string text2)
+        public void Lexer_Lex_TokenPairs_WithSeparators(
+            SyntaxType syntaxType1, string text1,
+            SyntaxType syntaxType2, string text2)
         {
             var text = text1 + text2;
             var tokens = SyntaxTree.ParseTokens(text).ToList();
@@ -61,9 +63,10 @@ namespace AS_Compiler.Tests.CodeAnalysis.Syntax
 
         [Theory]
         [MemberData(nameof(GetTokenPairsWithSeparatorData))]
-        public void Lexer_Lex_TokenPairs(SyntaxType syntaxType1, string text1,
-                                           SyntaxType separatorType, string separatorText,
-                                           SyntaxType syntaxType2, string text2)
+        public void Lexer_Lex_TokenPairs(
+            SyntaxType syntaxType1, string text1,
+            SyntaxType separatorType, string separatorText,
+            SyntaxType syntaxType2, string text2)
         {
             var text = text1 + separatorText + text2;
             var tokens = SyntaxTree.ParseTokens(text).ToList();
@@ -99,7 +102,7 @@ namespace AS_Compiler.Tests.CodeAnalysis.Syntax
                 .Select(t => (sytnaxType: t, text: SyntaxFacts.GetText(t)))
                 .Where(t => t.text != null);
 
-            var dynamicTokens =  new[]
+            var dynamicTokens = new[]
             {
                 (SyntaxType.NumberToken, "1"),
                 (SyntaxType.NumberToken, "123"),
@@ -128,7 +131,7 @@ namespace AS_Compiler.Tests.CodeAnalysis.Syntax
             var isSyntaxType1Keyword = syntaxType1.ToString().EndsWith("Keyword");
             var isSyntaxType2Keyword = syntaxType2.ToString().EndsWith("Keyword");
 
-            if(syntaxType1 == SyntaxType.IdentifierToken && syntaxType2 == SyntaxType.IdentifierToken)
+            if (syntaxType1 == SyntaxType.IdentifierToken && syntaxType2 == SyntaxType.IdentifierToken)
             {
                 return true;
             }
@@ -236,7 +239,7 @@ namespace AS_Compiler.Tests.CodeAnalysis.Syntax
             }
         }
 
-        private static IEnumerable<(SyntaxType syntaxType1, string text1, 
+        private static IEnumerable<(SyntaxType syntaxType1, string text1,
                                     SyntaxType separatorType, string separatorText,
                                     SyntaxType syntaxType2, string text2)> GetTokenPairsWithSeparator()
         {
