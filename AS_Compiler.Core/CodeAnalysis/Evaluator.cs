@@ -28,9 +28,6 @@ namespace AS_Compiler.Core.CodeAnalysis
         {
             switch (node.BoundNodeType)
             {
-                case BoundNodeType.ForStatement:
-                    EvaluateForStatement((BoundForStatement)node);
-                    break;
                 case BoundNodeType.WhileStatement:
                     EvaluateWhileStatement((BoundWhileStatement)node);
                     break;
@@ -38,7 +35,7 @@ namespace AS_Compiler.Core.CodeAnalysis
                     EvaluateIfStatement((BoundIfStatement)node);
                     break;
                 case BoundNodeType.BlockStatement:
-                    EvaluateBlockStatement((BoundBlockStatement) node);
+                    EvaluateBlockStatement((BoundBlockStatement)node);
                     break;
                 case BoundNodeType.VariableDeclaration:
                     EvaluateVariableDeclaration((BoundVariableDeclaration)node);
@@ -48,18 +45,6 @@ namespace AS_Compiler.Core.CodeAnalysis
                     break;
                 default:
                     throw new Exception($"Unexpected node {node.BoundNodeType}");
-            }
-        }
-
-        private void EvaluateForStatement(BoundForStatement node)
-        {
-            var lowerBound = (int) EvaluateExpression(node.LowerBound);
-            var upperBound = (int) EvaluateExpression(node.UpperBound);
-
-            for (var i = lowerBound; i <= upperBound; i++)
-            {
-                _variables[node.Variable] = i;
-                EvaluateStatement(node.Body);
             }
         }
 
@@ -73,7 +58,7 @@ namespace AS_Compiler.Core.CodeAnalysis
 
         private void EvaluateIfStatement(BoundIfStatement node)
         {
-            var condition = (bool) EvaluateExpression(node.Condition);
+            var condition = (bool)EvaluateExpression(node.Condition);
 
             if (condition)
             {
@@ -109,11 +94,11 @@ namespace AS_Compiler.Core.CodeAnalysis
         {
             return node.BoundNodeType switch
             {
-                BoundNodeType.LiteralExpression => EvaluateLiteralExpression((BoundLiteralExpression) node),
-                BoundNodeType.VariableExpression => EvaluateVariableExpression((BoundVariableExpression) node),
-                BoundNodeType.AssignmentExpression => EvaluateAssignmentExpression((BoundAssignmentExpression) node),
-                BoundNodeType.UnaryExpression => EvaluateUnaryExpression((BoundUnaryExpression) node),
-                BoundNodeType.BinaryExpression => EvaluateBinaryExpression((BoundBinaryExpression) node),
+                BoundNodeType.LiteralExpression => EvaluateLiteralExpression((BoundLiteralExpression)node),
+                BoundNodeType.VariableExpression => EvaluateVariableExpression((BoundVariableExpression)node),
+                BoundNodeType.AssignmentExpression => EvaluateAssignmentExpression((BoundAssignmentExpression)node),
+                BoundNodeType.UnaryExpression => EvaluateUnaryExpression((BoundUnaryExpression)node),
+                BoundNodeType.BinaryExpression => EvaluateBinaryExpression((BoundBinaryExpression)node),
                 _ => throw new Exception($"Unexpected node {node.Type}")
             };
         }
@@ -158,21 +143,21 @@ namespace AS_Compiler.Core.CodeAnalysis
             switch (boundBinaryExpression.Operator.OperatorType)
             {
                 case BoundBinaryOperatorType.Addition:
-                    return (int) left + (int) right;
+                    return (int)left + (int)right;
                 case BoundBinaryOperatorType.Subtraction:
-                    return (int) left - (int) right;
+                    return (int)left - (int)right;
                 case BoundBinaryOperatorType.Multiplication:
-                    return (int) left * (int) right;
+                    return (int)left * (int)right;
                 case BoundBinaryOperatorType.Division:
-                    return (int) left / (int) right;
+                    return (int)left / (int)right;
                 case BoundBinaryOperatorType.BitwiseAnd:
                     if (boundBinaryExpression.Type == typeof(int))
                     {
-                        return (int) left & (int) right;
+                        return (int)left & (int)right;
                     }
                     else
                     {
-                        return (bool) left & (bool) right;
+                        return (bool)left & (bool)right;
                     }
                 case BoundBinaryOperatorType.BitwiseOr:
                     if (boundBinaryExpression.Type == typeof(int))
@@ -193,21 +178,21 @@ namespace AS_Compiler.Core.CodeAnalysis
                         return (bool)left ^ (bool)right;
                     }
                 case BoundBinaryOperatorType.LogicalAnd:
-                    return (bool) left && (bool) right;
+                    return (bool)left && (bool)right;
                 case BoundBinaryOperatorType.LogicalOr:
-                    return (bool) left || (bool) right;
+                    return (bool)left || (bool)right;
                 case BoundBinaryOperatorType.Equals:
                     return Equals(left, right);
                 case BoundBinaryOperatorType.NotEquals:
                     return !Equals(left, right);
                 case BoundBinaryOperatorType.LessThan:
-                    return (int) left < (int) right;
+                    return (int)left < (int)right;
                 case BoundBinaryOperatorType.LessThanOrEquals:
-                    return (int) left <= (int) right;
+                    return (int)left <= (int)right;
                 case BoundBinaryOperatorType.GreaterThan:
-                    return (int) left > (int) right;
+                    return (int)left > (int)right;
                 case BoundBinaryOperatorType.GreaterThanOrEquals:
-                    return (int) left >= (int) right;
+                    return (int)left >= (int)right;
                 default:
                     throw new Exception($"Unexpected binary operator {boundBinaryExpression.Operator.OperatorType}");
             }
