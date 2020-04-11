@@ -13,6 +13,7 @@ namespace AS_Compiler.CommandLine
         private static void Main()
         {
             var showTree = false;
+            var showProgram = false;
             var variables = new Dictionary<VariableSymbol, object>();
             var textBuilder = new StringBuilder();
             Compilation previous = null;
@@ -34,6 +35,10 @@ namespace AS_Compiler.CommandLine
                         case "#showTree":
                             showTree = !showTree;
                             Console.WriteLine(showTree ? "Showing parse trees." : "Not showing parse trees.");
+                            continue;
+                        case "#showProgram":
+                            showProgram = !showProgram;
+                            Console.WriteLine(showProgram ? "Showing parse trees." : "Not showing bound tree.");
                             continue;
                         case "#cls":
                             Console.Clear();
@@ -63,6 +68,11 @@ namespace AS_Compiler.CommandLine
                 if (showTree)
                 {
                     syntaxTree.Root.WriteTo(Console.Out);
+                }
+
+                if (showProgram)
+                {
+                    compilation.EmitTree(Console.Out);
                 }
 
                 if (!diagnostics.Any())
