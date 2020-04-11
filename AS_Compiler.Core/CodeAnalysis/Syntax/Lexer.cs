@@ -18,7 +18,6 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
         }
 
         private char Current => Peek(0);
-        private char LookAhead => Peek(1);
         public DiagnosticBag Diagnostics { get; } = new DiagnosticBag();
 
         private char Peek(int offset)
@@ -70,18 +69,36 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                     _type = SyntaxType.ClosingBraceToken;
                     _position++;
                     break;
+                case '~':
+                    _type = SyntaxType.TildeToken;
+                    _position++;
+                    break;
+                case '^':
+                    _type = SyntaxType.HatToken;
+                    _position++;
+                    break;
                 case '&':
-                    if (LookAhead == '&')
+                    _position++;
+                    if (Current == '&')
                     {
                         _type = SyntaxType.AmpersandAmpersandToken;
-                        _position += 2;
+                        _position++;
+                    }
+                    else
+                    {
+                        _type = SyntaxType.AmpersandToken;
                     }
                     break;
                 case '|':
-                    if (LookAhead == '|')
+                    _position++;
+                    if (Current == '|')
                     {
                         _type = SyntaxType.PipePipeToken;
-                        _position += 2;
+                        _position++;
+                    }
+                    else
+                    {
+                        _type = SyntaxType.PipeToken;
                     }
                     break;
                 case '=':

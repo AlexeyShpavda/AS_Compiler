@@ -29,7 +29,8 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
             new BoundUnaryOperator(SyntaxType.BangToken, BoundUnaryOperatorType.LogicalNegation, typeof(bool)),
 
             new BoundUnaryOperator(SyntaxType.PlusToken, BoundUnaryOperatorType.Identity, typeof(int)),
-            new BoundUnaryOperator(SyntaxType.MinusToken, BoundUnaryOperatorType.Negation, typeof(int))
+            new BoundUnaryOperator(SyntaxType.MinusToken, BoundUnaryOperatorType.Negation, typeof(int)),
+            new BoundUnaryOperator(SyntaxType.TildeToken, BoundUnaryOperatorType.OnesComplement, typeof(int))
         };
 
         public static BoundUnaryOperator Bind(SyntaxType syntaxType, Type operandType)

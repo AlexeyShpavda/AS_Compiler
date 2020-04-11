@@ -7,14 +7,16 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
     {
         public static int GetUnaryOperatorPrecedence(this SyntaxType syntaxType)
         {
-            return syntaxType switch
+            switch (syntaxType)
             {
-                SyntaxType.PlusToken => 6,
-                SyntaxType.MinusToken => 6,
-                SyntaxType.BangToken => 6,
-
-                _ => 0
-            };
+                case SyntaxType.PlusToken:
+                case SyntaxType.MinusToken:
+                case SyntaxType.BangToken:
+                case SyntaxType.TildeToken:
+                    return 6;
+                default:
+                    return 0;
+            }
         }
 
         public static int GetBinaryOperatorPrecedence(this SyntaxType syntaxType)
@@ -34,9 +36,12 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                 case SyntaxType.GreaterThanToken:
                 case SyntaxType.GreaterThanOrEqualsToken:
                     return 3;
+                case SyntaxType.AmpersandToken:
                 case SyntaxType.AmpersandAmpersandToken:
                     return 2;
+                case SyntaxType.PipeToken:
                 case SyntaxType.PipePipeToken:
+                case SyntaxType.HatToken:
                     return 1;
                 default:
                     return 0;
@@ -92,12 +97,16 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                 SyntaxType.MinusToken => "-",
                 SyntaxType.StarToken => "*",
                 SyntaxType.SlashToken => "/",
+                SyntaxType.TildeToken => "~",
                 SyntaxType.EqualsToken => "=",
                 SyntaxType.LessThanToken => "<",
                 SyntaxType.LessThanOrEqualsToken => "<=",
                 SyntaxType.GreaterThanToken => ">",
                 SyntaxType.GreaterThanOrEqualsToken => ">=",
                 SyntaxType.BangToken => "!",
+                SyntaxType.HatToken => "^",
+                SyntaxType.AmpersandToken => "&",
+                SyntaxType.PipeToken => "|",
                 SyntaxType.AmpersandAmpersandToken => "&&",
                 SyntaxType.PipePipeToken => "||",
                 SyntaxType.EqualsEqualsToken => "==",

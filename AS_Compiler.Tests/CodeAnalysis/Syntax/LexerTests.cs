@@ -198,6 +198,26 @@ namespace AS_Compiler.Tests.CodeAnalysis.Syntax
                 return true;
             }
 
+            if (syntaxType1 == SyntaxType.AmpersandToken && syntaxType2 == SyntaxType.AmpersandToken)
+            {
+                return true;
+            }
+
+            if (syntaxType1 == SyntaxType.AmpersandToken && syntaxType2 == SyntaxType.AmpersandAmpersandToken)
+            {
+                return true;
+            }
+
+            if (syntaxType1 == SyntaxType.PipeToken && syntaxType2 == SyntaxType.PipeToken)
+            {
+                return true;
+            }
+
+            if (syntaxType1 == SyntaxType.PipeToken && syntaxType2 == SyntaxType.PipePipeToken)
+            {
+                return true;
+            }
+
             return false;
         }
 

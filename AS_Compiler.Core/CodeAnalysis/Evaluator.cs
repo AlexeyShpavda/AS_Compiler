@@ -145,6 +145,7 @@ namespace AS_Compiler.Core.CodeAnalysis
                 BoundUnaryOperatorType.Identity => (int)operand,
                 BoundUnaryOperatorType.Negation => -(int)operand,
                 BoundUnaryOperatorType.LogicalNegation => !(bool)operand,
+                BoundUnaryOperatorType.OnesComplement => ~(int)operand,
                 _ => throw new Exception($"Unexpected unary operator {boundUnaryExpression.Operator.OperatorType}")
             };
         }
@@ -154,22 +155,62 @@ namespace AS_Compiler.Core.CodeAnalysis
             var left = EvaluateExpression(boundBinaryExpression.Left);
             var right = EvaluateExpression(boundBinaryExpression.Right);
 
-            return boundBinaryExpression.Operator.OperatorType switch
+            switch (boundBinaryExpression.Operator.OperatorType)
             {
-                BoundBinaryOperatorType.Addition => (int)left + (int)right,
-                BoundBinaryOperatorType.Subtraction => (int)left - (int)right,
-                BoundBinaryOperatorType.Multiplication => (int)left * (int)right,
-                BoundBinaryOperatorType.Division => (int)left / (int)right,
-                BoundBinaryOperatorType.LogicalAnd => (bool)left && (bool)right,
-                BoundBinaryOperatorType.LogicalOr => (bool)left || (bool)right,
-                BoundBinaryOperatorType.Equals => Equals(left, right),
-                BoundBinaryOperatorType.NotEquals => !Equals(left, right),
-                BoundBinaryOperatorType.LessThan => (int)left < (int)right,
-                BoundBinaryOperatorType.LessThanOrEquals => (int)left <= (int)right,
-                BoundBinaryOperatorType.GreaterThan => (int)left > (int)right,
-                BoundBinaryOperatorType.GreaterThanOrEquals => (int)left >= (int)right,
-                _ => throw new Exception($"Unexpected binary operator {boundBinaryExpression.Operator.OperatorType}")
-            };
+                case BoundBinaryOperatorType.Addition:
+                    return (int) left + (int) right;
+                case BoundBinaryOperatorType.Subtraction:
+                    return (int) left - (int) right;
+                case BoundBinaryOperatorType.Multiplication:
+                    return (int) left * (int) right;
+                case BoundBinaryOperatorType.Division:
+                    return (int) left / (int) right;
+                case BoundBinaryOperatorType.BitwiseAnd:
+                    if (boundBinaryExpression.Type == typeof(int))
+                    {
+                        return (int) left & (int) right;
+                    }
+                    else
+                    {
+                        return (bool) left & (bool) right;
+                    }
+                case BoundBinaryOperatorType.BitwiseOr:
+                    if (boundBinaryExpression.Type == typeof(int))
+                    {
+                        return (int)left | (int)right;
+                    }
+                    else
+                    {
+                        return (bool)left | (bool)right;
+                    }
+                case BoundBinaryOperatorType.BitwiseXor:
+                    if (boundBinaryExpression.Type == typeof(int))
+                    {
+                        return (int)left ^ (int)right;
+                    }
+                    else
+                    {
+                        return (bool)left ^ (bool)right;
+                    }
+                case BoundBinaryOperatorType.LogicalAnd:
+                    return (bool) left && (bool) right;
+                case BoundBinaryOperatorType.LogicalOr:
+                    return (bool) left || (bool) right;
+                case BoundBinaryOperatorType.Equals:
+                    return Equals(left, right);
+                case BoundBinaryOperatorType.NotEquals:
+                    return !Equals(left, right);
+                case BoundBinaryOperatorType.LessThan:
+                    return (int) left < (int) right;
+                case BoundBinaryOperatorType.LessThanOrEquals:
+                    return (int) left <= (int) right;
+                case BoundBinaryOperatorType.GreaterThan:
+                    return (int) left > (int) right;
+                case BoundBinaryOperatorType.GreaterThanOrEquals:
+                    return (int) left >= (int) right;
+                default:
+                    throw new Exception($"Unexpected binary operator {boundBinaryExpression.Operator.OperatorType}");
+            }
         }
     }
 }
