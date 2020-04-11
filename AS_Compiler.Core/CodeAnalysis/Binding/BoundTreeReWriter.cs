@@ -19,6 +19,12 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
                     return RewriteWhileStatement((BoundWhileStatement)node);
                 case BoundNodeType.ForStatement:
                     return RewriteForStatement((BoundForStatement)node);
+                case BoundNodeType.LabelStatement:
+                    return RewriteLabelStatement((BoundLabelStatement)node);
+                case BoundNodeType.GotoStatement:
+                    return RewriteGotoStatement((BoundGotoStatement)node);
+                case BoundNodeType.ConditionalGotoStatement:
+                    return RewriteConditionalGotoStatement((BoundConditionalGotoStatement)node);
                 case BoundNodeType.ExpressionStatement:
                     return RewriteExpressionStatement((BoundExpressionStatement)node);
                 default:
@@ -100,6 +106,25 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
                    && body == node.Body
                 ? node
                 : new BoundForStatement(node.Variable, lowerBound, upperBound, body);
+        }
+
+        protected virtual BoundStatement RewriteLabelStatement(BoundLabelStatement node)
+        {
+            return node;
+        }
+
+        protected virtual BoundStatement RewriteGotoStatement(BoundGotoStatement node)
+        {
+            return node;
+        }
+
+        protected virtual BoundStatement RewriteConditionalGotoStatement(BoundConditionalGotoStatement node)
+        {
+            var condition = RewriteExpression(node.Condition);
+
+            return condition == node.Condition
+                ? node
+                : new BoundConditionalGotoStatement(node.Label, condition, node.JumpIfFalse);
         }
 
         protected virtual BoundStatement RewriteExpressionStatement(BoundExpressionStatement node)

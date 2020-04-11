@@ -67,7 +67,7 @@ namespace AS_Compiler.Core.CodeAnalysis
             statement.WriteTo(writer);
         }
 
-        private BoundStatement GetStatement()
+        private BoundBlockStatement GetStatement()
         {
             var result = GlobalScope.Statement;
             return Lowering.Lowering.Lower(result);
