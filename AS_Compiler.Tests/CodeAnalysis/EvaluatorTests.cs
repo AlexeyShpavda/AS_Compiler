@@ -76,6 +76,7 @@ namespace AS_Compiler.Tests.CodeAnalysis
         [InlineData("{ var a = 0 if a == 1 a = 1 else a = 2 a }", 2)]
         [InlineData("{ var i = 1 var sum = 0 while i <= 5 { sum = sum + i i = i + 1 } sum }", 15)]
         [InlineData("{ var sum = 0 for i = 1 to 5 { sum = sum + i } sum }", 15)]
+        [InlineData("{ var a = 0 for i = 1 to (a = a + 1) { } a }", 1)]
         public void SyntaxFact_GetText_RoundTrips(string text, object expectedValue)
         {
             AssertValue(text, expectedValue);

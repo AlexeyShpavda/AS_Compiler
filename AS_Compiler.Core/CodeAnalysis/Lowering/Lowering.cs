@@ -38,7 +38,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Lowering
             {
                 var current = stack.Pop();
 
-                if(current is BoundBlockStatement blockStatement)
+                if (current is BoundBlockStatement blockStatement)
                 {
                     foreach (var s in blockStatement.Statements.Reverse())
                     {
@@ -117,11 +117,13 @@ namespace AS_Compiler.Core.CodeAnalysis.Lowering
         {
             var variableExpression = new BoundVariableExpression(node.Variable);
             var variableDeclaration = new BoundVariableDeclaration(node.Variable, node.LowerBound);
+            var upperBoundSymbol = new VariableSymbol("upperBound", true, typeof(int));
+            var upperBoundDeclaration = new BoundVariableDeclaration(upperBoundSymbol, node.UpperBound);
 
             var condition = new BoundBinaryExpression(
                 variableExpression,
                 BoundBinaryOperator.Bind(SyntaxType.LessThanOrEqualsToken, typeof(int), typeof(int)),
-                node.UpperBound);
+                new BoundVariableExpression(upperBoundSymbol));
 
             var increment = new BoundExpressionStatement(
                 new BoundAssignmentExpression(
@@ -133,7 +135,11 @@ namespace AS_Compiler.Core.CodeAnalysis.Lowering
 
             var whileBlock = new BoundBlockStatement(ImmutableArray.Create(node.Body, increment));
             var whileStatement = new BoundWhileStatement(condition, whileBlock);
-            var result = new BoundBlockStatement(ImmutableArray.Create<BoundStatement>(variableDeclaration, whileStatement));
+
+            var result = new BoundBlockStatement(ImmutableArray.Create<BoundStatement>(
+                variableDeclaration,
+                upperBoundDeclaration,
+                whileStatement));
 
             return RewriteStatement(result);
         }
