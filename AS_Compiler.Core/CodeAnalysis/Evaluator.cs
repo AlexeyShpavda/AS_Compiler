@@ -52,8 +52,7 @@ namespace AS_Compiler.Core.CodeAnalysis
                     case BoundNodeType.ConditionalGotoStatement:
                         var conditionalGotoStatement = (BoundConditionalGotoStatement)s;
                         var condition = (bool)EvaluateExpression(conditionalGotoStatement.Condition);
-                        if (condition && !conditionalGotoStatement.JumpIfFalse
-                            || !condition && conditionalGotoStatement.JumpIfFalse)
+                        if (condition == conditionalGotoStatement.JumpIfTrue)
                         {
                             index = labelToIndex[conditionalGotoStatement.Label];
                         }
