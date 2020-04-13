@@ -78,6 +78,17 @@ namespace AS_Compiler.CommandLine
                 return true;
             }
 
+            var lastTwoLinesAreBlank = text
+                .Split(Environment.NewLine)
+                .Reverse()
+                .TakeWhile(string.IsNullOrEmpty)
+                .Count() == 2;
+
+            if (lastTwoLinesAreBlank)
+            {
+                return true;
+            }
+
             var syntaxTree = SyntaxTree.Parse(text);
 
             return !syntaxTree.Root.Statement.GetLastToken().IsMissing;

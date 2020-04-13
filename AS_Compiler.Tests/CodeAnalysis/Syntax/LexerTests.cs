@@ -107,7 +107,9 @@ namespace AS_Compiler.Tests.CodeAnalysis.Syntax
                 (SyntaxType.NumberToken, "1"),
                 (SyntaxType.NumberToken, "123"),
                 (SyntaxType.IdentifierToken, "a"),
-                (SyntaxType.IdentifierToken, "abc")
+                (SyntaxType.IdentifierToken, "ab"),
+                (SyntaxType.StringToken, "\"ab\""),
+                (SyntaxType.StringToken, "\"a\"\"b\""),
             };
 
             return fixedTokens.Concat(dynamicTokens);
@@ -151,7 +153,7 @@ namespace AS_Compiler.Tests.CodeAnalysis.Syntax
                 return true;
             }
 
-            if (isSyntaxType2Keyword && syntaxType1 == SyntaxType.IdentifierToken)
+            if (syntaxType1 == SyntaxType.StringToken && syntaxType2 == SyntaxType.StringToken)
             {
                 return true;
             }

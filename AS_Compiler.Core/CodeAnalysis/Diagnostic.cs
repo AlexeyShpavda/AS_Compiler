@@ -93,5 +93,11 @@ namespace AS_Compiler.Core.CodeAnalysis
             var message = $"Variable '{name}' is read-only and cannot be assigned.";
             Report(textSpan, message);
         }
+
+        public void ReportUnterminatedString(TextSpan textSpan)
+        {
+            const string message = "Unterminated string literal.";
+            Report(textSpan, message);
+        }
     }
 }

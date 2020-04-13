@@ -239,6 +239,8 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                     return ParseBooleanLiteral();
                 case SyntaxType.NumberToken:
                     return ParseNumberLiteral();
+                case SyntaxType.StringToken:
+                    return ParseStringLiteral();
                 default:
                     return ParseNameExpression();
             }
@@ -266,6 +268,13 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
             var numberToken = MatchToken(SyntaxType.NumberToken);
 
             return new LiteralExpressionSyntax(numberToken);
+        }
+
+        private ExpressionSyntax ParseStringLiteral()
+        {
+            var stringToken = MatchToken(SyntaxType.StringToken);
+
+            return new LiteralExpressionSyntax(stringToken);
         }
 
         private ExpressionSyntax ParseNameExpression()

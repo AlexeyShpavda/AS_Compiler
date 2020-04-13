@@ -1,4 +1,5 @@
-﻿using AS_Compiler.Core.CodeAnalysis.Text;
+﻿using System.Text;
+using AS_Compiler.Core.CodeAnalysis.Text;
 
 namespace AS_Compiler.Core.CodeAnalysis.Syntax
 {
@@ -18,6 +19,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
         }
 
         private char Current => Peek(0);
+        private char Lookahead => Peek(1);
         public DiagnosticBag Diagnostics { get; } = new DiagnosticBag();
 
         private char Peek(int offset)
@@ -149,6 +151,9 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                         _type = SyntaxType.GreaterThanToken;
                     }
                     break;
+                case '"':
+                    ReadString();
+                    break;
                 case '0':
                 case '1':
                 case '2':
@@ -188,6 +193,47 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
             var text = SyntaxFacts.GetText(_type) ?? _text.ToString(_start, length);
 
             return new SyntaxToken(_type, _start, text, _value);
+        }
+
+        private void ReadString()
+        {
+            _position++;
+            var stringBuilder = new StringBuilder();
+
+            var done = false;
+
+            while (!done)
+            {
+                switch (Current)
+                {
+                    case '\0':
+                    case '\r':
+                    case '\n':
+                        var textSpan = new TextSpan(_start, 1);
+                        Diagnostics.ReportUnterminatedString(textSpan);
+                        done = true;
+                        break;
+                    case '"':
+                        if(Lookahead == '"')
+                        {
+                            stringBuilder.Append(Current);
+                            _position += 2;
+                        }
+                        else
+                        {
+                            _position++;
+                            done = true;
+                        }
+                        break;
+                    default:
+                        stringBuilder.Append(Current);
+                        _position++;
+                        break;
+                }
+            }
+
+            _type = SyntaxType.StringToken;
+            _value = stringBuilder.ToString();
         }
 
         private void ReadNumberToken()

@@ -5,6 +5,7 @@
         UnknownToken,
         EndOfFileToken,
         WhiteSpaceToken,
+        StringToken,
         NumberToken,
         PlusToken,
         MinusToken,
