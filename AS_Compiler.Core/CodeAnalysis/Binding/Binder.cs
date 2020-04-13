@@ -183,7 +183,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
             return BindExpression(syntax.Expression);
         }
 
-        private BoundExpression BindLiteralExpression(LiteralExpressionSyntax syntax)
+        private static BoundExpression BindLiteralExpression(LiteralExpressionSyntax syntax)
         {
             var value = syntax.Value ?? 0;
 
@@ -196,13 +196,13 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
 
             if (string.IsNullOrEmpty(name))
             {
-                return new BoundLiteralExpression(0);
+                return new BoundErrorExpression();
             }
 
             if (!_scope.TryLookup(name, out var variable))
             {
                 Diagnostics.ReportUndefinedName(syntax.IdentifierToken.TextSpan, name);
-                return new BoundLiteralExpression(0);
+                return new BoundErrorExpression();
             }
 
             return new BoundVariableExpression(variable);
@@ -239,10 +239,15 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
             var boundOperand = BindExpression(syntax.Operand);
             var boundOperator = BoundUnaryOperator.Bind(syntax.OperatorToken.Type, boundOperand.Type);
 
+            if (boundOperand.Type == TypeSymbol.Error)
+            {
+                return new BoundErrorExpression();
+            }
+
             if (boundOperator == null)
             {
                 Diagnostics.ReportUndefinedUnaryOperator(syntax.OperatorToken.TextSpan, syntax.OperatorToken.Text, boundOperand.Type);
-                return boundOperand;
+                return new BoundErrorExpression();
             }
 
             return new BoundUnaryExpression(boundOperator, boundOperand);
@@ -254,10 +259,15 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
             var boundRight = BindExpression(syntax.Right);
             var boundOperator = BoundBinaryOperator.Bind(syntax.OperatorToken.Type, boundLeft.Type, boundRight.Type);
 
+            if (boundLeft.Type == TypeSymbol.Error || boundRight.Type == TypeSymbol.Error)
+            {
+                return new BoundErrorExpression();
+            }
+
             if (boundOperator == null)
             {
                 Diagnostics.ReportUndefinedBinaryOperator(syntax.OperatorToken.TextSpan, syntax.OperatorToken.Text, boundLeft.Type, boundRight.Type);
-                return boundLeft;
+                return new BoundErrorExpression();
             }
 
             return new BoundBinaryExpression(boundLeft, boundOperator, boundRight);

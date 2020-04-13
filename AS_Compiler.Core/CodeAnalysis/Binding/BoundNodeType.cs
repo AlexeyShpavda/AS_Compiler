@@ -17,5 +17,6 @@
         AssignmentExpression,
         UnaryExpression,
         BinaryExpression,
+        ErrorExpression
     }
 }
