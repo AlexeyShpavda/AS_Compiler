@@ -17,5 +17,6 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
         public string Text { get; }
         public object Value { get; }
         public override TextSpan TextSpan => new TextSpan(Position, Text?.Length ?? 0);
+        public bool IsMissing => Text == null;
     }
 }
