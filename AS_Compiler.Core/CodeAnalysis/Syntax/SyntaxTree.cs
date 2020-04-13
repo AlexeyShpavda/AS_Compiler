@@ -31,23 +31,44 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
             return new SyntaxTree(text);
         }
 
-        public static IEnumerable<SyntaxToken> ParseTokens(string text)
+        public static ImmutableArray<SyntaxToken> ParseTokens(string text)
         {
             var sourceText = SourceText.From(text);
             return ParseTokens(sourceText);
         }
 
-        public static IEnumerable<SyntaxToken> ParseTokens(SourceText text)
+        public static ImmutableArray<SyntaxToken> ParseTokens(string text, out ImmutableArray<Diagnostic> diagnostics)
         {
-            var lexer = new Lexer(text);
-            while (true)
-            {
-                var token = lexer.NextSyntaxToken();
-                if (token.Type == SyntaxType.EndOfFileToken)
-                    break;
+            var sourceText = SourceText.From(text);
+            return ParseTokens(sourceText, out diagnostics);
+        }
 
-                yield return token;
+        public static ImmutableArray<SyntaxToken> ParseTokens(SourceText text)
+        {
+            return ParseTokens(text, out _);
+        }
+
+        public static ImmutableArray<SyntaxToken> ParseTokens(SourceText text, out ImmutableArray<Diagnostic> diagnostics)
+        {
+            static IEnumerable<SyntaxToken> LexTokens(Lexer lexer)
+            {
+                while (true)
+                {
+                    var token = lexer.NextSyntaxToken();
+                    if (token.Type == SyntaxType.EndOfFileToken)
+                    {
+                        break;
+                    }
+
+                    yield return token;
+                }
             }
+
+            var lexer = new Lexer(text);
+            var result = LexTokens(lexer).ToImmutableArray();
+            diagnostics = lexer.Diagnostics.ToImmutableArray();
+
+            return result;
         }
     }
 }

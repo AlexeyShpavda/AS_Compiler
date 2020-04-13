@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AS_Compiler.Core.CodeAnalysis.Syntax;
+using AS_Compiler.Core.CodeAnalysis.Text;
 using Xunit;
 
 namespace AS_Compiler.Tests.CodeAnalysis.Syntax
@@ -26,6 +27,21 @@ namespace AS_Compiler.Tests.CodeAnalysis.Syntax
             untestedTokenTypes.ExceptWith(testedTokenTypes);
 
             Assert.Empty(untestedTokenTypes);
+        }
+
+        [Fact]
+        public void Lexer_Lex_UnterminatedString()
+        {
+            const string text = "\"abc";
+            var tokens = SyntaxTree.ParseTokens(text, out var diagnostics);
+
+            var token = Assert.Single(tokens);
+            Assert.Equal(SyntaxType.StringToken, token.Type);
+            Assert.Equal(text, token.Text);
+
+            var diagnostic = Assert.Single(diagnostics);
+            Assert.Equal(new TextSpan(0, 1), diagnostic.TextSpan);
+            Assert.Equal("Unterminated string literal.", diagnostic.Message);
         }
 
         [Theory]
