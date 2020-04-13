@@ -40,8 +40,8 @@ namespace AS_Compiler.CommandLine
         {
             private readonly int _cursorTop;
             private int _renderedLineCount;
-            private int _currentLine;
-            private int _currentCharacter;
+            private int _currentLineIndex;
+            private int _currentCharacterIndex;
             private readonly Action<string> _lineRenderer;
             private readonly ObservableCollection<string> _submissionDocument;
 
@@ -97,19 +97,19 @@ namespace AS_Compiler.CommandLine
 
             private void UpdateCursorPosition()
             {
-                Console.CursorTop = _cursorTop + _currentLine;
-                Console.CursorLeft = 2 + _currentCharacter;
+                Console.CursorTop = _cursorTop + _currentLineIndex;
+                Console.CursorLeft = 2 + _currentCharacterIndex;
             }
 
             public int CurrentLine
             {
-                get => _currentLine;
+                get => _currentLineIndex;
                 set
                 {
-                    if (_currentLine != value)
+                    if (_currentLineIndex != value)
                     {
-                        _currentLine = value;
-                        _currentCharacter = Math.Min(_submissionDocument[_currentLine].Length, _currentCharacter);
+                        _currentLineIndex = value;
+                        _currentCharacterIndex = Math.Min(_submissionDocument[_currentLineIndex].Length, _currentCharacterIndex);
 
                         UpdateCursorPosition();
                     }
@@ -118,12 +118,12 @@ namespace AS_Compiler.CommandLine
 
             public int CurrentCharacter
             {
-                get => _currentCharacter;
+                get => _currentCharacterIndex;
                 set
                 {
-                    if (_currentCharacter != value)
+                    if (_currentCharacterIndex != value)
                     {
-                        _currentCharacter = value;
+                        _currentCharacterIndex = value;
                         UpdateCursorPosition();
                     }
                 }
