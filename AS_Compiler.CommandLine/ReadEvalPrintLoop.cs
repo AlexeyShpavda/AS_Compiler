@@ -369,6 +369,11 @@ namespace AS_Compiler.CommandLine
 
         private void UpdateDocumentFromHistory(IList<string> document, SubmissionView view)
         {
+            if(_submissionHistory.Count == 0)
+            {
+                return;
+            }
+
             document.Clear();
 
             var historyItem = _submissionHistory[_submissionHistoryIndex];
