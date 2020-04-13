@@ -19,13 +19,13 @@ namespace AS_Compiler.Core.CodeAnalysis
 
         public object Evaluate()
         {
-            var labelToIndex = new Dictionary<LabelSymbol, int>();
+            var labelToIndex = new Dictionary<BoundLabel, int>();
 
             for (var i = 0; i < _root.Statements.Length; i++)
             {
                 if (_root.Statements[i] is BoundLabelStatement l)
                 {
-                    labelToIndex.Add(l.Label, i + 1);
+                    labelToIndex.Add(l.BoundLabel, i + 1);
                 }
             }
 
@@ -47,14 +47,14 @@ namespace AS_Compiler.Core.CodeAnalysis
                         break;
                     case BoundNodeType.GotoStatement:
                         var gotoStatement = (BoundGotoStatement)s;
-                        index = labelToIndex[gotoStatement.Label];
+                        index = labelToIndex[gotoStatement.BoundLabel];
                         break;
                     case BoundNodeType.ConditionalGotoStatement:
                         var conditionalGotoStatement = (BoundConditionalGotoStatement)s;
                         var condition = (bool)EvaluateExpression(conditionalGotoStatement.Condition);
                         if (condition == conditionalGotoStatement.JumpIfTrue)
                         {
-                            index = labelToIndex[conditionalGotoStatement.Label];
+                            index = labelToIndex[conditionalGotoStatement.BoundLabel];
                         }
                         else
                         {

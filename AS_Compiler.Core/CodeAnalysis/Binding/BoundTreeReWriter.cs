@@ -124,7 +124,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
 
             return condition == node.Condition
                 ? node
-                : new BoundConditionalGotoStatement(node.Label, condition, node.JumpIfTrue);
+                : new BoundConditionalGotoStatement(node.BoundLabel, condition, node.JumpIfTrue);
         }
 
         protected virtual BoundStatement RewriteExpressionStatement(BoundExpressionStatement node)

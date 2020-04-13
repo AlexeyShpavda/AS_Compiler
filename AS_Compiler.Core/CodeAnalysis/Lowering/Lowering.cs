@@ -14,10 +14,10 @@ namespace AS_Compiler.Core.CodeAnalysis.Lowering
         {
         }
 
-        private LabelSymbol GenerateLabel()
+        private BoundLabel GenerateLabel()
         {
-            var name = $"Label{++_labelCount}";
-            return new LabelSymbol(name);
+            var name = $"BoundLabel{++_labelCount}";
+            return new BoundLabel(name);
         }
 
         public static BoundBlockStatement Lower(BoundStatement statement)
