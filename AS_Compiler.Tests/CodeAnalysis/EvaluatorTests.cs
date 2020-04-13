@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AS_Compiler.Core.CodeAnalysis;
+using AS_Compiler.Core.CodeAnalysis.Symbols;
 using AS_Compiler.Core.CodeAnalysis.Syntax;
 using Xunit;
 

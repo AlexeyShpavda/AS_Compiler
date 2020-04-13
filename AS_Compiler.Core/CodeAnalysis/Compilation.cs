@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using AS_Compiler.Core.CodeAnalysis.Binding;
+using AS_Compiler.Core.CodeAnalysis.Symbols;
 using AS_Compiler.Core.CodeAnalysis.Syntax;
 
 namespace AS_Compiler.Core.CodeAnalysis

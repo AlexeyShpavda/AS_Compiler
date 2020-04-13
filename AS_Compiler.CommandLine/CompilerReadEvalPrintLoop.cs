@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AS_Compiler.Core.CodeAnalysis;
+using AS_Compiler.Core.CodeAnalysis.Symbols;
 using AS_Compiler.Core.CodeAnalysis.Syntax;
 using AS_Compiler.Core.CodeAnalysis.Text;
 

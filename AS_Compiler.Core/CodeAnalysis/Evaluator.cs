@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AS_Compiler.Core.CodeAnalysis.Binding;
+using AS_Compiler.Core.CodeAnalysis.Symbols;
 
 namespace AS_Compiler.Core.CodeAnalysis
 {

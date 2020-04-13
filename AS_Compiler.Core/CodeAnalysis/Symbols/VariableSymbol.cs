@@ -1,19 +1,19 @@
 ﻿using System;
 
-namespace AS_Compiler.Core.CodeAnalysis
+namespace AS_Compiler.Core.CodeAnalysis.Symbols
 {
-    public sealed class VariableSymbol
+    public sealed class VariableSymbol : Symbol
     {
         internal VariableSymbol(string name, bool isReadOnly, Type type)
+            : base(name)
         {
-            Name = name;
             IsReadOnly = isReadOnly;
             Type = type;
         }
 
-        public string Name { get; }
         public bool IsReadOnly { get; }
         public Type Type { get; }
+        public override SymbolType SymbolType => SymbolType.Variable;
 
         public override string ToString() => Name;
     }
