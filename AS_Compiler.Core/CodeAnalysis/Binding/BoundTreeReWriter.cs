@@ -150,9 +150,16 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
                     return RewriteUnaryExpression((BoundUnaryExpression)node);
                 case BoundNodeType.BinaryExpression:
                     return RewriteBinaryExpression((BoundBinaryExpression)node);
+                case BoundNodeType.ErrorExpression:
+                    return RewriteErrorExpression((BoundErrorExpression)node);
                 default:
                     throw new Exception($"Unexpected node: '{node.BoundNodeType}'");
             }
+        }
+
+        protected virtual BoundExpression RewriteErrorExpression(BoundErrorExpression node)
+        {
+            return node;
         }
 
         protected virtual BoundExpression RewriteLiteralExpression(BoundLiteralExpression node)
