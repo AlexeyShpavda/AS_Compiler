@@ -21,13 +21,22 @@ namespace AS_Compiler.CommandLine
             foreach (var token in tokens)
             {
                 var isKeyword = token.Type.ToString().EndsWith("Keyword");
+                var isIdentifier = token.Type == SyntaxType.IdentifierToken;
                 var isNumber = token.Type == SyntaxType.NumberToken;
 
                 if (isKeyword)
                 {
                     Console.ForegroundColor = ConsoleColor.Cyan;
                 }
-                else if (!isNumber)
+                else if (isIdentifier)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
+                }
+                else if (isNumber)
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else
                 {
                     Console.ForegroundColor = ConsoleColor.DarkGray;
                 }
