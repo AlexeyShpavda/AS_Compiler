@@ -71,20 +71,7 @@ namespace AS_Compiler.CommandLine
 
             var syntaxTree = SyntaxTree.Parse(text);
 
-            return !GetLastToken(syntaxTree.Root.Statement).IsMissing;
-        }
-
-        private static SyntaxToken GetLastToken(SyntaxNode node)
-        {
-            while (true)
-            {
-                if (node is SyntaxToken token)
-                {
-                    return token;
-                }
-
-                node = node.GetChildren().Last();
-            }
+            return !syntaxTree.Root.Statement.GetLastToken().IsMissing;
         }
 
         protected override void EvaluateSubmission(string text)

@@ -53,6 +53,16 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
             }
         }
 
+        public SyntaxToken GetLastToken()
+        {
+            if (this is SyntaxToken token)
+            {
+                return token;
+            }
+
+            return GetChildren().Last().GetLastToken();
+        }
+
         public void WriteTo(TextWriter writer)
         {
             Print(writer, this);
