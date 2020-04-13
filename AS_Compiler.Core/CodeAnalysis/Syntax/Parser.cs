@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Xml;
 using AS_Compiler.Core.CodeAnalysis.Text;
 
 namespace AS_Compiler.Core.CodeAnalysis.Syntax

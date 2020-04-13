@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using AS_Compiler.Core.CodeAnalysis.Symbols;
 using AS_Compiler.Core.CodeAnalysis.Syntax;
 using AS_Compiler.Core.CodeAnalysis.Text;
 
@@ -38,7 +38,7 @@ namespace AS_Compiler.Core.CodeAnalysis
             _diagnostics.Add(diagnostic);
         }
 
-        public void ReportInvalidNumber(TextSpan textSpan, string text, Type type)
+        public void ReportInvalidNumber(TextSpan textSpan, string text, TypeSymbol type)
         {
             var message = $"The number {text} is not valid {type}.";
             Report(textSpan, message);
@@ -58,13 +58,13 @@ namespace AS_Compiler.Core.CodeAnalysis
             Report(textSpan, message);
         }
 
-        public void ReportUndefinedUnaryOperator(TextSpan textSpan, string operatorText, Type operandType)
+        public void ReportUndefinedUnaryOperator(TextSpan textSpan, string operatorText, TypeSymbol operandType)
         {
             var message = $"Unary operator '{operatorText}' is not defined for type '{operandType}'.";
             Report(textSpan, message);
         }
 
-        public void ReportUndefinedBinaryOperator(TextSpan textSpan, string operatorText, Type leftType, Type rightType)
+        public void ReportUndefinedBinaryOperator(TextSpan textSpan, string operatorText, TypeSymbol leftType, TypeSymbol rightType)
         {
             var message = $"Binary operator '{operatorText}' is not defined for type '{leftType}' and '{rightType}'.";
             Report(textSpan, message);
@@ -76,7 +76,7 @@ namespace AS_Compiler.Core.CodeAnalysis
             Report(textSpan, message);
         }
 
-        public void ReportCannotConvert(TextSpan textSpan, Type fromType, Type toType)
+        public void ReportCannotConvert(TextSpan textSpan, TypeSymbol fromType, TypeSymbol toType)
         {
             var message = $"Cannot convert type '{fromType}' to '{toType}'.";
             Report(textSpan, message);

@@ -98,7 +98,7 @@ namespace AS_Compiler.Core.CodeAnalysis
             };
         }
 
-        private object EvaluateLiteralExpression(BoundLiteralExpression boundLiteralExpression)
+        private static object EvaluateLiteralExpression(BoundLiteralExpression boundLiteralExpression)
         {
             return boundLiteralExpression.Value;
         }
@@ -146,7 +146,7 @@ namespace AS_Compiler.Core.CodeAnalysis
                 case BoundBinaryOperatorType.Division:
                     return (int)left / (int)right;
                 case BoundBinaryOperatorType.BitwiseAnd:
-                    if (boundBinaryExpression.Type == typeof(int))
+                    if (boundBinaryExpression.Type == TypeSymbol.Int)
                     {
                         return (int)left & (int)right;
                     }
@@ -155,7 +155,7 @@ namespace AS_Compiler.Core.CodeAnalysis
                         return (bool)left & (bool)right;
                     }
                 case BoundBinaryOperatorType.BitwiseOr:
-                    if (boundBinaryExpression.Type == typeof(int))
+                    if (boundBinaryExpression.Type == TypeSymbol.Int)
                     {
                         return (int)left | (int)right;
                     }
@@ -164,7 +164,7 @@ namespace AS_Compiler.Core.CodeAnalysis
                         return (bool)left | (bool)right;
                     }
                 case BoundBinaryOperatorType.BitwiseXor:
-                    if (boundBinaryExpression.Type == typeof(int))
+                    if (boundBinaryExpression.Type == TypeSymbol.Int)
                     {
                         return (int)left ^ (int)right;
                     }

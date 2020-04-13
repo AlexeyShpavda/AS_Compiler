@@ -195,7 +195,7 @@ namespace AS_Compiler.Tests.CodeAnalysis
             ";
 
             const string diagnostics = @"
-                Cannot convert type 'System.Boolean' to 'System.Int32'.
+                Cannot convert type 'bool' to 'int'.
             ";
 
             AssertHasDiagnostics(text, diagnostics);
@@ -213,7 +213,7 @@ namespace AS_Compiler.Tests.CodeAnalysis
             ";
 
             const string diagnostics = @"
-                Cannot convert type 'System.Int32' to 'System.Boolean'.
+                Cannot convert type 'int' to 'bool'.
             ";
 
             AssertHasDiagnostics(text, diagnostics);
@@ -231,7 +231,7 @@ namespace AS_Compiler.Tests.CodeAnalysis
             ";
 
             const string diagnostics = @"
-                Cannot convert type 'System.Int32' to 'System.Boolean'.
+                Cannot convert type 'int' to 'bool'.
             ";
 
             AssertHasDiagnostics(text, diagnostics);
@@ -249,7 +249,7 @@ namespace AS_Compiler.Tests.CodeAnalysis
             ";
 
             const string diagnostics = @"
-                Cannot convert type 'System.Boolean' to 'System.Int32'.
+                Cannot convert type 'bool' to 'int'.
             ";
 
             AssertHasDiagnostics(text, diagnostics);
@@ -267,7 +267,7 @@ namespace AS_Compiler.Tests.CodeAnalysis
             ";
 
             const string diagnostics = @"
-                Cannot convert type 'System.Boolean' to 'System.Int32'.
+                Cannot convert type 'bool' to 'int'.
             ";
 
             AssertHasDiagnostics(text, diagnostics);
@@ -279,7 +279,7 @@ namespace AS_Compiler.Tests.CodeAnalysis
             const string text = @"[+]false";
 
             const string diagnostics = @"
-                Unary operator '+' is not defined for type 'System.Boolean'.
+                Unary operator '+' is not defined for type 'bool'.
             ";
 
             AssertHasDiagnostics(text, diagnostics);
@@ -291,7 +291,7 @@ namespace AS_Compiler.Tests.CodeAnalysis
             const string text = @"1 [+] true";
 
             const string diagnostics = @"
-                Binary operator '+' is not defined for type 'System.Int32' and 'System.Boolean'.
+                Binary operator '+' is not defined for type 'int' and 'bool'.
             ";
 
             AssertHasDiagnostics(text, diagnostics);

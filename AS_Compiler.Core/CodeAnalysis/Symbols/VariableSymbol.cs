@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace AS_Compiler.Core.CodeAnalysis.Symbols
+﻿namespace AS_Compiler.Core.CodeAnalysis.Symbols
 {
     public sealed class VariableSymbol : Symbol
     {
-        internal VariableSymbol(string name, bool isReadOnly, Type type)
+        internal VariableSymbol(string name, bool isReadOnly, TypeSymbol type)
             : base(name)
         {
             IsReadOnly = isReadOnly;
@@ -12,9 +10,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Symbols
         }
 
         public bool IsReadOnly { get; }
-        public Type Type { get; }
+        public TypeSymbol Type { get; }
         public override SymbolType SymbolType => SymbolType.Variable;
-
-        public override string ToString() => Name;
     }
 }
