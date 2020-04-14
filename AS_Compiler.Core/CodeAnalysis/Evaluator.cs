@@ -94,8 +94,27 @@ namespace AS_Compiler.Core.CodeAnalysis
                 BoundNodeType.AssignmentExpression => EvaluateAssignmentExpression((BoundAssignmentExpression)node),
                 BoundNodeType.UnaryExpression => EvaluateUnaryExpression((BoundUnaryExpression)node),
                 BoundNodeType.BinaryExpression => EvaluateBinaryExpression((BoundBinaryExpression)node),
+                BoundNodeType.CallExpression => EvaluateCallExpression((BoundCallExpression)node),
                 _ => throw new Exception($"Unexpected node {node.Type}")
             };
+        }
+
+        private object EvaluateCallExpression(BoundCallExpression node)
+        {
+            if (node.Function == BuiltInFunctions.Input)
+            {
+                return Console.ReadLine();
+            }
+            else if (node.Function == BuiltInFunctions.Print)
+            {
+                var message = (string)EvaluateExpression(node.Arguments[0]);
+                Console.WriteLine(message);
+                return null;
+            }
+            else
+            {
+                throw new Exception($"Unexpected function {node.Function}");
+            }
         }
 
         private static object EvaluateLiteralExpression(BoundLiteralExpression boundLiteralExpression)

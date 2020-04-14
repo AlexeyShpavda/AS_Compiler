@@ -3,6 +3,8 @@
     public enum SymbolType
     {
         Variable,
-        Type
+        Type,
+        Function,
+        Parameter
     }
 }

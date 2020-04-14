@@ -99,5 +99,30 @@ namespace AS_Compiler.Core.CodeAnalysis
             const string message = "Unterminated string literal.";
             Report(textSpan, message);
         }
+
+        public void ReportUndefinedFunction(TextSpan textSpan, string name)
+        {
+            var message = $"Function '{name}' does not exist.";
+            Report(textSpan, message);
+        }
+
+        public void ReportWrongArgumentCount(TextSpan textSpan, string name, int expectedCount, int actualCount)
+        {
+            var message = $"Function '{name}' requires {expectedCount} arguments, but were given {actualCount}.";
+            Report(textSpan, message);
+        }
+
+
+        public void ReportWrongArgumentType(TextSpan textSpan, string name, TypeSymbol parameterType, TypeSymbol argumentType)
+        {
+            var message = $"Parameter '{name}' requires type '{parameterType}' but was given '{argumentType}'.";
+            Report(textSpan, message);
+        }
+
+        public void ReportExpressionMustHaveValue(TextSpan textSpan)
+        {
+            const string message = "Expression must have a value.";
+            Report(textSpan, message);
+        }
     }
 }

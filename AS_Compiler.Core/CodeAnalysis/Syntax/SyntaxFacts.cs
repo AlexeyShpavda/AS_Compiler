@@ -115,6 +115,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                 SyntaxType.ClosingParenthesisToken => ")",
                 SyntaxType.OpeningBraceToken => "{",
                 SyntaxType.ClosingBraceToken => "}",
+                SyntaxType.CommaToken => ",",
                 SyntaxType.TrueKeyword => "true",
                 SyntaxType.FalseKeyword => "false",
                 SyntaxType.VarKeyword => "var",

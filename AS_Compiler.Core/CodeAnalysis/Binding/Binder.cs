@@ -149,7 +149,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
 
         private BoundStatement BindExpressionStatement(ExpressionStatementSyntax syntax)
         {
-            var expression = BindExpression(syntax.Expression);
+            var expression = BindExpression(syntax.Expression, true);
 
             return new BoundExpressionStatement(expression);
         }
@@ -168,7 +168,20 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
             return result;
         }
 
-        private BoundExpression BindExpression(ExpressionSyntax syntax)
+        private BoundExpression BindExpression(ExpressionSyntax syntax, bool isVoidable = false)
+        {
+            var result = BindExpressionInternal(syntax);
+
+            if (!isVoidable && result.Type == TypeSymbol.Void)
+            {
+                Diagnostics.ReportExpressionMustHaveValue(syntax.TextSpan);
+                return new BoundErrorExpression();
+            }
+
+            return result;
+        }
+
+        private BoundExpression BindExpressionInternal(ExpressionSyntax syntax)
         {
             return syntax.Type switch
             {
@@ -178,6 +191,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
                 SyntaxType.AssignmentExpression => BindAssignmentExpression((AssignmentExpressionSyntax)syntax),
                 SyntaxType.UnaryExpression => BindUnaryExpression((UnaryExpressionSyntax)syntax),
                 SyntaxType.BinaryExpression => BindBinaryExpression((BinaryExpressionSyntax)syntax),
+                SyntaxType.CallExpression => BindCallExpression((CallExpressionSyntax)syntax),
                 _ => throw new Exception($"Unexpected syntax {syntax.Type}")
             };
         }
@@ -275,6 +289,47 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
             }
 
             return new BoundBinaryExpression(boundLeft, boundOperator, boundRight);
+        }
+
+        private BoundExpression BindCallExpression(CallExpressionSyntax syntax)
+        {
+            var boundArguments = ImmutableArray.CreateBuilder<BoundExpression>();
+
+            foreach (var argument in syntax.Arguments)
+            {
+                var boundArgument = BindExpression(argument);
+                boundArguments.Add(boundArgument);
+            }
+
+            var functions = BuiltInFunctions.GetAll();
+
+            var function = functions.SingleOrDefault(f => f.Name == syntax.Identifier.Text);
+
+            if (function == null)
+            {
+                Diagnostics.ReportUndefinedFunction(syntax.Identifier.TextSpan, syntax.Identifier.Text);
+                return new BoundErrorExpression();
+            }
+
+            if (syntax.Arguments.Count != function.Parameters.Length)
+            {
+                Diagnostics.ReportWrongArgumentCount(syntax.TextSpan, function.Name, function.Parameters.Length, syntax.Arguments.Count);
+                return new BoundErrorExpression();
+            }
+
+            for (var i = 0; i < syntax.Arguments.Count; i++)
+            {
+                var argument = boundArguments[i];
+                var parameter = function.Parameters[i];
+
+                if (argument.Type != parameter.Type)
+                {
+                    Diagnostics.ReportWrongArgumentType(syntax.TextSpan, parameter.Name, parameter.Type, argument.Type);
+                    return new BoundErrorExpression();
+                }
+            }
+
+            return new BoundCallExpression(function, boundArguments.ToImmutable());
         }
     }
 }

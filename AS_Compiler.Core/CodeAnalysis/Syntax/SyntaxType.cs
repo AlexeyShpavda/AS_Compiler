@@ -30,6 +30,7 @@
         LessThanOrEqualsToken,
         GreaterThanToken,
         GreaterThanOrEqualsToken,
+        CommaToken,
 
         TrueKeyword,
         FalseKeyword,
@@ -57,5 +58,6 @@
         BinaryExpression,
         UnaryExpression,
         AssignmentExpression,
+        CallExpression,
     }
 }

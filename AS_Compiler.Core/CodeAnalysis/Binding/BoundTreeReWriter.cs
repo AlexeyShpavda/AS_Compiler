@@ -152,9 +152,41 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
                     return RewriteBinaryExpression((BoundBinaryExpression)node);
                 case BoundNodeType.ErrorExpression:
                     return RewriteErrorExpression((BoundErrorExpression)node);
+                case BoundNodeType.CallExpression:
+                    return RewriteCallExpression((BoundCallExpression)node);
                 default:
                     throw new Exception($"Unexpected node: '{node.BoundNodeType}'");
             }
+        }
+
+        protected virtual BoundExpression RewriteCallExpression(BoundCallExpression node)
+        {
+            ImmutableArray<BoundExpression>.Builder builder = null;
+
+            for (var i = 0; i < node.Arguments.Length; i++)
+            {
+                var oldArgument = node.Arguments[i];
+                var newArgument = RewriteExpression(oldArgument);
+
+                if (oldArgument != newArgument)
+                {
+                    if (builder == null)
+                    {
+                        builder = ImmutableArray.CreateBuilder<BoundExpression>(node.Arguments.Length);
+
+                        for (var j = 0; j < i; j++)
+                        {
+                            builder.Add(node.Arguments[j]);
+                        }
+                    }
+                }
+
+                builder?.Add(newArgument);
+            }
+
+            return builder == null
+                ? node
+                : new BoundCallExpression(node.Function, builder.MoveToImmutable());
         }
 
         protected virtual BoundExpression RewriteErrorExpression(BoundErrorExpression node)

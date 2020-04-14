@@ -72,6 +72,10 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
                     _type = SyntaxType.ClosingBraceToken;
                     _position++;
                     break;
+                case ',':
+                    _type = SyntaxType.CommaToken;
+                    _position++;
+                    break;
                 case '~':
                     _type = SyntaxType.TildeToken;
                     _position++;
