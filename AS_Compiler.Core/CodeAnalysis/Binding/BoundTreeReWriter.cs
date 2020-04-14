@@ -154,9 +154,20 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
                     return RewriteErrorExpression((BoundErrorExpression)node);
                 case BoundNodeType.CallExpression:
                     return RewriteCallExpression((BoundCallExpression)node);
+                case BoundNodeType.ConversionExpression:
+                    return RewriteConversionExpression((BoundConversionExpression)node);
                 default:
                     throw new Exception($"Unexpected node: '{node.BoundNodeType}'");
             }
+        }
+
+        protected virtual BoundExpression RewriteConversionExpression(BoundConversionExpression node)
+        {
+            var expression = RewriteExpression(node.Expression);
+
+            return expression == node.Expression
+                ? node
+                : new BoundConversionExpression(node.Type, expression);
         }
 
         protected virtual BoundExpression RewriteCallExpression(BoundCallExpression node)

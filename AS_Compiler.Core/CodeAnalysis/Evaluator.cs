@@ -96,8 +96,31 @@ namespace AS_Compiler.Core.CodeAnalysis
                 BoundNodeType.UnaryExpression => EvaluateUnaryExpression((BoundUnaryExpression)node),
                 BoundNodeType.BinaryExpression => EvaluateBinaryExpression((BoundBinaryExpression)node),
                 BoundNodeType.CallExpression => EvaluateCallExpression((BoundCallExpression)node),
+                BoundNodeType.ConversionExpression => EvaluateConversionExpression((BoundConversionExpression)node),
                 _ => throw new Exception($"Unexpected node {node.Type}")
             };
+        }
+
+        private object EvaluateConversionExpression(BoundConversionExpression node)
+        {
+            var value = EvaluateExpression(node.Expression);
+
+            if (node.Type == TypeSymbol.Bool)
+            {
+                return Convert.ToBoolean(value);
+            }
+
+            if (node.Type == TypeSymbol.Int)
+            {
+                return Convert.ToInt32(value);
+            }
+
+            if (node.Type == TypeSymbol.String)
+            {
+                return Convert.ToString(value);
+            }
+
+            throw new Exception($"Unexpected type '{node.Type}'.");
         }
 
         private object EvaluateCallExpression(BoundCallExpression node)

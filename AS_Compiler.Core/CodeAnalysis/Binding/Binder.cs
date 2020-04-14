@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.ComponentModel;
 using System.Linq;
 using AS_Compiler.Core.CodeAnalysis.Symbols;
 using AS_Compiler.Core.CodeAnalysis.Syntax;
@@ -62,7 +63,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
 
         private static BoundScope CreateRootScope()
         {
-            var result =  new BoundScope(null);
+            var result = new BoundScope(null);
 
             foreach (var function in BuiltInFunctions.GetAll())
             {
@@ -305,6 +306,12 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
 
         private BoundExpression BindCallExpression(CallExpressionSyntax syntax)
         {
+            if (syntax.Arguments.Count == 1 
+                && LookupType(syntax.Identifier.Text) is { } type)
+            {
+                return BindConversion(type, syntax.Arguments[0]);
+            }
+
             var boundArguments = ImmutableArray.CreateBuilder<BoundExpression>();
 
             foreach (var argument in syntax.Arguments)
@@ -338,6 +345,31 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
             }
 
             return new BoundCallExpression(function, boundArguments.ToImmutable());
+        }
+
+        private BoundExpression BindConversion(TypeSymbol type, ExpressionSyntax syntax)
+        {
+            var expression = BindExpression(syntax);
+            var conversion = Conversion.Classify(expression.Type, type);
+
+            if (!conversion.Exists)
+            {
+                Diagnostics.ReportCannotConvert(syntax.TextSpan, expression.Type, type);
+                return new BoundErrorExpression();
+            }
+
+            return new BoundConversionExpression(type, expression);
+        }
+
+        private static TypeSymbol LookupType(string name)
+        {
+            return name switch
+            {
+                "bool" => TypeSymbol.Bool,
+                "int" => TypeSymbol.Int,
+                "string" => TypeSymbol.String,
+                _ => null
+            };
         }
     }
 }
