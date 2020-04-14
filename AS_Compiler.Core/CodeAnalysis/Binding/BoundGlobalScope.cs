@@ -21,6 +21,5 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
         public ImmutableArray<Diagnostic> Diagnostics { get; }
         public ImmutableArray<VariableSymbol> Variables { get; }
         public BoundStatement Statement { get; }
-
     }
 }

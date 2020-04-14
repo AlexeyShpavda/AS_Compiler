@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.ComponentModel;
 using System.Linq;
 using AS_Compiler.Core.CodeAnalysis.Symbols;
 using AS_Compiler.Core.CodeAnalysis.Syntax;
