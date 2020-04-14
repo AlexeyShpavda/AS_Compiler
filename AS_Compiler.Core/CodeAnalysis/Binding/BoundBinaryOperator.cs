@@ -57,6 +57,8 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
             new BoundBinaryOperator(SyntaxType.PipePipeToken, BoundBinaryOperatorType.LogicalOr, TypeSymbol.Bool),
             new BoundBinaryOperator(SyntaxType.EqualsEqualsToken, BoundBinaryOperatorType.Equals, TypeSymbol.Bool),
             new BoundBinaryOperator(SyntaxType.BangEqualsToken, BoundBinaryOperatorType.NotEquals, TypeSymbol.Bool),
+
+            new BoundBinaryOperator(SyntaxType.PlusToken, BoundBinaryOperatorType.Addition, TypeSymbol.String), 
         };
 
         public static BoundBinaryOperator Bind(SyntaxType syntaxType, TypeSymbol leftType, TypeSymbol rightType)

@@ -138,7 +138,14 @@ namespace AS_Compiler.Core.CodeAnalysis
             switch (boundBinaryExpression.Operator.OperatorType)
             {
                 case BoundBinaryOperatorType.Addition:
-                    return (int)left + (int)right;
+                    if (boundBinaryExpression.Type == TypeSymbol.Int)
+                    {
+                        return (int)left + (int)right;
+                    }
+                    else
+                    {
+                        return (string)left + (string)right;
+                    }
                 case BoundBinaryOperatorType.Subtraction:
                     return (int)left - (int)right;
                 case BoundBinaryOperatorType.Multiplication:
