@@ -24,6 +24,7 @@ namespace AS_Compiler.CommandLine
                 var isKeyword = token.Type.ToString().EndsWith("Keyword");
                 var isIdentifier = token.Type == SyntaxType.IdentifierToken;
                 var isNumber = token.Type == SyntaxType.NumberToken;
+                var isString = token.Type == SyntaxType.StringToken;
 
                 if (isKeyword)
                 {
@@ -33,7 +34,7 @@ namespace AS_Compiler.CommandLine
                 {
                     Console.ForegroundColor = ConsoleColor.DarkCyan;
                 }
-                else if (isNumber)
+                else if (isNumber || isString)
                 {
                     Console.ForegroundColor = ConsoleColor.White;
                 }
