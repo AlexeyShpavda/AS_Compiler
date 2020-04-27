@@ -2,14 +2,14 @@
 {
     public class VariableSymbol : Symbol
     {
-        internal VariableSymbol(string name, bool isReadOnly, TypeSymbol type)
+        internal VariableSymbol(string name, bool isConstant, TypeSymbol type)
             : base(name)
         {
-            IsReadOnly = isReadOnly;
+            IsConstant = isConstant;
             Type = type;
         }
 
-        public bool IsReadOnly { get; }
+        public bool IsConstant { get; }
         public TypeSymbol Type { get; }
         public override SymbolType SymbolType => SymbolType.Variable;
     }

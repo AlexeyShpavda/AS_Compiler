@@ -90,7 +90,7 @@ namespace AS_Compiler.Core.CodeAnalysis
 
         public void ReportCannotAssign(TextSpan textSpan, string name)
         {
-            var message = $"Variable '{name}' is read-only and cannot be assigned.";
+            var message = $"Variable '{name}' is constant and cannot be changed.";
             Report(textSpan, message);
         }
 

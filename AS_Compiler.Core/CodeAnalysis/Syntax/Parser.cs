@@ -74,7 +74,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
             {
                 case SyntaxType.OpeningBraceToken:
                     return ParseBlockStatement();
-                case SyntaxType.LetKeyword:
+                case SyntaxType.ConstKeyword:
                 case SyntaxType.VarKeyword:
                     return ParseVariableDeclaration();
                 case SyntaxType.IfKeyword:
@@ -135,7 +135,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Syntax
 
         private StatementSyntax ParseVariableDeclaration()
         {
-            var expected = Current.Type == SyntaxType.LetKeyword ? SyntaxType.LetKeyword : SyntaxType.VarKeyword;
+            var expected = Current.Type == SyntaxType.ConstKeyword ? SyntaxType.ConstKeyword : SyntaxType.VarKeyword;
             var keyword = MatchToken(expected);
             var identifier = MatchToken(SyntaxType.IdentifierToken);
             var equalsToken = MatchToken(SyntaxType.EqualsToken);

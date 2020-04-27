@@ -104,11 +104,11 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
             return new BoundForStatement(variable, lowerBound, upperBound, body);
         }
 
-        private VariableSymbol BindVariable(SyntaxToken identifier, bool isReadOnly, TypeSymbol type)
+        private VariableSymbol BindVariable(SyntaxToken identifier, bool isConstant, TypeSymbol type)
         {
             var name = identifier.Text ?? "?";
             var declare = !identifier.IsMissing;
-            var variable = new VariableSymbol(name, isReadOnly, type);
+            var variable = new VariableSymbol(name, isConstant, type);
 
             if (declare && !_scope.TryDeclareVariable(variable))
             {
@@ -152,9 +152,9 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
 
         private BoundStatement BindVariableDeclaration(VariableDeclarationSyntax syntax)
         {
-            var isReadOnly = syntax.Keyword.Type == SyntaxType.LetKeyword;
+            var isConstant = syntax.Keyword.Type == SyntaxType.ConstKeyword;
             var initializer = BindExpression(syntax.Initializer);
-            var variable = BindVariable(syntax.Identifier, isReadOnly, initializer.Type);
+            var variable = BindVariable(syntax.Identifier, isConstant, initializer.Type);
 
             return new BoundVariableDeclaration(variable, initializer);
         }
@@ -249,7 +249,7 @@ namespace AS_Compiler.Core.CodeAnalysis.Binding
                 return boundExpression;
             }
 
-            if (variable.IsReadOnly)
+            if (variable.IsConstant)
             {
                 Diagnostics.ReportCannotAssign(syntax.EqualsToken.TextSpan, name);
             }

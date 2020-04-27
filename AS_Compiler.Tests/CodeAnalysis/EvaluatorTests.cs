@@ -172,13 +172,13 @@ namespace AS_Compiler.Tests.CodeAnalysis
         {
             const string text = @"
                 {
-                    let x = 1
+                    const x = 1
                     x [=] 0
                 }
             ";
 
             const string diagnostics = @"
-                Variable 'x' is read-only and cannot be assigned.
+                Variable 'x' is constant and cannot be changed.
             ";
 
             AssertHasDiagnostics(text, diagnostics);

@@ -35,7 +35,7 @@
         TrueKeyword,
         FalseKeyword,
         VarKeyword,
-        LetKeyword,
+        ConstKeyword,
         IfKeyword,
         ElseKeyword,
         WhileKeyword,
